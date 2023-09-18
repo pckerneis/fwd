@@ -2,7 +2,7 @@ import * as fs from 'node:fs/promises';
 import * as path from 'path';
 import process from 'process';
 
-import { rli, clearBuffer } from './rli.js';
+import { rli } from './rli.js';
 import { getBestMatches, promptMidiOutputName } from './prompt.js';
 import { getOutputs, openMidiOutput } from './midi.js';
 import { runInSandbox } from './vm.js';
@@ -41,6 +41,23 @@ ${outlines.join('\n')}`,
   }, 100);
 
   runInSandbox(existingFile.content, midiOutput, outlines);
+
+  const ac = new AbortController();
+  const { signal } = ac;
+  setTimeout(() => ac.abort(), 10000);
+
+  try {
+    const watcher = fs.watch(existingFile.path, { signal });
+    for await (const event of watcher) {
+      runInSandbox(existingFile.content, midiOutput, outlines);
+    }
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      return;
+    }
+
+    throw err;
+  }
 }
 
 export async function promptAndReadFile(filePath) {

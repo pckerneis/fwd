@@ -12,7 +12,7 @@ export function runInSandbox(userCode, midiOutput, textOutputLines) {
   };
 
   try {
-    vm.runInNewContext(userCode, context);
+    vm.runInNewContext(userCode, context, { timeout: 10000 });
   } catch (e) {
     textOutputLines.push(e);
   }
