@@ -6,6 +6,27 @@ import { rli, clearBuffer } from './rli.js';
 import { getBestMatches, promptMidiOutputName } from './prompt.js';
 import { getOutputs, openMidiOutput } from './midi.js';
 import { runInSandbox } from './vm.js';
+import { watchFile } from './watch-file.js';
+import {now, startScheduler} from './scheduler.js';
+
+function startDisplay(existingOutput, existingFile, outlines) {
+  setInterval(() => {
+    clearBuffer();
+
+    const maxLines = 5;
+    if (outlines.length > maxLines) {
+      outlines.splice(0, outlines.length - maxLines);
+    }
+
+    console.log(
+        `Output: ${existingOutput}
+File:   ${existingFile.path}
+Time:   ${now()}
+____________________________________
+${outlines.join('\n')}`,
+    );
+  }, 100);
+}
 
 export async function run(file, output) {
   const existingFile = await promptAndReadFile(file);
@@ -21,43 +42,19 @@ export async function run(file, output) {
     existingOutput = await promptMidiOutputName(outputs);
   }
 
-  const startDate = Date.now();
   const outlines = [];
   const midiOutput = openMidiOutput(existingOutput);
 
-  setInterval(() => {
-    clearBuffer();
-
-    console.log(
-      `Output: ${existingOutput}
-File:   ${existingFile.path}
-Time:   ${(Date.now() - startDate) / 1000}
-
-(s) to start/stop
-(p) to pause/unpause
-____________________________________
-${outlines.join('\n')}`,
-    );
-  }, 100);
+  startDisplay(existingOutput, existingFile, outlines);
 
   runInSandbox(existingFile.content, midiOutput, outlines);
 
-  const ac = new AbortController();
-  const { signal } = ac;
-  setTimeout(() => ac.abort(), 10000);
+  startScheduler();
 
-  try {
-    const watcher = fs.watch(existingFile.path, { signal });
-    for await (const event of watcher) {
-      runInSandbox(existingFile.content, midiOutput, outlines);
-    }
-  } catch (err) {
-    if (err.name === 'AbortError') {
-      return;
-    }
-
-    throw err;
-  }
+  watchFile(existingFile.path, async () => {
+    const updatedFile = await tryToReadFile(existingFile.path);
+    runInSandbox(updatedFile.content, midiOutput, outlines);
+  });
 }
 
 export async function promptAndReadFile(filePath) {

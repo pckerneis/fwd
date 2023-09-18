@@ -2,6 +2,16 @@
 log('Hello, World!');
 
 // Play a few notes
-note(36, 127, 0, 1);
-note(39, 127, 1, 1);
-note(40, 127, 2, 1);
+// note(36, 127, 1);
+
+// Schedule
+at(1, () => {
+  log('Scheduled action.')
+  note(40, 127, 1);
+});
+
+// Loop
+// every(4, 2, () => {
+//   note(40, 127, 1);
+// });
+
