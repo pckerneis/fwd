@@ -4,7 +4,8 @@ import process from 'process';
 
 import { rli, clearBuffer } from './rli.js';
 import { getBestMatches, promptMidiOutputName } from './prompt.js';
-import { getOutputs } from './midi.js';
+import { getOutputs, openMidiOutput } from './midi.js';
+import { runInSandbox } from './vm.js';
 
 export async function run(file, output, bpm) {
   const existingFile = await promptAndReadFile(file);
@@ -20,9 +21,11 @@ export async function run(file, output, bpm) {
     existingOutput = await promptMidiOutputName(outputs);
   }
 
-  const existingBPM = (bpm && parseFloat(bpm)) || 120;
+  // const existingBPM = (bpm && parseFloat(bpm)) || 120;
 
-  let t = 0;
+  const startDate = Date.now();
+  const outlines = [];
+  const midiOutput = openMidiOutput(existingOutput);
 
   setInterval(() => {
     clearBuffer();
@@ -30,15 +33,16 @@ export async function run(file, output, bpm) {
     console.log(
       `Output: ${existingOutput}
 File:   ${existingFile.path}
-BPM:    ${existingBPM}
-Time:   ${t}
+Time:   ${(Date.now() - startDate) / 1000}
 
 (s) to start/stop
 (p) to pause/unpause
-____________________________________`,
+____________________________________
+${outlines.join('\n')}`,
     );
-    t += 1;
   }, 100);
+
+  runInSandbox(existingFile.content, midiOutput, outlines);
 }
 
 export async function promptAndReadFile(filePath) {

@@ -8,22 +8,23 @@ export function openMidiOutput(outputName) {
   return new easymidi.Output(outputName);
 }
 
-export function playNote(options) {
-  const { midiOutput, note, velocity, channel, duration, time } = options;
-
+export function playNote(midiOutput, channel, note, velocity, time, duration) {
   setTimeout(() => {
     midiOutput.send('noteon', {
       note,
       velocity: velocity ?? 127,
       channel: channel ?? 0,
     });
-  }, time);
+  }, time * 1000);
 
-  setTimeout(() => {
-    midiOutput.send('noteoff', {
-      note,
-      velocity: 0,
-      channel: channel ?? 0,
-    });
-  }, time + duration);
+  setTimeout(
+    () => {
+      midiOutput.send('noteoff', {
+        note,
+        velocity: 0,
+        channel: channel ?? 0,
+      });
+    },
+    (time + duration) * 1000,
+  );
 }
