@@ -1,4 +1,4 @@
-import rli from './rli.js';
+import { rli } from './rli.js';
 
 async function promptMatchingOutput(outputs) {
   do {
@@ -27,7 +27,7 @@ Which MIDI output do you want to use? `);
 export function getBestMatches(candidate, options) {
   const lowerCaseCandidate = candidate.toLocaleLowerCase();
   return options.filter((out) =>
-      out.toLocaleLowerCase().startsWith(lowerCaseCandidate),
+    out.toLocaleLowerCase().startsWith(lowerCaseCandidate),
   );
 }
 

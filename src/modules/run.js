@@ -2,9 +2,9 @@ import * as fs from 'node:fs/promises';
 import * as path from 'path';
 import process from 'process';
 
-import rli from './rli.js';
-import {getBestMatches, promptMidiOutputName} from './prompt.js';
-import {getOutputs} from './midi.js';
+import { rli, clearBuffer } from './rli.js';
+import { getBestMatches, promptMidiOutputName } from './prompt.js';
+import { getOutputs } from './midi.js';
 
 export async function run(file, output, bpm) {
   const existingFile = await promptAndReadFile(file);
@@ -20,13 +20,25 @@ export async function run(file, output, bpm) {
     existingOutput = await promptMidiOutputName(outputs);
   }
 
-  const existingBPM = bpm && parseFloat(bpm) || 120;
+  const existingBPM = (bpm && parseFloat(bpm)) || 120;
 
-  console.log(`
-Output: ${existingOutput}
+  let t = 0;
+
+  setInterval(() => {
+    clearBuffer();
+
+    console.log(
+      `Output: ${existingOutput}
 File:   ${existingFile.path}
 BPM:    ${existingBPM}
-`);
+Time:   ${t}
+
+(s) to start/stop
+(p) to pause/unpause
+____________________________________`,
+    );
+    t += 1;
+  }, 100);
 }
 
 export async function promptAndReadFile(filePath) {
@@ -55,23 +67,23 @@ async function promptFile() {
 }
 
 async function tryToReadFile(relativeOrAbsolutePath) {
-  if (! relativeOrAbsolutePath) {
+  if (!relativeOrAbsolutePath) {
     return null;
   }
 
   try {
     return {
       path: relativeOrAbsolutePath,
-      content: await fs.readFile(relativeOrAbsolutePath, 'utf8')
+      content: await fs.readFile(relativeOrAbsolutePath, 'utf8'),
     };
-  } catch(e) {
+  } catch (e) {
     try {
       const fullPath = path.resolve(process.cwd(), relativeOrAbsolutePath);
       return {
         path: fullPath,
-        content: await fs.readFile(fullPath, 'utf8')
+        content: await fs.readFile(fullPath, 'utf8'),
       };
-    } catch(e2) {
+    } catch (e2) {
       return null;
     }
   }
