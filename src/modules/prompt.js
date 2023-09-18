@@ -45,6 +45,5 @@ export async function promptMidiOutputName(outputs) {
     midiOut = await promptMatchingOutput(outputs);
   }
 
-  console.info(`\nPicked MIDI output: ${midiOut}.\n`);
   return midiOut;
 }

@@ -1,18 +1,18 @@
 import { playNote } from './midi.js';
+import vm from 'node:vm';
 
 export function runInSandbox(userCode, midiOutput, textOutputLines) {
-  try {
-    eval(`"use strict";
-
-    function log(msg) {
-      textOutputLines.push(msg);
-    }
-
-    function note(pitch, velocity, time, duration, channel) {
+  const context = {
+    note(pitch, velocity, time, duration, channel) {
       playNote(midiOutput, channel, pitch, velocity, time, duration);
-    }
+    },
+    log(msg) {
+      textOutputLines.push(msg);
+    },
+  };
 
-    ${userCode}`);
+  try {
+    vm.runInNewContext(userCode, context);
   } catch (e) {
     textOutputLines.push(e);
   }

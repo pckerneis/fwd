@@ -13,10 +13,9 @@ program
   .command('run')
   .description('Run a program from a JS file')
   .option('--file, -f <file>', 'Path to the program file to run')
-  .option('--bpm, -b <bpm>', 'BPM to run at (defaults to 120)', '120')
   .option('--output, -o <output>', 'MIDI output to use')
   .action(async (options) => {
-    await run(options.F, options.O, options.B);
+    await run(options.F, options.O);
   });
 
 program.parse();

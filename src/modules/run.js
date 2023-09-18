@@ -7,7 +7,7 @@ import { getBestMatches, promptMidiOutputName } from './prompt.js';
 import { getOutputs, openMidiOutput } from './midi.js';
 import { runInSandbox } from './vm.js';
 
-export async function run(file, output, bpm) {
+export async function run(file, output) {
   const existingFile = await promptAndReadFile(file);
 
   const outputs = getOutputs();
@@ -20,8 +20,6 @@ export async function run(file, output, bpm) {
   } else {
     existingOutput = await promptMidiOutputName(outputs);
   }
-
-  // const existingBPM = (bpm && parseFloat(bpm)) || 120;
 
   const startDate = Date.now();
   const outlines = [];
