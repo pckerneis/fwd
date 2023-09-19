@@ -1,5 +1,6 @@
 const scheduledEvents = [];
 let startTime = 0;
+let previousTime = 0;
 
 export function schedule(time, action) {
   scheduledEvents.push({ time, action });
@@ -32,7 +33,10 @@ export function startScheduler() {
 
   setInterval(() => {
     const elapsed = now();
+    removePastEvents(previousTime);
     const currentEvents = removePastEvents(elapsed);
     currentEvents.forEach((event) => event.action());
+
+    previousTime = elapsed;
   });
 }
