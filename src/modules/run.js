@@ -56,7 +56,7 @@ async function promptFile() {
   const existingFile = await tryToReadFile(answer);
 
   if (existingFile) {
-    console.info(`\nReading from "${existingFile.path}".\n`);
+    console.info(`\nReading from "${existingFile.path}".`);
 
     return existingFile;
   } else {

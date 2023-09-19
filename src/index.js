@@ -1,6 +1,9 @@
 import { Command } from 'commander';
-
 import { run } from './modules/run.js';
+import packagejson from '../package.json' assert { type: 'json' };
+import { printWelcome } from './modules/display.js';
+
+printWelcome(packagejson.version);
 
 const program = new Command();
 
