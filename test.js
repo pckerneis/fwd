@@ -1,14 +1,14 @@
 // Output text to console
 log('Hello, World!');
+note(36, 127, 1);
 
-// Play a few notes
-// note(36, 127, 1);
+wait(2);
+flog("Waited for 2. Now is " + cursor());
+note(40, 127, 1);
 
-// Schedule
-at(1, () => {
-  log('Scheduled action.')
-  note(40, 127, 1);
-});
+at(now() + 1);
+flog("1 second after now");
+note(39, 127, 1);
 
 // Loop
 // every(4, 2, () => {

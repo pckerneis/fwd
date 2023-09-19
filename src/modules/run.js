@@ -7,13 +7,13 @@ import { getBestMatches, promptMidiOutputName } from './prompt.js';
 import { getOutputs, openMidiOutput } from './midi.js';
 import { runInSandbox } from './vm.js';
 import { watchFile } from './watch-file.js';
-import {now, startScheduler} from './scheduler.js';
+import {initScheduler, now, startScheduler} from './scheduler.js';
 
 function startDisplay(existingOutput, existingFile, outlines) {
   setInterval(() => {
     clearBuffer();
 
-    const maxLines = 5;
+    const maxLines = 10;
     if (outlines.length > maxLines) {
       outlines.splice(0, outlines.length - maxLines);
     }
@@ -46,6 +46,8 @@ export async function run(file, output) {
   const midiOutput = openMidiOutput(existingOutput);
 
   startDisplay(existingOutput, existingFile, outlines);
+
+  initScheduler();
 
   runInSandbox(existingFile.content, midiOutput, outlines);
 
