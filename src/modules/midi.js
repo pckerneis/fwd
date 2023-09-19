@@ -1,4 +1,5 @@
 import easymidi from 'easymidi';
+import {notifyMidiSent} from './midi-sent.js';
 
 export function getOutputs() {
   return easymidi.getOutputs();
@@ -22,4 +23,6 @@ export function playNote(midiOutput, channel, note, velocity, duration) {
       channel: channel ?? 0,
     });
   }, duration * 1000);
+
+  notifyMidiSent();
 }

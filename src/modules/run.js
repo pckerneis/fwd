@@ -2,31 +2,13 @@ import * as fs from 'node:fs/promises';
 import * as path from 'path';
 import process from 'process';
 
-import { rli, clearBuffer } from './rli.js';
+import { rli } from './rli.js';
 import { getBestMatches, promptMidiOutputName } from './prompt.js';
 import { getOutputs, openMidiOutput } from './midi.js';
 import { runInSandbox } from './vm.js';
 import { watchFile } from './watch-file.js';
-import {initScheduler, now, startScheduler} from './scheduler.js';
-
-function startDisplay(existingOutput, existingFile, outlines) {
-  setInterval(() => {
-    clearBuffer();
-
-    const maxLines = 10;
-    if (outlines.length > maxLines) {
-      outlines.splice(0, outlines.length - maxLines);
-    }
-
-    console.log(
-        `Output: ${existingOutput}
-File:   ${existingFile.path}
-Time:   ${now()}
-____________________________________
-${outlines.join('\n')}`,
-    );
-  }, 100);
-}
+import {initScheduler, startScheduler} from './scheduler.js';
+import {startDisplay} from './display.js';
 
 export async function run(file, output) {
   const existingFile = await promptAndReadFile(file);

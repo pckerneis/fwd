@@ -2,6 +2,12 @@ import { playNote } from './midi.js';
 import vm from 'node:vm';
 import {clearScheduledEvents, now, schedule} from './scheduler.js';
 
+let lastChangeDate;
+
+export function getLastChangeDate() {
+  return lastChangeDate;
+}
+
 function buildContext(midiOutput, textOutputLines) {
   let cursor = 0;
 
@@ -40,6 +46,7 @@ export function runInSandbox(userCode, midiOutput, textOutputLines) {
 
   try {
     vm.runInNewContext(userCode, context, { timeout: 10000 });
+    lastChangeDate = new Date();
   } catch (e) {
     textOutputLines.push(e);
   }
