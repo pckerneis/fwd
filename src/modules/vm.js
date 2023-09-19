@@ -1,6 +1,6 @@
 import { playNote } from './midi.js';
 import vm from 'node:vm';
-import {clearScheduledEvents, now, schedule} from './scheduler.js';
+import { clearScheduledEvents, now, schedule } from './scheduler.js';
 
 let lastChangeDate;
 
@@ -35,7 +35,7 @@ function buildContext(midiOutput, textOutputLines) {
     },
     cursor() {
       return cursor;
-    }
+    },
   };
 }
 

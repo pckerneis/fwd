@@ -7,8 +7,8 @@ import { getBestMatches, promptMidiOutputName } from './prompt.js';
 import { getOutputs, openMidiOutput } from './midi.js';
 import { runInSandbox } from './vm.js';
 import { watchFile } from './watch-file.js';
-import {initScheduler, startScheduler} from './scheduler.js';
-import {startDisplay} from './display.js';
+import { initScheduler, startScheduler } from './scheduler.js';
+import { startDisplay } from './display.js';
 
 export async function run(file, output) {
   const existingFile = await promptAndReadFile(file);

@@ -1,7 +1,7 @@
-import {clearBuffer} from './rli.js';
-import {now} from './scheduler.js';
-import {getLastChangeDate} from './vm.js';
-import {getMidiSent, resetMidiSent} from './midi-sent.js';
+import { clearBuffer } from './rli.js';
+import { now } from './scheduler.js';
+import { getLastChangeDate } from './vm.js';
+import { getMidiSent, resetMidiSent } from './midi-sent.js';
 
 function truncateOutputLines(outlines) {
   const maxLines = 10;
@@ -16,7 +16,7 @@ export function startDisplay(existingOutput, existingFile, outlines) {
     truncateOutputLines(outlines);
 
     console.log(
-        `Output: [${getMidiSent() ? 'x' : ' '}] ${existingOutput}
+      `Output: [${getMidiSent() ? 'x' : ' '}] ${existingOutput}
 File:   ${existingFile.path} (at ${getLastChangeDate().toLocaleTimeString()})
 Time:   ${now()}
 ____________________________________

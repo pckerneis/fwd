@@ -1,5 +1,5 @@
 import easymidi from 'easymidi';
-import {notifyMidiSent} from './midi-sent.js';
+import { notifyMidiSent } from './midi-sent.js';
 
 export function getOutputs() {
   return easymidi.getOutputs();
