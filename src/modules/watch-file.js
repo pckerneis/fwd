@@ -1,20 +1,7 @@
-import fs from 'node:fs/promises';
+import chokidar from 'chokidar';
 
 export async function watchFile(path, callback) {
-  const ac = new AbortController();
-  const { signal } = ac;
-  setTimeout(() => ac.abort(), 10000);
-
-  try {
-    const watcher = fs.watch(path, { signal });
-    for await (const event of watcher) {
-      callback();
-    }
-  } catch (err) {
-    if (err.name === 'AbortError') {
-      return;
-    }
-
-    throw err;
-  }
+  chokidar
+      .watch(path)
+      .on('change', () => callback());
 }
