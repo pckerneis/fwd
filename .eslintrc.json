@@ -8,6 +8,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
+  "ignorePatterns": ["example.js"],
   "rules": {
     "no-constant-condition": "off"
   }
