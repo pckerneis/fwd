@@ -7,8 +7,8 @@ A tiny environment for musical composition and live-coding in JavaScript.
 To run from the sources:
 
 - clone the project
-- install the NPM dependencies with `npm install`
-- run with `npm run start`
+- install the NPM dependencies with `npm install -g .`
+- run with `fwd`
 
 You'll be prompted a text file to read from, and a MIDI output to send to.
 
