@@ -8,7 +8,7 @@ export function getLastChangeDate() {
   return lastChangeDate;
 }
 
-function buildContext(midiOutput, textOutputLines) {
+function buildContext(midiOutput, textOutputLines, env) {
   let cursor = 0;
 
   const fire = (action) => schedule(cursor, action);
@@ -16,6 +16,7 @@ function buildContext(midiOutput, textOutputLines) {
   const log = (msg) => textOutputLines.push(msg);
 
   return {
+    env,
     fire,
     log,
     note(pitch, velocity, duration, channel) {
@@ -39,10 +40,10 @@ function buildContext(midiOutput, textOutputLines) {
   };
 }
 
-export function runInSandbox(userCode, midiOutput, textOutputLines) {
+export function runInSandbox(userCode, midiOutput, textOutputLines, env) {
   clearScheduledEvents();
 
-  const context = buildContext(midiOutput, textOutputLines);
+  const context = buildContext(midiOutput, textOutputLines, env);
 
   try {
     vm.runInNewContext(userCode, context, { timeout: 10000 });

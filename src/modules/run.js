@@ -24,6 +24,7 @@ export async function run(file, output) {
     existingOutput = await promptMidiOutputName(outputs);
   }
 
+  const env = {};
   const outlines = [];
   const midiOutput = openMidiOutput(existingOutput);
 
@@ -31,13 +32,13 @@ export async function run(file, output) {
 
   initScheduler();
 
-  runInSandbox(existingFile.content, midiOutput, outlines);
+  runInSandbox(existingFile.content, midiOutput, outlines, env);
 
   startScheduler();
 
   watchFile(existingFile.path, async () => {
     const updatedFile = await tryToReadFile(existingFile.path);
-    runInSandbox(updatedFile.content, midiOutput, outlines);
+    runInSandbox(updatedFile.content, midiOutput, outlines, env);
   });
 }
 
