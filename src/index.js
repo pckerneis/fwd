@@ -9,7 +9,7 @@ const program = new Command();
 
 program
   .name('conductor')
-  .version('0.0.1')
+  .version(packagejson.version)
   .description('CLI to run musical programs in JS')
   .option('--file, -f <file>', 'Path to the program file to run')
   .option('--output, -o <output>', 'MIDI output to use')
