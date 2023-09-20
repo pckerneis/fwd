@@ -85,3 +85,7 @@ with note number `n` and velocity `v` on midi channel `c`.
 
 Schedule a MIDI note-off message to be sent at the cursor position
 with note number `n` and velocity `v` on midi channel `c`.
+
+### `env`
+
+An object that persists in between executions.
