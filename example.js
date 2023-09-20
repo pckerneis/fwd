@@ -13,3 +13,6 @@ note(40, 127, 1);
 // Try changing the program to trigger these instructions again
 at(now() + 1);
 flog('1 second after now');
+
+at(3);
+repeat((i) => log('Repeat #' + i), 0.25, 5);

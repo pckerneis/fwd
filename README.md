@@ -1,4 +1,4 @@
-# conductor-cli
+# fwd
 
 A tiny environment for musical composition and live-coding in JavaScript.
 
@@ -66,6 +66,10 @@ Offset the cursor by `d` expressed in seconds.
 ### `fire(fn)`
 
 Schedule the function `fn` to be called at the cursor position.
+
+### `repeat(fn, interval, count = Infinity)`
+
+Repeatedly calls the function `fn` every `interval` seconds for `count` times, starting at the cursor position.
 
 ### `note(p, v, d, c)`
 

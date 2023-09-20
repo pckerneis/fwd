@@ -17,6 +17,40 @@ function fire(action) {
   schedule(_cursor, action);
 }
 
+function repeat(action, interval, count = Infinity) {
+  const startCount = count;
+  let nextCursor = _cursor;
+
+  const t = now();
+
+  for (;;) {
+    if (nextCursor >= t) {
+      break;
+    }
+
+    count -= 1;
+
+    if (count < 0) {
+      return;
+    }
+
+    nextCursor += interval;
+  }
+
+  const scheduleNext = () => {
+    schedule(nextCursor, () => {
+      if (count > 0) {
+        action(startCount - count);
+        count -= 1;
+        nextCursor += interval;
+        scheduleNext();
+      }
+    });
+  };
+
+  scheduleNext();
+}
+
 function log(msg) {
   _textOutputLines.push(msg);
 }
@@ -52,5 +86,6 @@ export function getApi() {
     at,
     wait,
     cursor,
+    repeat,
   };
 }
