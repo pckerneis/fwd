@@ -1,6 +1,6 @@
-import { playNote } from './midi.js';
 import vm from 'node:vm';
-import { clearScheduledEvents, now, schedule } from './scheduler.js';
+import { clearScheduledEvents } from './scheduler.js';
+import { getApi, initApi } from './api.js';
 
 let lastChangeDate;
 
@@ -9,34 +9,11 @@ export function getLastChangeDate() {
 }
 
 function buildContext(midiOutput, textOutputLines, env) {
-  let cursor = 0;
-
-  const fire = (action) => schedule(cursor, action);
-
-  const log = (msg) => textOutputLines.push(msg);
+  initApi(midiOutput, textOutputLines, env);
 
   return {
     env,
-    fire,
-    log,
-    note(pitch, velocity, duration, channel) {
-      fire(() => playNote(midiOutput, channel, pitch, velocity, duration));
-    },
-    flog(msg) {
-      fire(() => log(msg));
-    },
-    at(time) {
-      cursor = time;
-    },
-    wait(duration) {
-      cursor += duration;
-    },
-    now() {
-      return now();
-    },
-    cursor() {
-      return cursor;
-    },
+    ...getApi(),
   };
 }
 
