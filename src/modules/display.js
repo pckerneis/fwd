@@ -2,7 +2,7 @@ import process from 'process';
 import { clearBuffer } from './rli.js';
 import { now } from './scheduler.js';
 import { getLastChangeDate } from './vm.js';
-import { getMidiSent, resetMidiSent } from './midi-sent.js';
+import { getMidiSent, resetMidiSent } from './midi.js';
 
 function truncateOutputLines(outlines) {
   const maxLines = process.stdout.rows - 6;

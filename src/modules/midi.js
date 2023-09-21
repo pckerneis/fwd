@@ -1,5 +1,18 @@
 import easymidi from 'easymidi';
-import { notifyMidiSent } from './midi-sent.js';
+
+let midiSent = false;
+
+function notifyMidiSent() {
+  midiSent = true;
+}
+
+export function resetMidiSent() {
+  midiSent = false;
+}
+
+export function getMidiSent() {
+  return midiSent;
+}
 
 export function getOutputs() {
   return easymidi.getOutputs();
