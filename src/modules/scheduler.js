@@ -2,6 +2,17 @@ const scheduledEvents = [];
 let startTime = 0;
 let previousTime = 0;
 let stopped = true;
+let intervalHandle;
+
+export function now() {
+  return stopped ? 0 : (Date.now() - startTime) / 1000;
+}
+
+export function initScheduler() {
+  stopped = true;
+  clearInterval(intervalHandle);
+  intervalHandle = null;
+}
 
 export function schedule(time, action) {
   scheduledEvents.push({ time, action });
@@ -25,20 +36,12 @@ function removePastEvents(time) {
   return pastEvents;
 }
 
-export function now() {
-  return stopped ? 0 : (Date.now() - startTime) / 1000;
-}
-
-export function initScheduler() {
-  stopped = true;
-}
-
 export function startScheduler() {
   stopped = false;
 
   startTime = Date.now();
 
-  setInterval(() => {
+  intervalHandle = setInterval(() => {
     const elapsed = now();
     removePastEvents(previousTime);
     const currentEvents = removePastEvents(elapsed);
