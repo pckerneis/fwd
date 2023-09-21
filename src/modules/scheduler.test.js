@@ -1,4 +1,10 @@
-import { clearScheduledEvents, initScheduler, now, schedule, startScheduler } from "./scheduler.js";
+import {
+  clearScheduledEvents,
+  initScheduler,
+  now,
+  schedule,
+  startScheduler,
+} from './scheduler.js';
 import { jest } from '@jest/globals';
 
 let currentTime = 0;
@@ -15,9 +21,7 @@ function advanceTime(duration) {
 beforeEach(() => {
   jest.useFakeTimers();
 
-  jest
-    .spyOn(global.Date, 'now')
-    .mockImplementation(() => currentTime);
+  jest.spyOn(global.Date, 'now').mockImplementation(() => currentTime);
 });
 
 afterEach(() => {
@@ -59,7 +63,6 @@ test('schedule actions', () => {
   advanceTime(10001);
   expect(spy).toBeCalled();
 });
-
 
 test('clearScheduledEvents() cancel scheduled actions', () => {
   mockDateNow(4537);
