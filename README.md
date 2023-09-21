@@ -37,7 +37,7 @@ at(now() + 1);
 flog('1 second after now');
 ```
 
-## API
+## API reference
 
 ### `cursor()`
 
