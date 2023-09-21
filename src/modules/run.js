@@ -1,12 +1,12 @@
 import * as fs from 'node:fs/promises';
 import * as path from 'path';
 import process from 'process';
+import chokidar from 'chokidar';
 
 import { rli } from './rli.js';
 import { getBestMatches, promptMidiOutputName } from './prompt.js';
 import { getOutputs, openMidiOutput } from './midi.js';
 import { runInSandbox } from './vm.js';
-import { watchFile } from './watch-file.js';
 import { initScheduler, startScheduler } from './scheduler.js';
 import { startDisplay } from './display.js';
 
@@ -36,7 +36,7 @@ export async function run(file, output) {
 
   startScheduler();
 
-  watchFile(existingFile.path, async () => {
+  chokidar.watch(existingFile.path).on('change', async () => {
     const updatedFile = await tryToReadFile(existingFile.path);
     runInSandbox(updatedFile.content, midiOutput, outlines, env);
   });
