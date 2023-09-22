@@ -32,20 +32,20 @@ export function getOutputs() {
 
 /**
  * Open a MIDI output
- * @param {string} outputName 
- * @returns 
+ * @param {string} outputName
+ * @returns
  */
 export function openMidiOutput(outputName) {
   return new easymidi.Output(outputName);
 }
 
 /**
- * 
+ *
  * @param {object} midiOutput the MIDI output to send signals to
  * @param {number} channel MIDI channel number (from 0 to 15)
  * @param {number} note MIDI note number
  * @param {number} velocity Note velocity
- * @param {duration} duration Note duration in seconds
+ * @param {number} duration Note duration in seconds
  */
 export function playNote(midiOutput, channel, note, velocity, duration) {
   midiOutput.send('noteon', {

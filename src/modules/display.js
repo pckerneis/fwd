@@ -6,7 +6,7 @@ import { getMidiSent, resetMidiSent } from './midi.js';
 
 /**
  * Truncates an array so that it fits into terminal.
- * 
+ *
  * @param {Array} textOutputLines an array of messages
  */
 function truncateOutputLines(textOutputLines) {
@@ -18,8 +18,8 @@ function truncateOutputLines(textOutputLines) {
 
 /**
  * Clear the terminal and print a welcome header.
- * 
- * @param {string} version 
+ *
+ * @param {string} version
  */
 export function printWelcome(version) {
   clearBuffer();
@@ -32,17 +32,17 @@ export function printWelcome(version) {
 
 /**
  * Clear the terminal and print runner info.
- * 
+ *
  * @param {string[]} outputLines an array of messages to be logged
- * @param {{path: string, content: string}} file the program file
+ * @param {string} filePath path to current program file
  * @param {string} outputName MIDI output name
  */
-function drawOnce(outputLines, file, outputName) {
+function drawOnce(outputLines, filePath, outputName) {
   clearBuffer();
   truncateOutputLines(outputLines);
 
   const maxPathLength = process.stdout.columns - 20;
-  const truncatedPath = file.path.substring(0, maxPathLength);
+  const truncatedPath = filePath.substring(0, maxPathLength);
   const maxOutputLength = process.stdout.columns - 10;
   const truncatedOutput = outputName.substring(0, maxOutputLength);
 
@@ -60,7 +60,7 @@ ${outputLines.join('\n')}`,
 
 /**
  * Start drawing runner info at fixed interval.
- * 
+ *
  * @param {string} outputName MIDI output name
  * @param {string} file path to current program file
  * @param {string[]} outputLines an array of logged messages

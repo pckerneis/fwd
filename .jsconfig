@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "nodenext",
     "target": "es6",
-    "js/ts.implicitProjectConfig.checkJs": true
+    "checkJs": true,
+    "resolveJsonModule": true
   },
-  "exclude": ["node_modules", "**/node_modules/*"]
+  "include": ["src"],
+  "exclude": ["node_modules", "**/node_modules/*", "coverage", "**/coverage"]
 }

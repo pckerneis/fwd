@@ -9,7 +9,7 @@ let _env;
 let _cursor = 0;
 
 /**
- * 
+ *
  * @param {string} midiOutput MIDI output used
  * @param {Array} textOutputLines array of messages to log
  * @param {object} env a dictionnary that persists between executions
@@ -23,7 +23,7 @@ export function initApi(midiOutput, textOutputLines, env) {
 
 /**
  * Schedule the function `action` to be called at the cursor position.
- * 
+ *
  * @param {Function} action the action to schedule
  */
 function fire(action) {
@@ -32,11 +32,11 @@ function fire(action) {
 
 /**
  * Repeatedly calls the function `fn` every `interval` seconds for `count` times, starting at the cursor position.
- * 
+ *
  * @param {Function} action the action to repeat
  * @param {number} interval the repeat interval
  * @param {number} count how many times to repeat
- * @returns 
+ * @returns
  */
 function repeat(action, interval, count = Infinity) {
   const startCount = count;
@@ -74,8 +74,8 @@ function repeat(action, interval, count = Infinity) {
 
 /**
  * Log a message.
- * 
- * @param {*} message 
+ *
+ * @param {*} message
  */
 function log(message) {
   _textOutputLines.push(message);
@@ -83,8 +83,8 @@ function log(message) {
 
 /**
  * Schedule a message to be logged at the cursor position.
- * 
- * @param {*} message 
+ *
+ * @param {*} message
  */
 function flog(message) {
   fire(() => log(message));
@@ -93,7 +93,7 @@ function flog(message) {
 /**
  * Move the cursor at position `time` expressed in seconds.
  *
- * @param {number} time 
+ * @param {number} time
  */
 function at(time) {
   _cursor = time;
@@ -102,7 +102,7 @@ function at(time) {
 /**
  * Offset the cursor by `duration` expressed in seconds.
  *
- * @param {number} duration 
+ * @param {number} duration
  */
 function wait(duration) {
   _cursor += duration;
@@ -119,10 +119,10 @@ function cursor() {
  * Schedule a MIDI note to be played at the cursor position
  * with note number `pitch`, velocity `velocity` and duration `duration` on midi channel `channel`.
  *
- * @param {number} pitch 
- * @param {number} velocity 
- * @param {number} duration 
- * @param {number} channel 
+ * @param {number} pitch
+ * @param {number} velocity
+ * @param {number} duration
+ * @param {number} channel
  */
 function note(pitch, velocity, duration, channel) {
   fire(() => playNote(_midiOutput, channel, pitch, velocity, duration));

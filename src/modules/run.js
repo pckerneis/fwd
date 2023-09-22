@@ -28,7 +28,7 @@ export async function run(file, output) {
   const outlines = [];
   const midiOutput = openMidiOutput(existingOutput);
 
-  startDisplay(existingOutput, existingFile, outlines);
+  startDisplay(existingOutput, existingFile.path, outlines);
 
   initScheduler();
 
