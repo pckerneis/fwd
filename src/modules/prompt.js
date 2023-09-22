@@ -1,6 +1,11 @@
 import { rli } from './rli.js';
 import { tryToReadFile } from './file.js';
 
+/**
+ * Prompts the user for a MIDI output
+ * @param {string[]} outputs list of available MIDI output names
+ * @returns output chosen by user
+ */
 async function promptMatchingOutput(outputs) {
   do {
     const answer = await rli.question(`
@@ -25,6 +30,12 @@ Which MIDI output do you want to use? `);
   } while (true);
 }
 
+/**
+ * Find options matching user-provided input
+ * @param {string} candidate user-provided input
+ * @param {string[]} options array of valid options
+ * @returns {string[]} a list of matching valid options
+ */
 export function getBestMatches(candidate, options) {
   const lowerCaseCandidate = candidate.toLocaleLowerCase();
   return options.filter((out) =>
@@ -32,6 +43,12 @@ export function getBestMatches(candidate, options) {
   );
 }
 
+/**
+ * Prompts the user for a MIDI output if there are more than one available.
+ * Log a warning if there are no MIDI output available, and return null.
+ * @param {string[]} outputs available MIDI output names
+ * @returns a MIDI output chosen by user
+ */
 export async function promptMidiOutputName(outputs) {
   let midiOut = null;
 
@@ -49,6 +66,11 @@ export async function promptMidiOutputName(outputs) {
   return midiOut;
 }
 
+/**
+ * Prompts an existing program file
+ * @param {string} filePath optional file path to check first
+ * @returns {Promise<{path: string, content: string}>} file chosen by user
+ */
 export async function promptAndReadFile(filePath) {
   const existingFile = await tryToReadFile(filePath);
 
@@ -59,6 +81,11 @@ export async function promptAndReadFile(filePath) {
   }
 }
 
+/**
+ * Asks the user to chose a file to run. This function gets recursively called
+ * until an readable file is found.
+ * @returns an existing file
+ */
 async function promptFile() {
   const answer = await rli.question(`What file to run? `);
   const existingFile = await tryToReadFile(answer);

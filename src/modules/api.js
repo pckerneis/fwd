@@ -9,7 +9,7 @@ let _env;
 let _cursor = 0;
 
 /**
- *
+ * Initialise API context
  * @param {string} midiOutput MIDI output used
  * @param {Array} textOutputLines array of messages to log
  * @param {object} env a dictionnary that persists between executions

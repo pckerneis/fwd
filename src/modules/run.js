@@ -1,12 +1,21 @@
 import chokidar from 'chokidar';
 
-import { getBestMatches, promptAndReadFile, promptMidiOutputName } from './prompt.js';
+import {
+  getBestMatches,
+  promptAndReadFile,
+  promptMidiOutputName,
+} from './prompt.js';
 import { getOutputs, openMidiOutput } from './midi.js';
 import { runInSandbox } from './vm.js';
 import { initScheduler, startScheduler } from './scheduler.js';
 import { startDisplay } from './display.js';
 import { tryToReadFile } from './file.js';
 
+/**
+ * Runs the CLI
+ * @param {string} file An optional path to file
+ * @param {string} output An optional MIDI output name
+ */
 export async function run(file, output) {
   const existingFile = await promptAndReadFile(file);
 

@@ -5,7 +5,7 @@ import process from 'process';
 /**
  * Tries to read a file given a path
  * @param {string} relativeOrAbsolutePath path to file
- * @returns {{path: string, content: string}} the loaded file or null
+ * @returns {Promise<{path: string, content: string}>} the loaded file or null
  */
 export async function tryToReadFile(relativeOrAbsolutePath) {
   if (!relativeOrAbsolutePath) {
