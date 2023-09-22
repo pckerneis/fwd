@@ -9,6 +9,7 @@ import { runInSandbox } from './vm.js';
 import { initScheduler, startScheduler } from './scheduler.js';
 import { startDisplay } from './display.js';
 import { tryToReadFile } from './file.js';
+import { DBG_MODE } from './dbg.js';
 import easymidi from 'easymidi';
 
 /**
@@ -34,7 +35,10 @@ export async function run(file, output) {
   const outlines = [];
   const midiOutput = new easymidi.Output(existingOutput);
 
-  startDisplay(existingOutput, existingFile.path, outlines);
+  
+  if (! DBG_MODE) {
+    startDisplay(existingOutput, existingFile.path, outlines);
+  }
 
   initScheduler();
 

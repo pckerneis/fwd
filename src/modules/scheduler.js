@@ -1,3 +1,5 @@
+import { dbg } from "./dbg.js";
+
 const scheduledEvents = [];
 let startTime = 0;
 let previousTime = 0;
@@ -16,6 +18,7 @@ export function now() {
  * Reset the scheduler to its default state
  */
 export function initScheduler() {
+  dbg('Initialise scheduler.');
   stopped = true;
   clearInterval(intervalHandle);
   intervalHandle = null;
@@ -29,6 +32,7 @@ export function initScheduler() {
  * @param {Function} action the function to be called
  */
 export function schedule(time, action) {
+  dbg('Schedule at ', time);
   scheduledEvents.push({ time, action });
 }
 
@@ -63,6 +67,7 @@ function removePastEvents(time) {
  * Starts the scheduler
  */
 export function startScheduler() {
+  dbg('Start scheduler.');
   stopped = false;
 
   startTime = Date.now();
