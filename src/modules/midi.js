@@ -1,5 +1,3 @@
-import easymidi from 'easymidi';
-
 let midiSent = false;
 
 /**
@@ -24,22 +22,6 @@ export function getMidiSent() {
 }
 
 /**
- * @returns an array with the available MIDI output names
- */
-export function getOutputs() {
-  return easymidi.getOutputs();
-}
-
-/**
- * Open a MIDI output
- * @param {string} outputName
- * @returns
- */
-export function openMidiOutput(outputName) {
-  return new easymidi.Output(outputName);
-}
-
-/**
  *
  * @param {object} midiOutput the MIDI output to send signals to
  * @param {number} channel MIDI channel number (from 0 to 15)
@@ -57,7 +39,7 @@ export function playNote(midiOutput, channel, note, velocity, duration) {
   setTimeout(() => {
     midiOutput.send('noteoff', {
       note,
-      velocity: 0,
+      velocity: velocity ?? 127,
       channel: channel ?? 0,
     });
   }, duration * 1000);

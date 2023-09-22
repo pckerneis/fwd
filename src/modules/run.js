@@ -5,11 +5,11 @@ import {
   promptAndReadFile,
   promptMidiOutputName,
 } from './prompt.js';
-import { getOutputs, openMidiOutput } from './midi.js';
 import { runInSandbox } from './vm.js';
 import { initScheduler, startScheduler } from './scheduler.js';
 import { startDisplay } from './display.js';
 import { tryToReadFile } from './file.js';
+import easymidi from 'easymidi';
 
 /**
  * Runs the CLI
@@ -19,7 +19,7 @@ import { tryToReadFile } from './file.js';
 export async function run(file, output) {
   const existingFile = await promptAndReadFile(file);
 
-  const outputs = getOutputs();
+  const outputs = easymidi.getOutputs();
   let existingOutput;
 
   const bestMatches = output != null ? getBestMatches(output, outputs) : [];
@@ -32,7 +32,7 @@ export async function run(file, output) {
 
   const env = {};
   const outlines = [];
-  const midiOutput = openMidiOutput(existingOutput);
+  const midiOutput = new easymidi.Output(existingOutput);
 
   startDisplay(existingOutput, existingFile.path, outlines);
 
