@@ -34,7 +34,7 @@ function fire(action) {
  * @returns
  */
 function repeat(action, interval, count = Infinity) {
-  const startCount = count;
+  let stepCount = 0;
   let nextCursor = _cursor;
 
   const t = now();
@@ -54,9 +54,14 @@ function repeat(action, interval, count = Infinity) {
   }
 
   const scheduleNext = () => {
-    schedule(nextCursor, () => {
+    schedule(nextCursor, () => { 
       if (count > 0) {
-        action(startCount - count);
+        const timeOutside = _cursor;
+        _cursor = nextCursor;
+
+        action(stepCount++);
+        _cursor = timeOutside;
+
         count -= 1;
         nextCursor += interval;
         scheduleNext();
