@@ -89,6 +89,7 @@ test('repeat() should repeatedly call a function', () => {
   advanceTime(1000);
 
   expect(action).toBeCalledTimes(3);
+  expect(action).toHaveBeenLastCalledWith(2);
 
   advanceTime(1000);
   advanceTime(1000);
@@ -96,6 +97,7 @@ test('repeat() should repeatedly call a function', () => {
   advanceTime(1000);
 
   expect(action).toBeCalledTimes(5);
+  expect(action).toHaveBeenLastCalledWith(4);
 });
 
 test('repeat() should skip past calls', () => {
@@ -118,6 +120,7 @@ test('repeat() should skip past calls', () => {
   advanceTime(1000);
 
   expect(action).toBeCalledTimes(3);
+  expect(action).toHaveBeenLastCalledWith(4);
 });
 
 test('repeat() should skip all calls', () => {

@@ -45,6 +45,7 @@ function repeat(action, interval, count = Infinity) {
     }
 
     count -= 1;
+    stepCount++;
 
     if (count < 0) {
       return;
