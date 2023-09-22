@@ -1,6 +1,9 @@
-import { dbg } from "./dbg.js";
+import { dbg } from './dbg.js';
+
+const LOOK_AHEAD = 0.5;
 
 const scheduledEvents = [];
+
 let startTime = 0;
 let previousTime = 0;
 let stopped = true;
@@ -47,15 +50,16 @@ export function clearScheduledEvents() {
  * Remove and return the scheduled events whose time is below the specified time
  *
  * @param {number} time time in seconds before which events should be removed
+ * @param {boolean} includeNow if true, events at time will be removed
  * @returns the removed events
  */
-function removePastEvents(time) {
+function removePastEvents(time, includeNow = false) {
   const pastEvents = [];
 
   for (let i = scheduledEvents.length - 1; i >= 0; --i) {
     const event = scheduledEvents[i];
 
-    if (event.time < time) {
+    if (event.time < time || (includeNow && event.time === time)) {
       pastEvents.push(...scheduledEvents.splice(i, 1));
     }
   }
@@ -73,11 +77,10 @@ export function startScheduler() {
   startTime = Date.now();
 
   intervalHandle = setInterval(() => {
-    const elapsed = now();
-    removePastEvents(previousTime);
-    const currentEvents = removePastEvents(elapsed);
+    const elapsed = now() + LOOK_AHEAD;
+    const currentEvents = removePastEvents(elapsed, true);
     currentEvents.forEach((event) => event.action());
 
-    previousTime = elapsed;
+    previousTime = now();
   }, 1);
 }

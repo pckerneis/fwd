@@ -55,7 +55,7 @@ function repeat(action, interval, count = Infinity) {
   }
 
   const scheduleNext = () => {
-    schedule(nextCursor, () => { 
+    schedule(nextCursor, () => {
       if (count > 0) {
         const timeOutside = _cursor;
         _cursor = nextCursor;

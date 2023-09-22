@@ -35,8 +35,7 @@ export async function run(file, output) {
   const outlines = [];
   const midiOutput = new easymidi.Output(existingOutput);
 
-  
-  if (! DBG_MODE) {
+  if (!DBG_MODE) {
     startDisplay(existingOutput, existingFile.path, outlines);
   }
 
