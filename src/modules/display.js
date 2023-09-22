@@ -4,13 +4,23 @@ import { now } from './scheduler.js';
 import { getLastChangeDate } from './vm.js';
 import { getMidiSent, resetMidiSent } from './midi.js';
 
-function truncateOutputLines(outlines) {
+/**
+ * Truncates an array so that it fits into terminal.
+ * 
+ * @param {Array} textOutputLines an array of messages
+ */
+function truncateOutputLines(textOutputLines) {
   const maxLines = process.stdout.rows - 6;
-  if (outlines.length > maxLines) {
-    outlines.splice(0, outlines.length - maxLines);
+  if (textOutputLines.length > maxLines) {
+    textOutputLines.splice(0, textOutputLines.length - maxLines);
   }
 }
 
+/**
+ * Clear the terminal and print a welcome header.
+ * 
+ * @param {string} version 
+ */
 export function printWelcome(version) {
   clearBuffer();
   console.log(`
@@ -20,6 +30,13 @@ export function printWelcome(version) {
   `);
 }
 
+/**
+ * Clear the terminal and print runner info.
+ * 
+ * @param {string[]} outputLines an array of messages to be logged
+ * @param {{path: string, content: string}} file the program file
+ * @param {string} outputName MIDI output name
+ */
 function drawOnce(outputLines, file, outputName) {
   clearBuffer();
   truncateOutputLines(outputLines);
@@ -41,6 +58,13 @@ ${outputLines.join('\n')}`,
   );
 }
 
+/**
+ * Start drawing runner info at fixed interval.
+ * 
+ * @param {string} outputName MIDI output name
+ * @param {string} file path to current program file
+ * @param {string[]} outputLines an array of logged messages
+ */
 export function startDisplay(outputName, file, outputLines) {
   setInterval(() => {
     drawOnce(outputLines, file, outputName);
