@@ -1,14 +1,11 @@
-import * as fs from 'node:fs/promises';
-import * as path from 'path';
-import process from 'process';
 import chokidar from 'chokidar';
 
-import { rli } from './rli.js';
-import { getBestMatches, promptMidiOutputName } from './prompt.js';
+import { getBestMatches, promptAndReadFile, promptMidiOutputName } from './prompt.js';
 import { getOutputs, openMidiOutput } from './midi.js';
 import { runInSandbox } from './vm.js';
 import { initScheduler, startScheduler } from './scheduler.js';
 import { startDisplay } from './display.js';
+import { tryToReadFile } from './file.js';
 
 export async function run(file, output) {
   const existingFile = await promptAndReadFile(file);
@@ -40,52 +37,4 @@ export async function run(file, output) {
     const updatedFile = await tryToReadFile(existingFile.path);
     runInSandbox(updatedFile.content, midiOutput, outlines, env);
   });
-}
-
-export async function promptAndReadFile(filePath) {
-  const existingFile = await tryToReadFile(filePath);
-
-  if (existingFile != null) {
-    return existingFile;
-  } else {
-    return await promptFile();
-  }
-}
-
-async function promptFile() {
-  const answer = await rli.question(`What file to run? `);
-  const existingFile = await tryToReadFile(answer);
-
-  if (existingFile) {
-    console.info(`\nReading from "${existingFile.path}".`);
-
-    return existingFile;
-  } else {
-    console.warn(`\nCannot read "${answer}".\n`);
-
-    return await promptFile();
-  }
-}
-
-async function tryToReadFile(relativeOrAbsolutePath) {
-  if (!relativeOrAbsolutePath) {
-    return null;
-  }
-
-  try {
-    return {
-      path: relativeOrAbsolutePath,
-      content: await fs.readFile(relativeOrAbsolutePath, 'utf8'),
-    };
-  } catch (e) {
-    try {
-      const fullPath = path.resolve(process.cwd(), relativeOrAbsolutePath);
-      return {
-        path: fullPath,
-        content: await fs.readFile(fullPath, 'utf8'),
-      };
-    } catch (e2) {
-      return null;
-    }
-  }
 }

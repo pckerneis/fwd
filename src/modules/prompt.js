@@ -1,4 +1,5 @@
 import { rli } from './rli.js';
+import { tryToReadFile } from './file.js';
 
 async function promptMatchingOutput(outputs) {
   do {
@@ -46,4 +47,29 @@ export async function promptMidiOutputName(outputs) {
   }
 
   return midiOut;
+}
+
+export async function promptAndReadFile(filePath) {
+  const existingFile = await tryToReadFile(filePath);
+
+  if (existingFile != null) {
+    return existingFile;
+  } else {
+    return await promptFile();
+  }
+}
+
+async function promptFile() {
+  const answer = await rli.question(`What file to run? `);
+  const existingFile = await tryToReadFile(answer);
+
+  if (existingFile) {
+    console.info(`\nReading from "${existingFile.path}".`);
+
+    return existingFile;
+  } else {
+    console.warn(`\nCannot read "${answer}".\n`);
+
+    return await promptFile();
+  }
 }
