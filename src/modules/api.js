@@ -1,23 +1,18 @@
-// @ts-check
-
 import { now, schedule } from './scheduler.js';
 import { playNote } from './midi.js';
 
 let _midiOutput;
 let _textOutputLines;
-let _env;
 let _cursor = 0;
 
 /**
  * Initialise API context
- * @param {string} midiOutput MIDI output used
+ * @param {object} midiOutput MIDI output used
  * @param {Array} textOutputLines array of messages to log
- * @param {object} env a dictionnary that persists between executions
  */
-export function initApi(midiOutput, textOutputLines, env) {
+export function initApi(midiOutput, textOutputLines) {
   _midiOutput = midiOutput;
   _textOutputLines = textOutputLines;
-  _env = env;
   _cursor = 0;
 }
 
@@ -133,7 +128,6 @@ function note(pitch, velocity, duration, channel) {
  */
 export function getApi() {
   return {
-    env: _env,
     fire,
     log,
     now,

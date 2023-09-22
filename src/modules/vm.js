@@ -19,7 +19,7 @@ export function getLastChangeDate() {
  * @returns the VM context
  */
 function buildContext(midiOutput, textOutputLines, env) {
-  initApi(midiOutput, textOutputLines, env);
+  initApi(midiOutput, textOutputLines);
 
   return {
     env,

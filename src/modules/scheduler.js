@@ -19,6 +19,8 @@ export function initScheduler() {
   stopped = true;
   clearInterval(intervalHandle);
   intervalHandle = null;
+  startTime = 0;
+  previousTime = 0;
 }
 
 /**
@@ -72,5 +74,5 @@ export function startScheduler() {
     currentEvents.forEach((event) => event.action());
 
     previousTime = elapsed;
-  });
+  }, 1);
 }
