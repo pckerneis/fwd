@@ -8,6 +8,11 @@ let startTime = 0;
 let previousTime = 0;
 let stopped = true;
 let intervalHandle;
+let currentSchedulerId = 0;
+
+export function getPreviousTime() {
+  return previousTime;
+}
 
 /**
  * Returns the elapsed time in seconds since scheduler start
@@ -27,6 +32,7 @@ export function initScheduler() {
   intervalHandle = null;
   startTime = 0;
   previousTime = 0;
+  currentSchedulerId = 0;
 }
 
 /**
@@ -36,14 +42,14 @@ export function initScheduler() {
  */
 export function schedule(time, action) {
   dbg('Schedule at ', time);
-  scheduledEvents.push({ time, action });
+  scheduledEvents.push({ time, action, schedulerId: currentSchedulerId });
 }
 
 /**
  * Clear the list of scheduled events
  */
 export function clearScheduledEvents() {
-  scheduledEvents.splice(0, scheduledEvents.length);
+  currentSchedulerId++;
 }
 
 /**
@@ -77,10 +83,13 @@ export function startScheduler() {
   startTime = Date.now();
 
   intervalHandle = setInterval(() => {
-    const elapsed = now() + LOOK_AHEAD;
-    const currentEvents = removePastEvents(elapsed, true);
-    currentEvents.forEach((event) => event.action());
+    const t = now();
+    const elapsed = t + LOOK_AHEAD;
+    const currentEvents = removePastEvents(elapsed);
+    currentEvents
+      .filter((event) => event.schedulerId === currentSchedulerId)
+      .forEach((event) => event.action());
 
-    previousTime = now();
+    previousTime = elapsed;
   }, 1);
 }

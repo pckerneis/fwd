@@ -15,7 +15,7 @@ export function getLastChangeDate() {
  * Build VM context
  * @param {object} midiOutput MIDI output object to use
  * @param {string[]} textOutputLines array of messages to log
- * @param {object} env Environment dictionnary persisted between executions
+ * @param {object} env Environment dictionary persisted between executions
  * @returns the VM context
  */
 function buildContext(midiOutput, textOutputLines, env) {
@@ -28,11 +28,11 @@ function buildContext(midiOutput, textOutputLines, env) {
 }
 
 /**
- * Runs user code in a sandboxed virtual machine
+ * Runs user code in a sandbox virtual machine
  * @param {string} userCode the JS code to run
  * @param {object} midiOutput MIDI output object to use
  * @param {string[]} textOutputLines array of messages to log
- * @param {object} env Environment dictionnary persisted between executions
+ * @param {object} env Environment dictionary persisted between executions
  */
 export function runInSandbox(userCode, midiOutput, textOutputLines, env) {
   clearScheduledEvents();

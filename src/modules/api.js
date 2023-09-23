@@ -1,5 +1,5 @@
-import { now, schedule } from './scheduler.js';
-import { playNote } from './midi.js';
+import {getPreviousTime, now, schedule} from './scheduler.js';
+import {playNote, sendProgramChange, setDefaultMidiChannel} from './midi.js';
 
 let _midiOutput;
 let _textOutputLines;
@@ -22,7 +22,9 @@ export function initApi(midiOutput, textOutputLines) {
  * @param {Function} action the action to schedule
  */
 function fire(action) {
-  schedule(_cursor, action);
+  if (_cursor >= getPreviousTime()) {
+    schedule(_cursor, action);
+  }
 }
 
 /**
@@ -40,7 +42,7 @@ function repeat(action, interval, count = Infinity) {
   const t = now();
 
   for (;;) {
-    if (nextCursor >= t) {
+    if (nextCursor + interval >= t) {
       break;
     }
 
@@ -129,6 +131,14 @@ function note(pitch, velocity, duration, channel) {
   fire(() => playNote(_midiOutput, channel, pitch, velocity, duration));
 }
 
+function program(program, channel) {
+  fire(() => sendProgramChange(_midiOutput, program, channel));
+}
+
+function channel(channel) {
+  fire(() => setDefaultMidiChannel(channel));
+}
+
 /**
  * @returns the public API
  */
@@ -143,5 +153,7 @@ export function getApi() {
     wait,
     cursor,
     repeat,
+    program,
+    channel,
   };
 }

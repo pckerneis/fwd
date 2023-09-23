@@ -1,6 +1,7 @@
 import { dbg } from './dbg.js';
 
 let midiSent = false;
+let defaultMidiChannel = 0;
 
 /**
  * Notify that MIDI signal was sent
@@ -37,16 +38,27 @@ export function playNote(midiOutput, channel, note, velocity, duration) {
   midiOutput.send('noteon', {
     note,
     velocity: velocity ?? 127,
-    channel: channel ?? 0,
+    channel: channel ?? defaultMidiChannel,
   });
 
   setTimeout(() => {
     midiOutput.send('noteoff', {
       note,
       velocity: velocity ?? 127,
-      channel: channel ?? 0,
+      channel: channel ?? defaultMidiChannel,
     });
   }, duration * 1000);
 
   notifyMidiSent();
+}
+
+export function sendProgramChange(midiOutput, programNumber, channel) {
+  midiOutput.send('program', {
+    number: programNumber,
+    channel: channel ?? defaultMidiChannel,
+  });
+}
+
+export function setDefaultMidiChannel(channelNumber) {
+  defaultMidiChannel = channelNumber ?? 0;
 }
