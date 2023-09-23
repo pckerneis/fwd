@@ -1,5 +1,5 @@
-import {getPreviousTime, now, schedule} from './scheduler.js';
-import {playNote, sendProgramChange, setDefaultMidiChannel} from './midi.js';
+import { getPreviousTime, now, schedule } from './scheduler.js';
+import { playNote, sendProgramChange, setDefaultMidiChannel } from './midi.js';
 
 let _midiOutput;
 let _textOutputLines;
