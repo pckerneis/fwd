@@ -1,5 +1,3 @@
-import { dbg } from './dbg.js';
-
 let midiSent = false;
 let defaultMidiChannel = 0;
 
@@ -33,7 +31,7 @@ export function getMidiSent() {
  * @param {number} duration Note duration in seconds
  */
 export function playNote(midiOutput, channel, note, velocity, duration) {
-  dbg(`Playing MIDI note.`, { midiOutput, channel, note, velocity, duration });
+  // dbg(`Playing MIDI note.`, { midiOutput, channel, note, velocity, duration });
 
   midiOutput.send('noteon', {
     note,
