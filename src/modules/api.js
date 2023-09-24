@@ -22,8 +22,15 @@ export function initApi(midiOutput, textOutputLines) {
  * @param {Function} action the action to schedule
  */
 function fire(action) {
+  const memoizedCursor = _cursor;
+
   if (_cursor >= getPreviousTime()) {
-    schedule(_cursor, action);
+    schedule(_cursor, () => {
+      const timeOutside = _cursor;
+      _cursor = memoizedCursor;
+      action();
+      _cursor = timeOutside;
+    });
   }
 }
 
