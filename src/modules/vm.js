@@ -40,6 +40,8 @@ export function runInSandbox(userCode, midiOutput, textOutputLines, env) {
 
   const context = buildContext(midiOutput, textOutputLines, env);
 
+  dbg(`Starting execution of code with length ${userCode.length}`);
+
   try {
     vm.runInNewContext(userCode, context, { timeout: 10000 });
     lastChangeDate = new Date();

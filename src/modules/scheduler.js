@@ -86,16 +86,21 @@ export function startScheduler(outputLines) {
   intervalHandle = setInterval(() => {
     const t = now();
     const elapsed = t + LOOK_AHEAD;
-    const currentEvents = removePastEvents(elapsed);
-    currentEvents
-      .filter((event) => event.schedulerId === currentSchedulerId)
-      .forEach((event) => {
-        try {
-          event.action();
-        } catch (e) {
-          outputLines.push(e);
-        }
-      });
+    let currentEvents = removePastEvents(elapsed);
+
+    while (currentEvents.length > 0) {
+      currentEvents
+        .filter((event) => event.schedulerId === currentSchedulerId)
+        .forEach((event) => {
+          try {
+            event.action();
+          } catch (e) {
+            outputLines.push(e);
+          }
+        });
+
+      currentEvents = removePastEvents(elapsed);
+    }
 
     previousTime = elapsed;
   }, 1);

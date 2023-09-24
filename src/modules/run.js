@@ -9,7 +9,7 @@ import { runInSandbox } from './vm.js';
 import { initScheduler, startScheduler } from './scheduler.js';
 import { startDisplay } from './display.js';
 import { tryToReadFile } from './file.js';
-import { DBG_MODE } from './dbg.js';
+import { dbg, DBG_MODE } from './dbg.js';
 import easymidi from 'easymidi';
 
 /**
@@ -45,8 +45,17 @@ export async function run(file, output) {
 
   startScheduler(outlines);
 
-  chokidar.watch(existingFile.path).on('change', async () => {
-    const updatedFile = await tryToReadFile(existingFile.path);
-    runInSandbox(updatedFile.content, midiOutput, outlines, env);
-  });
+  chokidar
+    .watch(existingFile.path, {
+      awaitWriteFinish: {
+        stabilityThreshold: 500,
+      },
+    })
+    .on('change', async () => {
+      const updatedFile = await tryToReadFile(existingFile.path);
+      dbg(
+        `read file ${updatedFile.path}. Length is ${updatedFile.content.length}`,
+      );
+      runInSandbox(updatedFile.content, midiOutput, outlines, env);
+    });
 }
