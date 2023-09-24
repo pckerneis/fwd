@@ -45,12 +45,13 @@ function drawOnce(outputLines, filePath, outputName) {
   const truncatedPath = filePath.substring(0, maxPathLength);
   const maxOutputLength = process.stdout.columns - 10;
   const truncatedOutput = outputName.substring(0, maxOutputLength);
+  const lastChangeTime = getLastChangeDate()?.toLocaleTimeString() ?? 'never';
 
   const borderMargin = new Array(process.stdout.columns - 7).fill(' ').join('');
 
   console.log(
     `╔══${borderMargin}══╗
- in    ${truncatedPath} (at ${getLastChangeDate().toLocaleTimeString()})
+ in    ${truncatedPath} (at ${lastChangeTime})
  out   [${getMidiSent() ? 'x' : ' '}] ${truncatedOutput}
  time  ${now()}
 ╚══${borderMargin}══╝
