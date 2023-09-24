@@ -1,6 +1,7 @@
 import { getApi, initApi } from './api.js';
 import { jest } from '@jest/globals';
 import { initScheduler, startScheduler } from './scheduler.js';
+import { resetNotesCurrentlyOnState } from './midi.js';
 
 let currentTime = 0;
 let messages = [];
@@ -26,6 +27,7 @@ beforeEach(() => {
   initApi(midiOutput, messages);
   initScheduler();
   mockDateNow(4537);
+  resetNotesCurrentlyOnState();
 });
 
 afterEach(() => {

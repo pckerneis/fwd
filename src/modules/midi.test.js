@@ -1,5 +1,10 @@
 import { jest } from '@jest/globals';
-import { getMidiSent, playNote, resetMidiSent } from './midi.js';
+import {
+  getMidiSent,
+  playNote,
+  resetMidiSent,
+  resetNotesCurrentlyOnState,
+} from './midi.js';
 
 let midiOutput;
 
@@ -9,6 +14,8 @@ beforeEach(() => {
   midiOutput = {
     send: jest.fn(),
   };
+
+  resetNotesCurrentlyOnState();
 });
 
 afterEach(() => {
