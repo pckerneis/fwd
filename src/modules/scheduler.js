@@ -93,7 +93,7 @@ export function startScheduler(outputLines) {
       .forEach((event) => {
         try {
           event.action();
-        } catch(e) {
+        } catch (e) {
           outputLines.push(e);
         }
       });

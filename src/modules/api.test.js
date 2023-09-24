@@ -36,7 +36,7 @@ afterEach(() => {
 test('fire() schedules an action at current time cursor', () => {
   const { fire, at } = getApi();
 
-  startScheduler();
+  startScheduler([]);
 
   const spy = jest.fn();
   at(10);
@@ -57,7 +57,7 @@ test('log() adds a log message', () => {
 test('flog() schedules a log message', () => {
   const { at, flog } = getApi();
 
-  startScheduler();
+  startScheduler([]);
 
   at(10);
   flog('Hello, World!');
@@ -78,7 +78,7 @@ test('wait() should offset cursor', () => {
 test('repeat() should repeatedly call a function', () => {
   const { repeat } = getApi();
 
-  startScheduler();
+  startScheduler([]);
 
   const action = jest.fn();
 
@@ -103,7 +103,7 @@ test('repeat() should repeatedly call a function', () => {
 test('repeat() should skip past calls', () => {
   const { repeat } = getApi();
 
-  startScheduler();
+  startScheduler([]);
 
   const action = jest.fn();
 
@@ -126,7 +126,7 @@ test('repeat() should skip past calls', () => {
 test('repeat() should skip all calls', () => {
   const { repeat } = getApi();
 
-  startScheduler();
+  startScheduler([]);
 
   const action = jest.fn();
 
@@ -148,7 +148,7 @@ test('repeat() should skip all calls', () => {
 test('repeat() should repeat at infinity', () => {
   const { repeat } = getApi();
 
-  startScheduler();
+  startScheduler([]);
 
   const action = jest.fn();
 
@@ -168,7 +168,7 @@ test('repeat() should repeat at infinity', () => {
 test('note() should schedule MIDI note', () => {
   const { at, note } = getApi();
 
-  startScheduler();
+  startScheduler([]);
 
   at(1);
   note(64, 64, 1, 0);

@@ -34,20 +34,20 @@ test('now() returns 0 when scheduler is stopped', () => {
 });
 
 test('now() returns 0 when scheduler has just started', () => {
-  startScheduler();
+  startScheduler([]);
   expect(now()).toBe(0);
 });
 
 test('now() returns elapsed time in seconds when scheduler is running', () => {
   mockDateNow(4537);
-  startScheduler();
+  startScheduler([]);
   advanceTime(4000);
   expect(now()).toBe(4);
 });
 
 test('initScheduler() stops execution', () => {
   mockDateNow(4537);
-  startScheduler();
+  startScheduler([]);
   advanceTime(4000);
   initScheduler();
   expect(now()).toBe(0);
@@ -55,7 +55,7 @@ test('initScheduler() stops execution', () => {
 
 test('schedule actions', () => {
   mockDateNow(4537);
-  startScheduler();
+  startScheduler([]);
 
   const spy = jest.fn();
   schedule(10, () => spy());
@@ -66,7 +66,7 @@ test('schedule actions', () => {
 
 test('clearScheduledEvents() cancel scheduled actions', () => {
   mockDateNow(4537);
-  startScheduler();
+  startScheduler([]);
 
   const spy = jest.fn();
   schedule(10, () => spy());
@@ -74,4 +74,18 @@ test('clearScheduledEvents() cancel scheduled actions', () => {
 
   advanceTime(10001);
   expect(spy).not.toBeCalled();
+});
+
+test('errors during execution are reported', () => {
+  mockDateNow(4537);
+  const outputLines = [];
+  startScheduler(outputLines);
+
+  const action = () => {
+    throw 'Boom!';
+  };
+  schedule(10, () => action());
+
+  advanceTime(10001);
+  expect(outputLines.length).toBe(1);
 });
