@@ -56,16 +56,15 @@ export function clearScheduledEvents() {
  * Remove and return the scheduled events whose time is below the specified time
  *
  * @param {number} time time in seconds before which events should be removed
- * @param {boolean} includeNow if true, events at time will be removed
  * @returns the removed events
  */
-function removePastEvents(time, includeNow = false) {
+function removePastEvents(time) {
   const pastEvents = [];
 
   for (let i = scheduledEvents.length - 1; i >= 0; --i) {
     const event = scheduledEvents[i];
 
-    if (event.time < time || (includeNow && event.time === time)) {
+    if (event.time < time) {
       pastEvents.push(...scheduledEvents.splice(i, 1));
     }
   }
