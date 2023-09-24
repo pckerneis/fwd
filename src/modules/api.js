@@ -83,6 +83,20 @@ function repeat(action, interval, count = Infinity) {
 }
 
 /**
+ * Clears the logs.
+ */
+function clear() {
+  _textOutputLines.splice(0, _textOutputLines.length);
+}
+
+/**
+ * Schedule a log clear at the cursor position.
+ */
+function fclear() {
+  fire(() => clear());
+}
+
+/**
  * Log a message.
  *
  * @param {*} message
@@ -162,5 +176,7 @@ export function getApi() {
     repeat,
     program,
     channel,
+    clear,
+    fclear,
   };
 }
