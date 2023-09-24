@@ -75,8 +75,10 @@ function removePastEvents(time, includeNow = false) {
 
 /**
  * Starts the scheduler
+ *
+ * @param {string[]} outputLines array of messages to log
  */
-export function startScheduler() {
+export function startScheduler(outputLines) {
   dbg('Start scheduler.');
   stopped = false;
 
@@ -88,7 +90,13 @@ export function startScheduler() {
     const currentEvents = removePastEvents(elapsed);
     currentEvents
       .filter((event) => event.schedulerId === currentSchedulerId)
-      .forEach((event) => event.action());
+      .forEach((event) => {
+        try {
+          event.action();
+        } catch(e) {
+          outputLines.push(e);
+        }
+      });
 
     previousTime = elapsed;
   }, 1);

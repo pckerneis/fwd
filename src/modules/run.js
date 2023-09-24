@@ -43,7 +43,7 @@ export async function run(file, output) {
 
   runInSandbox(existingFile.content, midiOutput, outlines, env);
 
-  startScheduler();
+  startScheduler(outlines);
 
   chokidar.watch(existingFile.path).on('change', async () => {
     const updatedFile = await tryToReadFile(existingFile.path);
