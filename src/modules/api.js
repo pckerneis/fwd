@@ -160,6 +160,18 @@ function channel(channel) {
   fire(() => setDefaultMidiChannel(channel));
 }
 
+function pick(numberOrArray) {
+  const value = Math.random();
+
+  if (Array.isArray(numberOrArray) || typeof numberOrArray === 'string') {
+    return numberOrArray[Math.floor(value * numberOrArray.length)];
+  } else if (typeof numberOrArray === 'number') {
+    return value * numberOrArray;
+  } else {
+    return value;
+  }
+}
+
 /**
  * @returns the public API
  */
@@ -178,5 +190,6 @@ export function getApi() {
     channel,
     clear,
     fclear,
+    pick,
   };
 }
