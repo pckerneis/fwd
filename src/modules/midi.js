@@ -1,6 +1,4 @@
 let midiSent = false;
-let defaultMidiChannel = 0;
-
 let notesCurrentlyOnState = {};
 let currentTriggerId = 0;
 
@@ -139,7 +137,7 @@ function sendNoteOffIfTriggerIdMatches(channel, note, midiOutput, triggerId) {
  */
 export function playNote(midiOutput, channel, note, velocity, duration) {
   const triggerId = currentTriggerId++;
-  channel = channel ?? defaultMidiChannel;
+  channel = channel ?? 0;
   velocity = velocity ?? 127;
 
   sendNoteOnWithNoOverlap(channel, note, midiOutput, velocity, triggerId);
@@ -153,19 +151,11 @@ export function playNote(midiOutput, channel, note, velocity, duration) {
  * Send a program change message
  * @param {*} midiOutput - MIDI output to send to
  * @param {number} programNumber - MIDI program number
- * @param {number} channel - MIDI channel to send to
+ * @param {number} [channel=0] - MIDI channel to send to
  */
 export function sendProgramChange(midiOutput, programNumber, channel) {
   midiOutput.send('program', {
     number: programNumber,
-    channel: channel ?? defaultMidiChannel,
+    channel: channel ?? 0,
   });
-}
-
-/**
- * Set the default value for next MIDI messages
- * @param {number} [channelNumber] - Default MIDI channel
- */
-export function setDefaultMidiChannel(channelNumber) {
-  defaultMidiChannel = channelNumber ?? 0;
 }

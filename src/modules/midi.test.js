@@ -5,7 +5,6 @@ import {
   resetMidiSent,
   resetNotesCurrentlyOnState,
   sendProgramChange,
-  setDefaultMidiChannel,
 } from './midi.js';
 
 let midiOutput;
@@ -52,6 +51,13 @@ test('should use default values', () => {
     velocity: 0,
     channel: 0,
   });
+
+  sendProgramChange(midiOutput, 1);
+
+  expect(midiOutput.send).toHaveBeenLastCalledWith('program', {
+    number: 1,
+    channel: 0,
+  });
 });
 
 test('should avoid overlapping notes', () => {
@@ -90,33 +96,5 @@ test('should send program change message', () => {
   expect(midiOutput.send).toHaveBeenLastCalledWith('program', {
     channel: 0,
     number: 0,
-  });
-});
-
-test('should set default channel', () => {
-  setDefaultMidiChannel(9);
-
-  playNote(midiOutput, undefined, 48, 127, 1);
-  expect(midiOutput.send).toHaveBeenLastCalledWith('noteon', {
-    channel: 9,
-    note: 48,
-    velocity: 127,
-  });
-
-  sendProgramChange(midiOutput, 12, undefined);
-  expect(midiOutput.send).toHaveBeenLastCalledWith('program', {
-    channel: 9,
-    number: 12,
-  });
-});
-
-test('should reset default channel', () => {
-  setDefaultMidiChannel();
-
-  playNote(midiOutput, undefined, 48, 127, 1);
-  expect(midiOutput.send).toHaveBeenLastCalledWith('noteon', {
-    channel: 0,
-    note: 48,
-    velocity: 127,
   });
 });

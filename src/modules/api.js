@@ -4,17 +4,18 @@ import {
   now,
   schedule,
 } from './scheduler.js';
-import { playNote, sendProgramChange, setDefaultMidiChannel } from './midi.js';
+import { playNote, sendProgramChange } from './midi.js';
 import { dbg } from './dbg.js';
 
 let _midiOutput;
 let _textOutputLines;
 let _cursor = 0;
+let defaultMidiChannel = 0;
 
 /**
  * Initialise API context
- * @param {object} midiOutput MIDI output used
- * @param {Array} textOutputLines array of messages to log
+ * @param {object} midiOutput - MIDI output used
+ * @param {Array} textOutputLines - Array of messages to log
  */
 export function initApi(midiOutput, textOutputLines) {
   _midiOutput = midiOutput;
@@ -25,7 +26,7 @@ export function initApi(midiOutput, textOutputLines) {
 /**
  * Schedule the function `action` to be called at the cursor position.
  *
- * @param {Function} action the action to schedule
+ * @param {Function} action - The action to schedule as a function
  */
 function fire(action) {
   const memoizedCursor = _cursor;
@@ -45,9 +46,9 @@ function fire(action) {
 /**
  * Repeatedly calls the function `fn` every `interval` seconds for `count` times, starting at the cursor position.
  *
- * @param {Function} action the action to repeat
- * @param {number} interval the repeat interval
- * @param {number} count how many times to repeat
+ * @param {Function} action - The action to repeat
+ * @param {number} interval - The repeat interval
+ * @param {number} count - How many times to repeat
  * @returns
  */
 function repeat(action, interval, count = Infinity) {
@@ -112,25 +113,25 @@ function fclear() {
 /**
  * Log a message.
  *
- * @param {*} message
+ * @param {*} messages - Messages to log
  */
-function log(message) {
-  _textOutputLines.push(message);
+function log(...messages) {
+  _textOutputLines.push(...messages);
 }
 
 /**
  * Schedule a message to be logged at the cursor position.
  *
- * @param {*} message
+ * @param {*} messages - Messages to log
  */
-function flog(message) {
-  fire(() => log(message));
+function flog(...messages) {
+  fire(() => log(...messages));
 }
 
 /**
  * Move the cursor at position `time` expressed in seconds.
  *
- * @param {number} time
+ * @param {number} time - Time position in seconds
  */
 function at(time) {
   _cursor = time;
@@ -139,7 +140,7 @@ function at(time) {
 /**
  * Offset the cursor by `duration` expressed in seconds.
  *
- * @param {number} duration
+ * @param {number} duration - Duration in seconds
  */
 function wait(duration) {
   _cursor += duration;
@@ -156,26 +157,49 @@ function cursor() {
  * Schedule a MIDI note to be played at the cursor position
  * with note number `pitch`, velocity `velocity` and duration `duration` on midi channel `channel`.
  *
- * @param {number} pitch
- * @param {number} velocity
- * @param {number} duration
- * @param {number} channel
+ * @param {number} pitch - MIDI note number
+ * @param {number} velocity - Velocity value
+ * @param {number} duration - Note duration
+ * @param {number} channel - MIDI channel to send to
  */
 function note(pitch, velocity, duration, channel) {
+  channel = channel ?? defaultMidiChannel;
+
   fire(() => {
     dbg('About to play note');
     playNote(_midiOutput, channel, pitch, velocity, duration);
   });
 }
 
+/**
+ * Sends a MIDI program change message.
+ * @param {number} program - MIDI program number
+ * @param {number} channel - MIDI channel to send to
+ */
 function program(program, channel) {
+  channel = channel ?? defaultMidiChannel;
+
   fire(() => sendProgramChange(_midiOutput, program, channel));
 }
 
-function channel(channel) {
-  fire(() => setDefaultMidiChannel(channel));
+/**
+ * Set the default value for next MIDI messages
+ * @param {number} [channelNumber] - Default MIDI channel
+ */
+export function channel(channelNumber) {
+  defaultMidiChannel = channelNumber ?? 0;
 }
 
+/**
+ * Pick an element among choices.
+ * - If an array is provided, the output will be an element of the array
+ * - If an string is provided, the output will be a character of the string
+ * - If a number is provided, the output will be a number between 0 and this number
+ * - For other inputs, the output is a random value between 0 and 1
+ *
+ * @param {number|string|Array} numberOrArray - choices to pick from as a number, an array or a string
+ * @returns {string|number} - a randomly picked element
+ */
 function pick(numberOrArray) {
   const value = Math.random();
 
