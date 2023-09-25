@@ -1,8 +1,9 @@
 import { dbg } from './dbg.js';
+import { EventQueue } from './event-queue.js';
 
-const LOOK_AHEAD = 0.5;
+const LOOK_AHEAD = 0;
 
-const scheduledEvents = [];
+const scheduledEvents = new EventQueue();
 
 let startTime = 0;
 let previousTime = 0;
@@ -12,6 +13,10 @@ let currentSchedulerId = 0;
 
 export function getPreviousTime() {
   return previousTime;
+}
+
+export function getCurrentSchedulerId() {
+  return currentSchedulerId;
 }
 
 /**
@@ -39,10 +44,11 @@ export function initScheduler() {
  * Schedule an action at a given time position
  * @param {number} time the time in seconds at which the action should be performed
  * @param {Function} action the function to be called
+ * @param {number} [schedulerId] scheduler ID
  */
-export function schedule(time, action) {
+export function schedule(time, action, schedulerId) {
   dbg('Schedule at ', time);
-  scheduledEvents.push({ time, action, schedulerId: currentSchedulerId });
+  scheduledEvents.add(time, action, schedulerId ?? currentSchedulerId);
 }
 
 /**
@@ -50,26 +56,6 @@ export function schedule(time, action) {
  */
 export function clearScheduledEvents() {
   currentSchedulerId++;
-}
-
-/**
- * Remove and return the scheduled events whose time is below the specified time
- *
- * @param {number} time time in seconds before which events should be removed
- * @returns the removed events
- */
-function removePastEvents(time) {
-  const pastEvents = [];
-
-  for (let i = scheduledEvents.length - 1; i >= 0; --i) {
-    const event = scheduledEvents[i];
-
-    if (event.time < time) {
-      pastEvents.push(...scheduledEvents.splice(i, 1));
-    }
-  }
-
-  return pastEvents;
 }
 
 /**
@@ -86,20 +72,19 @@ export function startScheduler(outputLines) {
   intervalHandle = setInterval(() => {
     const t = now();
     const elapsed = t + LOOK_AHEAD;
-    let currentEvents = removePastEvents(elapsed);
 
-    while (currentEvents.length > 0) {
-      currentEvents
-        .filter((event) => event.schedulerId === currentSchedulerId)
-        .forEach((event) => {
-          try {
-            event.action();
-          } catch (e) {
-            outputLines.push(e);
-          }
-        });
+    let next = scheduledEvents.next(elapsed);
 
-      currentEvents = removePastEvents(elapsed);
+    while (next != null) {
+      if (next.schedulerId === currentSchedulerId) {
+        try {
+          next.event();
+        } catch (e) {
+          outputLines.push(e);
+        }
+      }
+
+      next = scheduledEvents.next(elapsed);
     }
 
     previousTime = elapsed;

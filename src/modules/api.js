@@ -1,5 +1,11 @@
-import { getPreviousTime, now, schedule } from './scheduler.js';
+import {
+  getCurrentSchedulerId,
+  getPreviousTime,
+  now,
+  schedule,
+} from './scheduler.js';
 import { playNote, sendProgramChange, setDefaultMidiChannel } from './midi.js';
+import { dbg } from './dbg.js';
 
 let _midiOutput;
 let _textOutputLines;
@@ -31,6 +37,8 @@ function fire(action) {
       action();
       _cursor = timeOutside;
     });
+  } else {
+    dbg(`skipping ${_cursor} ${getPreviousTime()}`);
   }
 }
 
@@ -45,6 +53,7 @@ function fire(action) {
 function repeat(action, interval, count = Infinity) {
   let stepCount = 0;
   let nextCursor = _cursor;
+  const schedulerId = getCurrentSchedulerId();
 
   const t = now();
 
@@ -64,19 +73,23 @@ function repeat(action, interval, count = Infinity) {
   }
 
   const scheduleNext = () => {
-    schedule(nextCursor, () => {
-      if (count > 0) {
-        const timeOutside = _cursor;
-        _cursor = nextCursor;
+    schedule(
+      nextCursor,
+      () => {
+        if (count > 0) {
+          const timeOutside = _cursor;
+          _cursor = nextCursor;
 
-        action(stepCount++);
-        _cursor = timeOutside;
+          action(stepCount++);
+          _cursor = timeOutside;
 
-        count -= 1;
-        nextCursor += interval;
-        scheduleNext();
-      }
-    });
+          count -= 1;
+          nextCursor += interval;
+          scheduleNext();
+        }
+      },
+      schedulerId,
+    );
   };
 
   scheduleNext();
@@ -149,7 +162,10 @@ function cursor() {
  * @param {number} channel
  */
 function note(pitch, velocity, duration, channel) {
-  fire(() => playNote(_midiOutput, channel, pitch, velocity, duration));
+  fire(() => {
+    dbg('About to play note');
+    playNote(_midiOutput, channel, pitch, velocity, duration);
+  });
 }
 
 function program(program, channel) {
