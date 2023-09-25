@@ -38,8 +38,6 @@ function fire(action) {
       action();
       _cursor = timeOutside;
     });
-  } else {
-    dbg(`skipping ${_cursor} ${getPreviousTime()}`);
   }
 }
 

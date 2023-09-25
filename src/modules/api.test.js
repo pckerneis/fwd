@@ -48,6 +48,22 @@ test('fire() schedules an action at current time cursor', () => {
   expect(spy).toBeCalled();
 });
 
+test('fire() does not schedule in past', () => {
+  const { fire, at } = getApi();
+
+  startScheduler([]);
+
+  advanceTime(10001);
+
+  const spy = jest.fn();
+  at(5);
+  fire(() => spy());
+
+  advanceTime(10001);
+
+  expect(spy).not.toBeCalled();
+});
+
 test('log() adds a log message', () => {
   const { log } = getApi();
 
@@ -184,4 +200,137 @@ test('note() should schedule MIDI note', () => {
 
   // note off
   expect(midiOutput.send).toBeCalledTimes(2);
+});
+
+test('note() should schedule MIDI note with default channel', () => {
+  const { at, note, channel } = getApi();
+
+  startScheduler([]);
+
+  channel(4);
+  at(1);
+  note(64, 64, 1);
+
+  advanceTime(10001);
+
+  // note on
+  expect(midiOutput.send).toHaveBeenLastCalledWith('noteon', {
+    note: 64,
+    velocity: 64,
+    channel: 4,
+  });
+});
+
+test('clear() clears log output', () => {
+  const { log, clear } = getApi();
+  const output = [];
+  initApi(midiOutput, output);
+
+  log('Hello', 'World!');
+  expect(output.length).toBe(2);
+
+  clear();
+  expect(output.length).toBe(0);
+});
+
+test('fclear() schedules a log output clear', () => {
+  const { at, log, fclear } = getApi();
+  const output = [];
+  initApi(midiOutput, output);
+  startScheduler(output);
+
+  log('Hello', 'World!');
+  expect(output.length).toBe(2);
+
+  at(1);
+  fclear();
+  expect(output.length).toBe(2);
+
+  advanceTime(2000);
+  expect(output.length).toBe(0);
+});
+
+test('program() schedules a MIDI program change', () => {
+  const { at, program } = getApi();
+  const output = [];
+  initApi(midiOutput, output);
+  startScheduler(output);
+
+  at(1);
+  program(12, 1);
+
+  advanceTime(2000);
+  expect(midiOutput.send).toHaveBeenLastCalledWith('program', {
+    number: 12,
+    channel: 1,
+  });
+});
+
+test('program() schedules a MIDI program change with default channel', () => {
+  const { at, program, channel } = getApi();
+  const output = [];
+  initApi(midiOutput, output);
+  startScheduler(output);
+
+  at(1);
+  channel(9);
+  program(12);
+
+  advanceTime(2000);
+  expect(midiOutput.send).toHaveBeenLastCalledWith('program', {
+    number: 12,
+    channel: 9,
+  });
+});
+
+test('pick() picks a random number', () => {
+  const { pick } = getApi();
+  for (let i = 0; i < 100; ++i) {
+    const value = pick(10);
+    expect(value).toBeGreaterThanOrEqual(0);
+    expect(value).toBeLessThanOrEqual(10);
+  }
+});
+
+test('pick() picks a random character', () => {
+  const { pick } = getApi();
+  for (let i = 0; i < 100; ++i) {
+    const value = pick('abcd');
+    expect('abcd'.includes(value)).toBeTruthy();
+  }
+});
+
+test('pick() picks a random array element', () => {
+  const { pick } = getApi();
+  const choices = ['a', 'b', 'c'];
+  for (let i = 0; i < 100; ++i) {
+    const value = pick(choices);
+    expect(choices.includes(value)).toBeTruthy();
+  }
+});
+
+test('pick() picks a random value between 0 and 1', () => {
+  const { pick } = getApi();
+  for (let i = 0; i < 100; ++i) {
+    const value = pick();
+    expect(value).toBeGreaterThanOrEqual(0);
+    expect(value).toBeLessThanOrEqual(1);
+  }
+});
+
+test('channel() resets default channel', () => {
+  const { at, program, channel } = getApi();
+  const output = [];
+  initApi(midiOutput, output);
+  startScheduler(output);
+
+  at(1);
+  channel();
+  program(12);
+
+  advanceTime(2000);
+  expect(midiOutput.send).toHaveBeenLastCalledWith('program', {
+    number: 12,
+    channel: 0,
+  });
 });
