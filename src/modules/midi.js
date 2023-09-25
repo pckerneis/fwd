@@ -52,11 +52,9 @@ function setNoteCurrentlyOn(channel, note, triggerId) {
  * @param {number} note - note number
  */
 function setNoteCurrentlyOff(channel, note) {
-  if (notesCurrentlyOnState[channel] == null) {
-    notesCurrentlyOnState[channel] = {};
+  if (notesCurrentlyOnState[channel]) {
+    notesCurrentlyOnState[channel][note] = null;
   }
-
-  notesCurrentlyOnState[channel][note] = null;
 }
 
 /**
@@ -166,7 +164,7 @@ export function sendProgramChange(midiOutput, programNumber, channel) {
 
 /**
  * Set the default value for next MIDI messages
- * @param {number} channelNumber - Default MIDI channel
+ * @param {number} [channelNumber] - Default MIDI channel
  */
 export function setDefaultMidiChannel(channelNumber) {
   defaultMidiChannel = channelNumber ?? 0;
