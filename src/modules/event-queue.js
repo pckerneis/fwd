@@ -56,7 +56,7 @@ export class EventQueue {
    */
   add(time, event, schedulerId) {
     if (isNaN(time)) {
-      time = 0;
+      throw `Expected a numeric value for time but got ${time}`;
     }
 
     const idx = this.insertIndex(time, 0, this.events.length);
@@ -70,23 +70,6 @@ export class EventQueue {
     this.events.splice(idx, 0, scheduledEvent);
 
     return scheduledEvent.ref;
-  }
-
-  /**
-   * Insert an event in the queue. The queue is kept sorted in time position at insertion. If there are already events at
-   * the specified time location, the event will be inserted after the last event with equal time location.
-   *
-   * @param {string} eventRef A reference to the event to remove, obtained from a call to {@link add}.
-   */
-  remove(eventRef) {
-    this.events = this.events.filter((e) => e.ref !== eventRef);
-  }
-
-  /**
-   * Removes all previously added events.
-   */
-  clear() {
-    this.events = [];
   }
 
   insertIndex(time, min, max) {

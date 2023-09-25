@@ -89,3 +89,25 @@ test('errors during execution are reported', () => {
   advanceTime(10001);
   expect(outputLines.length).toBe(1);
 });
+
+test('schedules actions with equal time in the right order', () => {
+  mockDateNow(4537);
+  const outputLines = [];
+  startScheduler(outputLines);
+
+  let output = '';
+
+  const action1 = () => (output += '1');
+  const action2 = () => (output += '2');
+  const action3 = () => (output += '3');
+  schedule(10, () => action1());
+  schedule(10, () => action2());
+  schedule(10, () => action3());
+
+  advanceTime(10001);
+  expect(output).toBe('123');
+});
+
+test('throws error if time is invalid', () => {
+  expect(() => schedule('boom', () => {})).toThrow();
+});
