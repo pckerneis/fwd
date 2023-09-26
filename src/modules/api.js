@@ -42,7 +42,7 @@ function fire(action) {
 }
 
 /**
- * Repeatedly calls the function `fn` every `interval` seconds for `count` times, starting at the cursor position.
+ * Repeatedly calls the function `action` every `interval` seconds `count` times, starting at the cursor position.
  *
  * @param {Function} action - The action to repeat
  * @param {number} interval - The repeat interval
@@ -108,7 +108,7 @@ function fclear() {
 }
 
 /**
- * Log a message.
+ * Log messages tout console output.
  *
  * @param {*} messages - Messages to log
  */
@@ -117,7 +117,7 @@ function log(...messages) {
 }
 
 /**
- * Schedule a message to be logged at the cursor position.
+ * Schedule messages to be logged at the cursor position.
  *
  * @param {*} messages - Messages to log
  */
@@ -144,7 +144,8 @@ function wait(duration) {
 }
 
 /**
- * @returns the cursor position.
+ * Returns the current time cursor position
+ * @returns the cursor position
  */
 function cursor() {
   return _cursor;
@@ -210,6 +211,7 @@ function pick(numberOrArray) {
 }
 
 /**
+ * Returns the public programming interface.
  * @returns the public API
  */
 export function getApi() {
