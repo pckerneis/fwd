@@ -55,7 +55,7 @@ export class EventQueue {
    * @returns {string} the scheduled event ID that can used later on to remove the event from the queue. See {@link remove}.
    */
   add(time, event, schedulerId) {
-    if (isNaN(time)) {
+    if (Number.isNaN(time)) {
       throw `Expected a numeric value for time but got ${time}`;
     }
 
