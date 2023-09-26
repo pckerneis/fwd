@@ -47,7 +47,6 @@ function fire(action) {
  * @param {Function} action - The action to repeat
  * @param {number} interval - The repeat interval
  * @param {number} count - How many times to repeat
- * @returns
  */
 function repeat(action, interval, count = Infinity) {
   let stepCount = 0;
