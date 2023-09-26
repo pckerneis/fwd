@@ -109,5 +109,5 @@ test('schedules actions with equal time in the right order', () => {
 });
 
 test('throws error if time is invalid', () => {
-  expect(() => schedule('boom', () => {})).toThrow();
+  expect(() => schedule(null, () => {})).toThrow();
 });

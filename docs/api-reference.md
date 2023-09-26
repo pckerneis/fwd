@@ -31,17 +31,17 @@
 </dd>
 <dt><a href="#cursor">cursor()</a> ⇒</dt>
 <dd></dd>
-<dt><a href="#note">note(pitch, velocity, duration, channel)</a></dt>
+<dt><a href="#note">note(pitch, velocity, duration, [channel])</a></dt>
 <dd><p>Schedule a MIDI note to be played at the cursor position
 with note number <code>pitch</code>, velocity <code>velocity</code> and duration <code>duration</code> on midi channel <code>channel</code>.</p>
 </dd>
-<dt><a href="#program">program(program, channel)</a></dt>
+<dt><a href="#program">program(program, [channel])</a></dt>
 <dd><p>Sends a MIDI program change message.</p>
 </dd>
 <dt><a href="#channel">channel([channelNumber])</a></dt>
 <dd><p>Set the default value for next MIDI messages</p>
 </dd>
-<dt><a href="#pick">pick(numberOrArray)</a> ⇒ <code>string</code> | <code>number</code></dt>
+<dt><a href="#pick">pick([numberOrArray])</a> ⇒</dt>
 <dd><p>Pick an element among choices.</p>
 <ul>
 <li>If an array is provided, the output will be an element of the array</li>
@@ -153,8 +153,9 @@ Offset the cursor by `duration` expressed in seconds.
 **Returns**: the cursor position.  
 <a name="note"></a>
 
-## note(pitch, velocity, duration, channel)
-Schedule a MIDI note to be played at the cursor positionwith note number `pitch`, velocity `velocity` and duration `duration` on midi channel `channel`.
+## note(pitch, velocity, duration, [channel])
+Schedule a MIDI note to be played at the cursor position
+with note number `pitch`, velocity `velocity` and duration `duration` on midi channel `channel`.
 
 **Kind**: global function  
 
@@ -163,11 +164,11 @@ Schedule a MIDI note to be played at the cursor positionwith note number `pitch
 | pitch | <code>number</code> | MIDI note number |
 | velocity | <code>number</code> | Velocity value |
 | duration | <code>number</code> | Note duration |
-| channel | <code>number</code> | MIDI channel to send to |
+| [channel] | <code>number</code> | MIDI channel to send to |
 
 <a name="program"></a>
 
-## program(program, channel)
+## program(program, [channel])
 Sends a MIDI program change message.
 
 **Kind**: global function  
@@ -175,7 +176,7 @@ Sends a MIDI program change message.
 | Param | Type | Description |
 | --- | --- | --- |
 | program | <code>number</code> | MIDI program number |
-| channel | <code>number</code> | MIDI channel to send to |
+| [channel] | <code>number</code> | MIDI channel to send to |
 
 <a name="channel"></a>
 
@@ -190,19 +191,24 @@ Set the default value for next MIDI messages
 
 <a name="pick"></a>
 
-## pick(numberOrArray) ⇒ <code>string</code> \| <code>number</code>
-Pick an element among choices.- If an array is provided, the output will be an element of the array- If an string is provided, the output will be a character of the string- If a number is provided, the output will be a number between 0 and this number- For other inputs, the output is a random value between 0 and 1
+## pick([numberOrArray]) ⇒
+Pick an element among choices.
+- If an array is provided, the output will be an element of the array
+- If an string is provided, the output will be a character of the string
+- If a number is provided, the output will be a number between 0 and this number
+- For other inputs, the output is a random value between 0 and 1
 
 **Kind**: global function  
-**Returns**: <code>string</code> \| <code>number</code> - - a randomly picked element  
+**Returns**: a randomly picked element  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| numberOrArray | <code>number</code> \| <code>string</code> \| <code>Array</code> | choices to pick from as a number, an array or a string |
+| [numberOrArray] | <code>number</code> \| <code>string</code> \| <code>Array</code> | choices to pick from as a number, an array or a string |
 
 <a name="getApi"></a>
 
 ## getApi() ⇒
 **Kind**: global function  
 **Returns**: the public API  
+
 <style>dl { display: none; }</style>

@@ -157,7 +157,7 @@ function cursor() {
  * @param {number} pitch - MIDI note number
  * @param {number} velocity - Velocity value
  * @param {number} duration - Note duration
- * @param {number} channel - MIDI channel to send to
+ * @param {number} [channel] - MIDI channel to send to
  */
 function note(pitch, velocity, duration, channel) {
   channel = channel ?? defaultMidiChannel;
@@ -171,7 +171,7 @@ function note(pitch, velocity, duration, channel) {
 /**
  * Sends a MIDI program change message.
  * @param {number} program - MIDI program number
- * @param {number} channel - MIDI channel to send to
+ * @param {number} [channel] - MIDI channel to send to
  */
 function program(program, channel) {
   channel = channel ?? defaultMidiChannel;
@@ -194,8 +194,8 @@ export function channel(channelNumber) {
  * - If a number is provided, the output will be a number between 0 and this number
  * - For other inputs, the output is a random value between 0 and 1
  *
- * @param {number|string|Array} numberOrArray - choices to pick from as a number, an array or a string
- * @returns {string|number} - a randomly picked element
+ * @param {number|string|Array} [numberOrArray] - choices to pick from as a number, an array or a string
+ * @returns a randomly picked element
  */
 function pick(numberOrArray) {
   const value = Math.random();
