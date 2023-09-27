@@ -153,7 +153,7 @@ function cursor() {
 
 /**
  * Schedule a MIDI note to be played at the cursor position
- * with note number `pitch`, velocity `velocity` and duration `duration` on midi channel `channel`.
+ * with note number `pitch`, velocity `velocity` and duration `duration` on MIDI channel `channel`.
  *
  * @param {number} pitch - MIDI note number
  * @param {number} velocity - Velocity value

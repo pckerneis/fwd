@@ -9,7 +9,7 @@
 <dd><p>Schedule the function <code>action</code> to be called at the cursor position.</p>
 </dd>
 <dt><a href="#repeat">repeat(action, interval, count)</a></dt>
-<dd><p>Repeatedly calls the function <code>fn</code> every <code>interval</code> seconds for <code>count</code> times, starting at the cursor position.</p>
+<dd><p>Repeatedly calls the function <code>action</code> every <code>interval</code> seconds <code>count</code> times, starting at the cursor position.</p>
 </dd>
 <dt><a href="#clear">clear()</a></dt>
 <dd><p>Clears the logs.</p>
@@ -18,10 +18,10 @@
 <dd><p>Schedule a log clear at the cursor position.</p>
 </dd>
 <dt><a href="#log">log(...messages)</a></dt>
-<dd><p>Log a message.</p>
+<dd><p>Log messages tout console output.</p>
 </dd>
 <dt><a href="#flog">flog(...messages)</a></dt>
-<dd><p>Schedule a message to be logged at the cursor position.</p>
+<dd><p>Schedule messages to be logged at the cursor position.</p>
 </dd>
 <dt><a href="#at">at(time)</a></dt>
 <dd><p>Move the cursor at position <code>time</code> expressed in seconds.</p>
@@ -30,10 +30,11 @@
 <dd><p>Offset the cursor by <code>duration</code> expressed in seconds.</p>
 </dd>
 <dt><a href="#cursor">cursor()</a> ⇒</dt>
-<dd></dd>
+<dd><p>Returns the current time cursor position</p>
+</dd>
 <dt><a href="#note">note(pitch, velocity, duration, [channel])</a></dt>
 <dd><p>Schedule a MIDI note to be played at the cursor position
-with note number <code>pitch</code>, velocity <code>velocity</code> and duration <code>duration</code> on midi channel <code>channel</code>.</p>
+with note number <code>pitch</code>, velocity <code>velocity</code> and duration <code>duration</code> on MIDI channel <code>channel</code>.</p>
 </dd>
 <dt><a href="#program">program(program, [channel])</a></dt>
 <dd><p>Sends a MIDI program change message.</p>
@@ -51,7 +52,8 @@ with note number <code>pitch</code>, velocity <code>velocity</code> and duration
 </ul>
 </dd>
 <dt><a href="#getApi">getApi()</a> ⇒</dt>
-<dd></dd>
+<dd><p>Returns the public programming interface.</p>
+</dd>
 </dl>
 
 <a name="initApi"></a>
@@ -80,7 +82,7 @@ Schedule the function `action` to be called at the cursor position.
 <a name="repeat"></a>
 
 ## repeat(action, interval, count)
-Repeatedly calls the function `fn` every `interval` seconds for `count` times, starting at the cursor position.
+Repeatedly calls the function `action` every `interval` seconds `count` times, starting at the cursor position.
 
 **Kind**: global function  
 
@@ -105,7 +107,7 @@ Schedule a log clear at the cursor position.
 <a name="log"></a>
 
 ## log(...messages)
-Log a message.
+Log messages tout console output.
 
 **Kind**: global function  
 
@@ -116,7 +118,7 @@ Log a message.
 <a name="flog"></a>
 
 ## flog(...messages)
-Schedule a message to be logged at the cursor position.
+Schedule messages to be logged at the cursor position.
 
 **Kind**: global function  
 
@@ -149,13 +151,15 @@ Offset the cursor by `duration` expressed in seconds.
 <a name="cursor"></a>
 
 ## cursor() ⇒
+Returns the current time cursor position
+
 **Kind**: global function  
-**Returns**: the cursor position.  
+**Returns**: the cursor position  
 <a name="note"></a>
 
 ## note(pitch, velocity, duration, [channel])
 Schedule a MIDI note to be played at the cursor position
-with note number `pitch`, velocity `velocity` and duration `duration` on midi channel `channel`.
+with note number `pitch`, velocity `velocity` and duration `duration` on MIDI channel `channel`.
 
 **Kind**: global function  
 
@@ -208,6 +212,8 @@ Pick an element among choices.
 <a name="getApi"></a>
 
 ## getApi() ⇒
+Returns the public programming interface.
+
 **Kind**: global function  
 **Returns**: the public API  
 
