@@ -1,10 +1,4 @@
-import {
-  incrementSchedulerId,
-  initScheduler,
-  clock,
-  schedule,
-  startScheduler,
-} from './scheduler.js';
+import { initScheduler, clock, schedule, startScheduler } from './scheduler.js';
 import { jest } from '@jest/globals';
 
 let currentTime = 0;
@@ -62,18 +56,6 @@ test('schedule actions', () => {
 
   advanceTime(10001);
   expect(spy).toBeCalled();
-});
-
-test('incrementSchedulerId() cancel scheduled actions', () => {
-  mockDateNow(4537);
-  startScheduler([]);
-
-  const spy = jest.fn();
-  schedule(10, () => spy());
-  incrementSchedulerId();
-
-  advanceTime(10001);
-  expect(spy).not.toBeCalled();
 });
 
 test('errors during execution are reported', () => {

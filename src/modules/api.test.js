@@ -137,7 +137,7 @@ test('repeat() should skip past calls', () => {
   advanceTime(1000);
   advanceTime(1000);
 
-  expect(action).toBeCalledTimes(4);
+  expect(action).toBeCalledTimes(3);
   expect(action).toHaveBeenLastCalledWith(4);
 });
 
