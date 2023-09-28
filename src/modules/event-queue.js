@@ -7,7 +7,6 @@
  * @type {object}
  * @property {string} ref - a unique identifier.
  * @property {number} time - time position in seconds.
- * @property {number} schedulerId - scheduler ID.
  * @property {Function} event - action to perform.
  */
 
