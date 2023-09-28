@@ -77,7 +77,7 @@ function repeat(action, interval, count = Infinity) {
     schedule(
       nextCursor,
       () => {
-        if (count > 0) {
+        if (schedulerId === getCurrentSchedulerId() && count > 0) {
           const timeOutside = _cursor;
           _cursor = nextCursor;
 
@@ -89,7 +89,6 @@ function repeat(action, interval, count = Infinity) {
           scheduleNext();
         }
       },
-      schedulerId,
     );
   };
 

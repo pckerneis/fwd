@@ -1,5 +1,5 @@
 import vm from 'node:vm';
-import { clearScheduledEvents } from './scheduler.js';
+import { incrementSchedulerId } from './scheduler.js';
 import { getApi, initApi } from './api.js';
 import { dbg } from './dbg.js';
 
@@ -36,7 +36,7 @@ function buildContext(midiOutput, textOutputLines, env) {
  * @param {object} env Environment dictionary persisted between executions
  */
 export function runInSandbox(userCode, midiOutput, textOutputLines, env) {
-  clearScheduledEvents();
+  incrementSchedulerId();
 
   const context = buildContext(midiOutput, textOutputLines, env);
 

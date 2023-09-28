@@ -42,17 +42,16 @@ export function initScheduler() {
  * Schedule an action at a given time position
  * @param {number} time the time in seconds at which the action should be performed
  * @param {Function} action the function to be called
- * @param {number} [schedulerId] scheduler ID
  */
-export function schedule(time, action, schedulerId) {
+export function schedule(time, action) {
   dbg('Schedule at ', time);
-  scheduledEvents.add(time, action, schedulerId ?? currentSchedulerId);
+  scheduledEvents.add(time, action);
 }
 
 /**
  * Clear the list of scheduled events
  */
-export function clearScheduledEvents() {
+export function incrementSchedulerId() {
   currentSchedulerId++;
 }
 
@@ -73,13 +72,12 @@ export function startScheduler(outputLines) {
     let next = scheduledEvents.next(t);
 
     while (next != null) {
-      if (next.schedulerId === currentSchedulerId) {
-        currentEventTime = next.time;
-        try {
-          next.event();
-        } catch (e) {
-          outputLines.push(e);
-        }
+      currentEventTime = next.time;
+
+      try {
+        next.event();
+      } catch (e) {
+        outputLines.push(e);
       }
 
       next = scheduledEvents.next(t);

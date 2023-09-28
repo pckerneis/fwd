@@ -1,5 +1,5 @@
 import {
-  clearScheduledEvents,
+  incrementSchedulerId,
   initScheduler,
   clock,
   schedule,
@@ -64,13 +64,13 @@ test('schedule actions', () => {
   expect(spy).toBeCalled();
 });
 
-test('clearScheduledEvents() cancel scheduled actions', () => {
+test('incrementSchedulerId() cancel scheduled actions', () => {
   mockDateNow(4537);
   startScheduler([]);
 
   const spy = jest.fn();
   schedule(10, () => spy());
-  clearScheduledEvents();
+  incrementSchedulerId();
 
   advanceTime(10001);
   expect(spy).not.toBeCalled();

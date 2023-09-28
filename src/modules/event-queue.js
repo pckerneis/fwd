@@ -50,11 +50,10 @@ export class EventQueue {
    *
    * @param {number} time The time location at which the event is scheduled.
    * @param {Function} event the event to add to the queue.
-   * @param {number} schedulerId - Scheduler ID
    *
    * @returns {string} the scheduled event ID that can used later on to remove the event from the queue. See {@link remove}.
    */
-  add(time, event, schedulerId) {
+  add(time, event) {
     if (typeof time !== 'number' || Number.isNaN(time)) {
       throw `Expected a numeric value for time but got ${time}`;
     }
@@ -63,7 +62,6 @@ export class EventQueue {
     const scheduledEvent = {
       event,
       time,
-      schedulerId,
       ref: this.newRef(),
     };
 
