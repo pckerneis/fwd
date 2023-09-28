@@ -74,22 +74,19 @@ function repeat(action, interval, count = Infinity) {
   }
 
   const scheduleNext = () => {
-    schedule(
-      nextCursor,
-      () => {
-        if (schedulerId === getCurrentSchedulerId() && count > 0) {
-          const timeOutside = _cursor;
-          _cursor = nextCursor;
+    schedule(nextCursor, () => {
+      if (schedulerId === getCurrentSchedulerId() && count > 0) {
+        const timeOutside = _cursor;
+        _cursor = nextCursor;
 
-          action(stepCount++);
-          _cursor = timeOutside;
+        action(stepCount++);
+        _cursor = timeOutside;
 
-          count -= 1;
-          nextCursor += interval;
-          scheduleNext();
-        }
-      },
-    );
+        count -= 1;
+        nextCursor += interval;
+        scheduleNext();
+      }
+    });
   };
 
   scheduleNext();
