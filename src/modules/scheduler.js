@@ -1,18 +1,16 @@
 import { dbg } from './dbg.js';
 import { EventQueue } from './event-queue.js';
 
-const LOOK_AHEAD = 0;
-
 const scheduledEvents = new EventQueue();
 
 let startTime = 0;
-let previousTime = 0;
+let currentEventTime = 0;
 let stopped = true;
 let intervalHandle;
 let currentSchedulerId = 0;
 
-export function getPreviousTime() {
-  return previousTime;
+export function getCurrentEventTime() {
+  return currentEventTime;
 }
 
 export function getCurrentSchedulerId() {
@@ -23,7 +21,7 @@ export function getCurrentSchedulerId() {
  * Returns the elapsed time in seconds since scheduler start
  * @returns 0 when stopped or elapsed time in seconds when running
  */
-export function now() {
+export function clock() {
   return stopped ? 0 : (Date.now() - startTime) / 1000;
 }
 
@@ -36,7 +34,7 @@ export function initScheduler() {
   clearInterval(intervalHandle);
   intervalHandle = null;
   startTime = 0;
-  previousTime = 0;
+  currentEventTime = 0;
   currentSchedulerId = 0;
 }
 
@@ -70,13 +68,13 @@ export function startScheduler(outputLines) {
   startTime = Date.now();
 
   intervalHandle = setInterval(() => {
-    const t = now();
-    const elapsed = t + LOOK_AHEAD;
+    const t = clock();
 
-    let next = scheduledEvents.next(elapsed);
+    let next = scheduledEvents.next(t);
 
     while (next != null) {
       if (next.schedulerId === currentSchedulerId) {
+        currentEventTime = next.time;
         try {
           next.event();
         } catch (e) {
@@ -84,9 +82,7 @@ export function startScheduler(outputLines) {
         }
       }
 
-      next = scheduledEvents.next(elapsed);
+      next = scheduledEvents.next(t);
     }
-
-    previousTime = elapsed;
   }, 1);
 }

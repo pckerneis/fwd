@@ -1,7 +1,6 @@
 import {
   getCurrentSchedulerId,
-  getPreviousTime,
-  now,
+  getCurrentEventTime,
   schedule,
 } from './scheduler.js';
 import { playNote, sendProgramChange } from './midi.js';
@@ -23,6 +22,10 @@ export function initApi(midiOutput, textOutputLines) {
   _cursor = 0;
 }
 
+function now() {
+  return getCurrentEventTime();
+}
+
 /**
  * Schedule the function `action` to be called at the cursor position.
  *
@@ -31,7 +34,7 @@ export function initApi(midiOutput, textOutputLines) {
 function fire(action) {
   const memoizedCursor = _cursor;
 
-  if (_cursor >= getPreviousTime()) {
+  if (_cursor >= now()) {
     schedule(_cursor, () => {
       const timeOutside = _cursor;
       _cursor = memoizedCursor;
@@ -56,7 +59,7 @@ function repeat(action, interval, count = Infinity) {
   const t = now();
 
   for (;;) {
-    if (nextCursor + interval >= t) {
+    if (nextCursor >= t) {
       break;
     }
 

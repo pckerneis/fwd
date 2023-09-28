@@ -1,6 +1,6 @@
 import process from 'process';
 import { clearBuffer } from './rli.js';
-import { now } from './scheduler.js';
+import { clock } from './scheduler.js';
 import { getLastChangeDate } from './vm.js';
 import { getMidiSent, resetMidiSent } from './midi.js';
 
@@ -53,7 +53,7 @@ function drawOnce(outputLines, filePath, outputName) {
     `╔══${borderMargin}══╗
  in    ${truncatedPath} (at ${lastChangeTime})
  out   [${getMidiSent() ? 'x' : ' '}] ${truncatedOutput}
- time  ${now()}
+ time  ${clock()}
 ╚══${borderMargin}══╝
 ${outputLines.join('\n')}`,
   );

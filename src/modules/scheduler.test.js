@@ -1,7 +1,7 @@
 import {
   clearScheduledEvents,
   initScheduler,
-  now,
+  clock,
   schedule,
   startScheduler,
 } from './scheduler.js';
@@ -29,20 +29,20 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-test('now() returns 0 when scheduler is stopped', () => {
-  expect(now()).toBe(0);
+test('clock() returns 0 when scheduler is stopped', () => {
+  expect(clock()).toBe(0);
 });
 
-test('now() returns 0 when scheduler has just started', () => {
+test('clock() returns 0 when scheduler has just started', () => {
   startScheduler([]);
-  expect(now()).toBe(0);
+  expect(clock()).toBe(0);
 });
 
-test('now() returns elapsed time in seconds when scheduler is running', () => {
+test('clock() returns elapsed time in seconds when scheduler is running', () => {
   mockDateNow(4537);
   startScheduler([]);
   advanceTime(4000);
-  expect(now()).toBe(4);
+  expect(clock()).toBe(4);
 });
 
 test('initScheduler() stops execution', () => {
@@ -50,7 +50,7 @@ test('initScheduler() stops execution', () => {
   startScheduler([]);
   advanceTime(4000);
   initScheduler();
-  expect(now()).toBe(0);
+  expect(clock()).toBe(0);
 });
 
 test('schedule actions', () => {
