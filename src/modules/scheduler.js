@@ -82,5 +82,7 @@ export function startScheduler(outputLines) {
 
       next = scheduledEvents.next(t);
     }
+
+    currentEventTime = t;
   }, 1);
 }
