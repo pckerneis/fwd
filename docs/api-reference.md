@@ -5,6 +5,9 @@
 <dt><a href="#initApi">initApi(midiOutput, textOutputLines)</a></dt>
 <dd><p>Initialise API context</p>
 </dd>
+<dt><a href="#now">now()</a> ⇒ <code>number</code></dt>
+<dd><p>Returns the execution time</p>
+</dd>
 <dt><a href="#fire">fire(action)</a></dt>
 <dd><p>Schedule the function <code>action</code> to be called at the cursor position.</p>
 </dd>
@@ -68,6 +71,13 @@ Initialise API context
 | midiOutput | <code>object</code> | MIDI output used |
 | textOutputLines | <code>Array</code> | Array of messages to log |
 
+<a name="now"></a>
+
+## now() ⇒ <code>number</code>
+Returns the execution time
+
+**Kind**: global function  
+**Returns**: <code>number</code> - Current execution time  
 <a name="fire"></a>
 
 ## fire(action)
