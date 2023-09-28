@@ -22,6 +22,10 @@ export function initApi(midiOutput, textOutputLines) {
   _cursor = 0;
 }
 
+/**
+ * Returns the execution time
+ * @returns {number} Current execution time
+ */
 function now() {
   return getCurrentEventTime();
 }
