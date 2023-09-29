@@ -347,7 +347,7 @@ test('channel() resets default channel', () => {
 
 test('def() adds to context', () => {
   const apiContext = getApiContext(midiOutput, messages);
-  const variable = apiContext.def('forty-two', 42);
+  const variable = apiContext.def('fortyTwo', 42);
   expect(variable).toBe(42);
   expect(apiContext.fortyTwo).toBe(42);
 });

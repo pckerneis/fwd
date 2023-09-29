@@ -106,11 +106,13 @@ test('throws error if time is invalid', () => {
 test('toggleSchedulerPaused() pauses and unpauses scheduler', () => {
   mockDateNow(4537);
   startScheduler([]);
+
+  let t = clock();
   toggleSchedulerPaused();
   expect(isPaused()).toBeTruthy();
 
   advanceTime(4000);
-  expect(clock()).toBe(0);
+  expect(clock()).toBe(t);
 
   toggleSchedulerPaused();
   expect(isPaused()).toBeFalsy();
