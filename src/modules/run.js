@@ -21,8 +21,9 @@ import readline from 'readline';
  * Runs the CLI
  * @param {string} file An optional path to file
  * @param {string} output An optional MIDI output name
+ * @param {boolean} headless - If true, header is hidden
  */
-export async function run(file, output) {
+export async function run(file, output, headless) {
   const existingFile = await promptAndReadFile(file);
 
   const outputs = easymidi.getOutputs();
@@ -41,7 +42,7 @@ export async function run(file, output) {
   const midiOutput = new easymidi.Output(existingOutput);
 
   if (!DBG_MODE) {
-    startDisplay(existingOutput, existingFile.path, outlines);
+    startDisplay(existingOutput, existingFile.path, outlines, headless);
   }
 
   initScheduler();

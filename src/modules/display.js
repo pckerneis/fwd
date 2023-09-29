@@ -36,8 +36,9 @@ export function printWelcome(version) {
  * @param {string[]} outputLines an array of messages to be logged
  * @param {string} filePath path to current program file
  * @param {string} outputName MIDI output name
+ * @param {boolean} headless - If true, header is hidden
  */
-function drawOnce(outputLines, filePath, outputName) {
+function drawOnce(outputLines, filePath, outputName, headless) {
   clearBuffer();
   truncateOutputLines(outputLines);
 
@@ -55,14 +56,18 @@ function drawOnce(outputLines, filePath, outputName) {
     clockString += ' [paused]';
   }
 
-  console.log(
-    `╔══${borderMargin}══╗
+  if (headless) {
+    console.log(outputLines.join('\n'));
+  } else {
+    console.log(
+      `╔══${borderMargin}══╗
  in    ${truncatedPath} (at ${lastChangeTime})
  out   [${getMidiSent() ? 'x' : ' '}] ${truncatedOutput}
  time  ${clockString}
 ╚══${borderMargin}══╝
 ${outputLines.join('\n')}`,
-  );
+    );
+  }
 }
 
 /**
@@ -71,12 +76,15 @@ ${outputLines.join('\n')}`,
  * @param {string} outputName MIDI output name
  * @param {string} file path to current program file
  * @param {string[]} outputLines an array of logged messages
+ * @param {boolean} headless - If true, header is hidden
  */
-export function startDisplay(outputName, file, outputLines) {
+export function startDisplay(outputName, file, outputLines, headless) {
   setInterval(() => {
-    drawOnce(outputLines, file, outputName);
+    drawOnce(outputLines, file, outputName, headless);
     resetMidiSent();
   }, 100);
 
-  process.stdout.on('resize', () => drawOnce(outputLines, file, outputName));
+  process.stdout.on('resize', () =>
+    drawOnce(outputLines, file, outputName, headless),
+  );
 }

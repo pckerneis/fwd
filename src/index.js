@@ -14,10 +14,11 @@ program
   .description('CLI to run musical programs in JS')
   .option('--file, -f <file>', 'Path to the program file to run')
   .option('--output, -o <output>', 'MIDI output to use')
+  .option('--headless, -h', 'Do not show header')
   .option('--debug, -d', 'Launch with debug output')
   .action(async (options) => {
     setDebug(options.D);
-    await run(options.F, options.O);
+    await run(options.F, options.O, options.H);
   });
 
 program.parse();
