@@ -2,9 +2,6 @@
 ## Functions
 
 <dl>
-<dt><a href="#initApi">initApi(midiOutput, textOutputLines)</a></dt>
-<dd><p>Initialise API context</p>
-</dd>
 <dt><a href="#now">now()</a> ⇒ <code>number</code></dt>
 <dd><p>Returns the execution time</p>
 </dd>
@@ -45,7 +42,7 @@ with note number <code>pitch</code>, velocity <code>velocity</code> and duration
 <dt><a href="#channel">channel([channelNumber])</a></dt>
 <dd><p>Set the default value for next MIDI messages</p>
 </dd>
-<dt><a href="#pick">pick([numberOrArray])</a> ⇒</dt>
+<dt><a href="#pick">pick([...numberOrArrayOrElements])</a> ⇒</dt>
 <dd><p>Pick an element among choices.</p>
 <ul>
 <li>If an array is provided, the output will be an element of the array</li>
@@ -54,22 +51,30 @@ with note number <code>pitch</code>, velocity <code>velocity</code> and duration
 <li>For other inputs, the output is a random value between 0 and 1</li>
 </ul>
 </dd>
+<dt><a href="#define">define(name, [defaultValue])</a> ⇒</dt>
+<dd><p>Define variable in the execution context with an optional default value.
+This won&#39;t have any effects if a value is already defined for <code>name</code>.</p>
+</dd>
+<dt><a href="#def">def()</a></dt>
+<dd><p>Alias for define.</p>
+</dd>
+<dt><a href="#forget">forget(name)</a></dt>
+<dd><p>Undefine variable in the execution context with an optional default value.</p>
+</dd>
+<dt><a href="#ndef">ndef()</a></dt>
+<dd><p>Alias for forget.</p>
+</dd>
+<dt><a href="#set">set(name, value)</a></dt>
+<dd><p>Define or overwrite variable in the execution context with the provided value.
+This won&#39;t have any effects if a value is already defined for <code>name</code>.</p>
+</dd>
 <dt><a href="#getApi">getApi()</a> ⇒</dt>
 <dd><p>Returns the public programming interface.</p>
 </dd>
+<dt><a href="#getApiContext">getApiContext(midiOutput, textOutputLines)</a></dt>
+<dd><p>Initialise and return API context</p>
+</dd>
 </dl>
-
-<a name="initApi"></a>
-
-## initApi(midiOutput, textOutputLines)
-Initialise API context
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| midiOutput | <code>object</code> | MIDI output used |
-| textOutputLines | <code>Array</code> | Array of messages to log |
 
 <a name="now"></a>
 
@@ -205,7 +210,7 @@ Set the default value for next MIDI messages
 
 <a name="pick"></a>
 
-## pick([numberOrArray]) ⇒
+## pick([...numberOrArrayOrElements]) ⇒
 Pick an element among choices.
 - If an array is provided, the output will be an element of the array
 - If an string is provided, the output will be a character of the string
@@ -217,7 +222,59 @@ Pick an element among choices.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| [numberOrArray] | <code>number</code> \| <code>string</code> \| <code>Array</code> | choices to pick from as a number, an array or a string |
+| [...numberOrArrayOrElements] | <code>Array</code> | choices to pick from as a number, an array or a string |
+
+<a name="define"></a>
+
+## define(name, [defaultValue]) ⇒
+Define variable in the execution context with an optional default value.
+This won't have any effects if a value is already defined for `name`.
+
+**Kind**: global function  
+**Returns**: the named value  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | The accessor name |
+| [defaultValue] | <code>\*</code> | A default value |
+
+<a name="def"></a>
+
+## def()
+Alias for define.
+
+**Kind**: global function  
+**See**: define(name, defaultValue)  
+<a name="forget"></a>
+
+## forget(name)
+Undefine variable in the execution context with an optional default value.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | The accessor name |
+
+<a name="ndef"></a>
+
+## ndef()
+Alias for forget.
+
+**Kind**: global function  
+**See**: forget(name)  
+<a name="set"></a>
+
+## set(name, value)
+Define or overwrite variable in the execution context with the provided value.
+This won't have any effects if a value is already defined for `name`.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | The accessor name |
+| value | <code>\*</code> | new value |
 
 <a name="getApi"></a>
 
@@ -226,5 +283,17 @@ Returns the public programming interface.
 
 **Kind**: global function  
 **Returns**: the public API  
+<a name="getApiContext"></a>
+
+## getApiContext(midiOutput, textOutputLines)
+Initialise and return API context
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| midiOutput | <code>object</code> | MIDI output used |
+| textOutputLines | <code>Array</code> | Array of messages to log |
+
 
 <style>dl { display: none; }</style>

@@ -37,7 +37,6 @@ export async function run(file, output, headless) {
     existingOutput = await promptMidiOutputName(outputs);
   }
 
-  const env = {};
   const outlines = [];
   const midiOutput = new easymidi.Output(existingOutput);
 
@@ -47,7 +46,7 @@ export async function run(file, output, headless) {
 
   initScheduler();
 
-  runInSandbox(existingFile.content, midiOutput, outlines, env);
+  runInSandbox(existingFile.content, midiOutput, outlines);
 
   startScheduler(outlines);
 
@@ -62,7 +61,7 @@ export async function run(file, output, headless) {
       dbg(
         `read file ${updatedFile.path}. Length is ${updatedFile.content.length}`,
       );
-      runInSandbox(updatedFile.content, midiOutput, outlines, env);
+      runInSandbox(updatedFile.content, midiOutput, outlines);
     });
 
   readline.emitKeypressEvents(process.stdin);

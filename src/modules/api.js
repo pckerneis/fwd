@@ -10,17 +10,7 @@ let _midiOutput;
 let _textOutputLines;
 let _cursor = 0;
 let defaultMidiChannel = 0;
-
-/**
- * Initialise API context
- * @param {object} midiOutput - MIDI output used
- * @param {Array} textOutputLines - Array of messages to log
- */
-export function initApi(midiOutput, textOutputLines) {
-  _midiOutput = midiOutput;
-  _textOutputLines = textOutputLines;
-  _cursor = 0;
-}
+let _env;
 
 /**
  * Returns the execution time
@@ -198,7 +188,7 @@ export function channel(channelNumber) {
  * - If a number is provided, the output will be a number between 0 and this number
  * - For other inputs, the output is a random value between 0 and 1
  *
- * @param {number|string|Array} [numberOrArrayOrElements] - choices to pick from as a number, an array or a string
+ * @param {Array} [numberOrArrayOrElements] - choices to pick from as a number, an array or a string
  * @returns a randomly picked element
  */
 function pick(...numberOrArrayOrElements) {
@@ -207,7 +197,8 @@ function pick(...numberOrArrayOrElements) {
   if (numberOrArrayOrElements?.length === 0) {
     return value;
   } else if (numberOrArrayOrElements?.length > 1) {
-    return numberOrArrayOrElements[Math.floor(value * numberOrArrayOrElements.length)];
+    const index = Math.floor(value * numberOrArrayOrElements.length);
+    return numberOrArrayOrElements[index];
   } else {
     const numberOrArray = numberOrArrayOrElements[0];
     if (Array.isArray(numberOrArray) || typeof numberOrArray === 'string') {
@@ -221,10 +212,59 @@ function pick(...numberOrArrayOrElements) {
 }
 
 /**
+ * Define variable in the execution context with an optional default value.
+ * This won't have any effects if a value is already defined for `name`.
+ * @param {string} name - The accessor name
+ * @param {*} [defaultValue] - A default value
+ * @return the named value
+ */
+function define(name, defaultValue) {
+  if (Object.prototype.hasOwnProperty.call(_env, name)) {
+    _env[name] = defaultValue;
+  }
+
+  return _env[name];
+}
+
+/**
+ * Alias for define.
+ * @see define(name, defaultValue)
+ */
+function def(name, value) {
+  return define(name, value);
+}
+
+/**
+ * Undefine variable in the execution context with an optional default value.
+ * @param {string} name - The accessor name
+ */
+function forget(name) {
+  delete _env[name];
+}
+
+/**
+ * Alias for forget.
+ * @see forget(name)
+ */
+function ndef(name) {
+  forget(name);
+}
+
+/**
+ * Define or overwrite variable in the execution context with the provided value.
+ * This won't have any effects if a value is already defined for `name`.
+ * @param {string} name - The accessor name
+ * @param {*} value - new value
+ */
+function set(name, value) {
+  _env[name] = value;
+}
+
+/**
  * Returns the public programming interface.
  * @returns the public API
  */
-export function getApi() {
+function getApi() {
   return {
     fire,
     log,
@@ -240,5 +280,27 @@ export function getApi() {
     clear,
     fclear,
     pick,
+
+    define,
+    forget,
+    def,
+    ndef,
+    set,
   };
+}
+
+/**
+ * Initialise and return API context
+ * @param {object} midiOutput - MIDI output used
+ * @param {Array} textOutputLines - Array of messages to log
+ */
+export function getApiContext(midiOutput, textOutputLines) {
+  _midiOutput = midiOutput;
+  _textOutputLines = textOutputLines;
+  _cursor = 0;
+  _env = {
+    ..._env,
+    ...getApi(),
+  };
+  return _env;
 }

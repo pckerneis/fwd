@@ -1,4 +1,4 @@
-import { getApi, initApi } from './api.js';
+import { getApiContext } from './api.js';
 import { jest } from '@jest/globals';
 import { initScheduler, startScheduler } from './scheduler.js';
 import { resetNotesCurrentlyOnState } from './midi.js';
@@ -24,7 +24,6 @@ beforeEach(() => {
 
   currentTime = 0;
   messages = [];
-  initApi(midiOutput, messages);
   initScheduler();
   mockDateNow(4537);
   resetNotesCurrentlyOnState();
@@ -36,7 +35,7 @@ afterEach(() => {
 });
 
 test('fire() schedules an action at current time cursor', () => {
-  const { fire, at } = getApi();
+  const { fire, at } = getApiContext(midiOutput, messages);
 
   startScheduler([]);
 
@@ -49,7 +48,7 @@ test('fire() schedules an action at current time cursor', () => {
 });
 
 test('fire() does not schedule in past', () => {
-  const { fire, at } = getApi();
+  const { fire, at } = getApiContext(midiOutput, messages);
 
   startScheduler([]);
 
@@ -65,7 +64,7 @@ test('fire() does not schedule in past', () => {
 });
 
 test('log() adds a log message', () => {
-  const { log } = getApi();
+  const { log } = getApiContext(midiOutput, messages);
 
   log('Hello, World!');
 
@@ -73,7 +72,7 @@ test('log() adds a log message', () => {
 });
 
 test('flog() schedules a log message', () => {
-  const { at, flog } = getApi();
+  const { at, flog } = getApiContext(midiOutput, messages);
 
   startScheduler([]);
 
@@ -87,14 +86,14 @@ test('flog() schedules a log message', () => {
 });
 
 test('wait() should offset cursor', () => {
-  const { wait, cursor } = getApi();
+  const { wait, cursor } = getApiContext(midiOutput, messages);
   expect(cursor()).toBe(0);
   wait(10);
   expect(cursor()).toBe(10);
 });
 
 test('repeat() should repeatedly call a function', () => {
-  const { repeat } = getApi();
+  const { repeat } = getApiContext(midiOutput, messages);
 
   startScheduler([]);
 
@@ -119,7 +118,7 @@ test('repeat() should repeatedly call a function', () => {
 });
 
 test('repeat() should skip past calls', () => {
-  const { repeat } = getApi();
+  const { repeat } = getApiContext(midiOutput, messages);
 
   startScheduler([]);
 
@@ -142,7 +141,7 @@ test('repeat() should skip past calls', () => {
 });
 
 test('repeat() should skip all calls', () => {
-  const { repeat } = getApi();
+  const { repeat } = getApiContext(midiOutput, messages);
 
   startScheduler([]);
 
@@ -164,7 +163,7 @@ test('repeat() should skip all calls', () => {
 });
 
 test('repeat() should repeat at infinity', () => {
-  const { repeat } = getApi();
+  const { repeat } = getApiContext(midiOutput, messages);
 
   startScheduler([]);
 
@@ -184,7 +183,7 @@ test('repeat() should repeat at infinity', () => {
 });
 
 test('note() should schedule MIDI note', () => {
-  const { at, note } = getApi();
+  const { at, note } = getApiContext(midiOutput, messages);
 
   startScheduler([]);
 
@@ -203,7 +202,7 @@ test('note() should schedule MIDI note', () => {
 });
 
 test('note() should schedule MIDI note with default channel', () => {
-  const { at, note, channel } = getApi();
+  const { at, note, channel } = getApiContext(midiOutput, messages);
 
   startScheduler([]);
 
@@ -222,9 +221,8 @@ test('note() should schedule MIDI note with default channel', () => {
 });
 
 test('clear() clears log output', () => {
-  const { log, clear } = getApi();
   const output = [];
-  initApi(midiOutput, output);
+  const { log, clear } = getApiContext(midiOutput, output);
 
   log('Hello', 'World!');
   expect(output.length).toBe(2);
@@ -234,9 +232,8 @@ test('clear() clears log output', () => {
 });
 
 test('fclear() schedules a log output clear', () => {
-  const { at, log, fclear } = getApi();
   const output = [];
-  initApi(midiOutput, output);
+  const { at, log, fclear } = getApiContext(midiOutput, output);
   startScheduler(output);
 
   log('Hello', 'World!');
@@ -251,9 +248,8 @@ test('fclear() schedules a log output clear', () => {
 });
 
 test('program() schedules a MIDI program change', () => {
-  const { at, program } = getApi();
   const output = [];
-  initApi(midiOutput, output);
+  const { at, program } = getApiContext(midiOutput, output);
   startScheduler(output);
 
   at(1);
@@ -267,9 +263,8 @@ test('program() schedules a MIDI program change', () => {
 });
 
 test('program() schedules a MIDI program change with default channel', () => {
-  const { at, program, channel } = getApi();
   const output = [];
-  initApi(midiOutput, output);
+  const { at, program, channel } = getApiContext(midiOutput, output);
   startScheduler(output);
 
   at(1);
@@ -284,7 +279,7 @@ test('program() schedules a MIDI program change with default channel', () => {
 });
 
 test('pick() picks a random number', () => {
-  const { pick } = getApi();
+  const { pick } = getApiContext(midiOutput, messages);
   for (let i = 0; i < 100; ++i) {
     const value = pick(10);
     expect(value).toBeGreaterThanOrEqual(0);
@@ -293,7 +288,7 @@ test('pick() picks a random number', () => {
 });
 
 test('pick() picks a random character', () => {
-  const { pick } = getApi();
+  const { pick } = getApiContext(midiOutput, messages);
   for (let i = 0; i < 100; ++i) {
     const value = pick('abcd');
     expect('abcd'.includes(value)).toBeTruthy();
@@ -301,7 +296,7 @@ test('pick() picks a random character', () => {
 });
 
 test('pick() picks a random array element', () => {
-  const { pick } = getApi();
+  const { pick } = getApiContext(midiOutput, messages);
   const choices = ['a', 'b', 'c'];
   for (let i = 0; i < 100; ++i) {
     const value = pick(choices);
@@ -310,7 +305,7 @@ test('pick() picks a random array element', () => {
 });
 
 test('pick() picks a random value between 0 and 1', () => {
-  const { pick } = getApi();
+  const { pick } = getApiContext(midiOutput, messages);
   for (let i = 0; i < 100; ++i) {
     const value = pick();
     expect(value).toBeGreaterThanOrEqual(0);
@@ -319,9 +314,8 @@ test('pick() picks a random value between 0 and 1', () => {
 });
 
 test('channel() resets default channel', () => {
-  const { at, program, channel } = getApi();
   const output = [];
-  initApi(midiOutput, output);
+  const { at, program, channel } = getApiContext(midiOutput, output);
   startScheduler(output);
 
   at(1);
