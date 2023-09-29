@@ -290,6 +290,7 @@ function getApi() {
  * @param {object} midiOutput - MIDI output used
  * @param {Array} textOutputLines - Array of messages to log
  * @return the API context
+ * @ignore
  */
 export function getApiContext(midiOutput, textOutputLines) {
   _midiOutput = midiOutput;

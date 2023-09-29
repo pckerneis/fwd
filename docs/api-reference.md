@@ -68,9 +68,6 @@ This won&#39;t have any effects if a value is already defined for <code>name</co
 <dd><p>Define or overwrite variable in the execution context with the provided value.
 This won&#39;t have any effects if a value is already defined for <code>name</code>.</p>
 </dd>
-<dt><a href="#getApiContext">getApiContext(midiOutput, textOutputLines)</a> ⇒</dt>
-<dd><p>Initialise and return API context</p>
-</dd>
 </dl>
 
 <a name="now"></a>
@@ -272,19 +269,6 @@ This won't have any effects if a value is already defined for `name`.
 | --- | --- | --- |
 | name | <code>string</code> | The accessor name |
 | value | <code>\*</code> | new value |
-
-<a name="getApiContext"></a>
-
-## getApiContext(midiOutput, textOutputLines) ⇒
-Initialise and return API context
-
-**Kind**: global function  
-**Returns**: the API context  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| midiOutput | <code>object</code> | MIDI output used |
-| textOutputLines | <code>Array</code> | Array of messages to log |
 
 
 <style>dl { display: none; }</style>
