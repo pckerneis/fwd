@@ -1,74 +1,4 @@
 # API Reference
-## Functions
-
-<dl>
-<dt><a href="#now">now()</a> ⇒ <code>number</code></dt>
-<dd><p>Returns the execution time</p>
-</dd>
-<dt><a href="#cursor">cursor()</a> ⇒ <code>number</code></dt>
-<dd><p>Returns the current time cursor position</p>
-</dd>
-<dt><a href="#fire">fire(action)</a></dt>
-<dd><p>Schedule the function <code>action</code> to be called at the cursor position.</p>
-</dd>
-<dt><a href="#repeat">repeat(action, interval, count)</a></dt>
-<dd><p>Repeatedly calls the function <code>action</code> every <code>interval</code> seconds <code>count</code> times, starting at the cursor position.</p>
-</dd>
-<dt><a href="#at">at(time)</a></dt>
-<dd><p>Move the cursor at position <code>time</code> expressed in seconds.</p>
-</dd>
-<dt><a href="#wait">wait(duration)</a></dt>
-<dd><p>Offset the cursor by <code>duration</code> expressed in seconds.</p>
-</dd>
-<dt><a href="#note">note(pitch, velocity, duration, [channel])</a></dt>
-<dd><p>Schedule a MIDI note to be played at the cursor position
-with note number <code>pitch</code>, velocity <code>velocity</code> and duration <code>duration</code> on MIDI channel <code>channel</code>.</p>
-</dd>
-<dt><a href="#program">program(program, [channel])</a></dt>
-<dd><p>Sends a MIDI program change message.</p>
-</dd>
-<dt><a href="#channel">channel([channelNumber])</a></dt>
-<dd><p>Set the default value for next MIDI messages</p>
-</dd>
-<dt><a href="#pick">pick([...numberOrArrayOrElements])</a> ⇒ <code>*</code></dt>
-<dd><p>Pick an element among choices.</p>
-<ul>
-<li>If an array is provided, the output will be an element of the array</li>
-<li>If an string is provided, the output will be a character of the string</li>
-<li>If a number is provided, the output will be a number between 0 and this number</li>
-<li>For other inputs, the output is a random value between 0 and 1</li>
-</ul>
-</dd>
-<dt><a href="#clear">clear()</a></dt>
-<dd><p>Clears the logs.</p>
-</dd>
-<dt><a href="#fclear">fclear()</a></dt>
-<dd><p>Schedule a log clear at the cursor position.</p>
-</dd>
-<dt><a href="#log">log(...messages)</a></dt>
-<dd><p>Log messages tout console output.</p>
-</dd>
-<dt><a href="#flog">flog(...messages)</a></dt>
-<dd><p>Schedule messages to be logged at the cursor position.</p>
-</dd>
-<dt><a href="#define">define(name, [defaultValue])</a> ⇒ <code>*</code></dt>
-<dd><p>Define variable in the execution context with an optional default value.
-This won&#39;t have any effects if a value is already defined for <code>name</code>.</p>
-</dd>
-<dt><a href="#def">def()</a></dt>
-<dd><p>Alias for define.</p>
-</dd>
-<dt><a href="#forget">forget(name)</a></dt>
-<dd><p>Undefine variable in the execution context with an optional default value.</p>
-</dd>
-<dt><a href="#ndef">ndef()</a></dt>
-<dd><p>Alias for forget.</p>
-</dd>
-<dt><a href="#set">set(name, value)</a></dt>
-<dd><p>Define or overwrite variable in the execution context with the provided value.
-This won&#39;t have any effects if a value is already defined for <code>name</code>.</p>
-</dd>
-</dl>
 
 <a name="now"></a>
 
@@ -270,5 +200,3 @@ This won't have any effects if a value is already defined for `name`.
 | name | <code>string</code> | The accessor name |
 | value | <code>\*</code> | new value |
 
-
-<style>dl { display: none; }</style>
