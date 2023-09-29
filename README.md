@@ -1,4 +1,4 @@
-# fwd
+# fwd 0.0.1
 
 A tiny environment for musical composition and live-coding in JavaScript.
 
@@ -20,7 +20,7 @@ allowing on-the-fly modification of the program running.
 
 Here is a simple program that demonstrates the API basics :
 
-```
+```javascript
 // Log some text
 log('Hello, World!');
 
@@ -36,7 +36,15 @@ note(40, 127, 1);
 // Try changing the program to trigger these instructions again
 at(now() + 1);
 flog('1 second after now');
+
+at(3);
+repeat((i) => log('Repeat #' + i), 0.25, 5);
 ```
+
+## CLI documentation
+
+See [CLI documentation](https://pckerneis.github.io/fwd/#/cli).
+
 
 ## API reference
 

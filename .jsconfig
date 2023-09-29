@@ -3,7 +3,8 @@
     "module": "nodenext",
     "target": "es6",
     "checkJs": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "lib": ["ES2021"]
   },
   "include": ["src"],
   "exclude": ["node_modules", "**/node_modules/*", "coverage", "**/coverage"]

@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node \"./src/index.js\"",
-    "docs": "node \"./src/generate-doc.js\"",
+    "docs": "node \"./src/gendocs/generate-doc.js\"",
     "check": "npx tsc --project ./.jsconfig --noEmit",
     "lint": "npx eslint **/*.js",
     "pretty": "npx prettier . --write",
