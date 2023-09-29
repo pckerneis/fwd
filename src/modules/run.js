@@ -1,5 +1,4 @@
 import chokidar from 'chokidar';
-
 import {
   getBestMatches,
   promptAndReadFile,
@@ -17,39 +16,19 @@ import { dbg, DBG_MODE } from './dbg.js';
 import easymidi from 'easymidi';
 import readline from 'readline';
 
-/**
- * Runs the CLI
- * @param {string} file An optional path to file
- * @param {string} output An optional MIDI output name
- * @param {boolean} headless - If true, header is hidden
- */
-export async function run(file, output, headless) {
-  const existingFile = await promptAndReadFile(file);
-
+async function getExistingMidiOutput(output) {
   const outputs = easymidi.getOutputs();
-  let existingOutput;
 
   const bestMatches = output != null ? getBestMatches(output, outputs) : [];
 
   if (bestMatches.length === 1) {
-    existingOutput = bestMatches[0];
+    return bestMatches[0];
   } else {
-    existingOutput = await promptMidiOutputName(outputs);
+    return await promptMidiOutputName(outputs);
   }
+}
 
-  const outlines = [];
-  const midiOutput = new easymidi.Output(existingOutput);
-
-  if (!DBG_MODE) {
-    startDisplay(existingOutput, existingFile.path, outlines, headless);
-  }
-
-  initScheduler();
-
-  runInSandbox(existingFile.content, midiOutput, outlines);
-
-  startScheduler(outlines);
-
+function startWatching(existingFile, midiOutput, outlines) {
   chokidar
     .watch(existingFile.path, {
       awaitWriteFinish: {
@@ -63,7 +42,9 @@ export async function run(file, output, headless) {
       );
       runInSandbox(updatedFile.content, midiOutput, outlines);
     });
+}
 
+function addKeyBindings() {
   readline.emitKeypressEvents(process.stdin);
 
   if (process.stdin.isTTY) process.stdin.setRawMode(true);
@@ -81,4 +62,32 @@ export async function run(file, output, headless) {
       }
     }
   });
+}
+
+/**
+ * Runs the CLI
+ * @param {string} file An optional path to file
+ * @param {string} output An optional MIDI output name
+ * @param {boolean} headless - If true, header is hidden
+ * @param {boolean} watch - If true, program file changes will trigger an execution
+ */
+export async function run(file, output, headless, watch) {
+  const existingFile = await promptAndReadFile(file);
+  const outlines = [];
+  const existingOutput = await getExistingMidiOutput(output);
+  const midiOutput = new easymidi.Output(existingOutput);
+
+  if (!DBG_MODE) {
+    startDisplay(existingOutput, existingFile.path, outlines, headless);
+  }
+
+  initScheduler();
+  runInSandbox(existingFile.content, midiOutput, outlines);
+  startScheduler(outlines);
+
+  if (watch) {
+    startWatching(existingFile, midiOutput, outlines);
+  }
+
+  addKeyBindings();
 }
