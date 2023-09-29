@@ -177,38 +177,38 @@ function pick(...numberOrArrayOrElements) {
       return value;
     }
   }
+}
 
-  /**
-   * Clears the logs.
-   */
-  function clear() {
-    _textOutputLines.splice(0, _textOutputLines.length);
-  }
+/**
+ * Clears the logs.
+ */
+function clear() {
+  _textOutputLines.splice(0, _textOutputLines.length);
+}
 
-  /**
-   * Schedule a log clear at the cursor position.
-   */
-  function fclear() {
-    fire(() => clear());
-  }
+/**
+ * Schedule a log clear at the cursor position.
+ */
+function fclear() {
+  fire(() => clear());
+}
 
-  /**
-   * Log messages tout console output.
-   *
-   * @param {*} messages - Messages to log
-   */
-  function log(...messages) {
-    _textOutputLines.push(...messages);
-  }
+/**
+ * Log messages tout console output.
+ *
+ * @param {*} messages - Messages to log
+ */
+function log(...messages) {
+  _textOutputLines.push(...messages);
+}
 
-  /**
-   * Schedule messages to be logged at the cursor position.
-   *
-   * @param {*} messages - Messages to log
-   */
-  function flog(...messages) {
-    fire(() => log(...messages));
-  }
+/**
+ * Schedule messages to be logged at the cursor position.
+ *
+ * @param {*} messages - Messages to log
+ */
+function flog(...messages) {
+  fire(() => log(...messages));
 }
 
 /**
@@ -289,6 +289,7 @@ function getApi() {
  * Initialise and return API context
  * @param {object} midiOutput - MIDI output used
  * @param {Array} textOutputLines - Array of messages to log
+ * @return the API context
  */
 export function getApiContext(midiOutput, textOutputLines) {
   _midiOutput = midiOutput;

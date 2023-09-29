@@ -39,6 +39,18 @@ with note number <code>pitch</code>, velocity <code>velocity</code> and duration
 <li>For other inputs, the output is a random value between 0 and 1</li>
 </ul>
 </dd>
+<dt><a href="#clear">clear()</a></dt>
+<dd><p>Clears the logs.</p>
+</dd>
+<dt><a href="#fclear">fclear()</a></dt>
+<dd><p>Schedule a log clear at the cursor position.</p>
+</dd>
+<dt><a href="#log">log(...messages)</a></dt>
+<dd><p>Log messages tout console output.</p>
+</dd>
+<dt><a href="#flog">flog(...messages)</a></dt>
+<dd><p>Schedule messages to be logged at the cursor position.</p>
+</dd>
 <dt><a href="#define">define(name, [defaultValue])</a> ⇒ <code>*</code></dt>
 <dd><p>Define variable in the execution context with an optional default value.
 This won&#39;t have any effects if a value is already defined for <code>name</code>.</p>
@@ -56,7 +68,7 @@ This won&#39;t have any effects if a value is already defined for <code>name</co
 <dd><p>Define or overwrite variable in the execution context with the provided value.
 This won&#39;t have any effects if a value is already defined for <code>name</code>.</p>
 </dd>
-<dt><a href="#getApiContext">getApiContext(midiOutput, textOutputLines)</a></dt>
+<dt><a href="#getApiContext">getApiContext(midiOutput, textOutputLines)</a> ⇒</dt>
 <dd><p>Initialise and return API context</p>
 </dd>
 </dl>
@@ -175,42 +187,35 @@ Pick an element among choices.
 | --- | --- | --- |
 | [...numberOrArrayOrElements] | <code>Array</code> | choices to pick from as a number, an array or a string |
 
+<a name="clear"></a>
 
-* [pick([...numberOrArrayOrElements])](#pick) ⇒ <code>\*</code>
-    * [~clear()](#pick..clear)
-    * [~fclear()](#pick..fclear)
-    * [~log(...messages)](#pick..log)
-    * [~flog(...messages)](#pick..flog)
-
-<a name="pick..clear"></a>
-
-### pick~clear()
+## clear()
 Clears the logs.
 
-**Kind**: inner method of [<code>pick</code>](#pick)  
-<a name="pick..fclear"></a>
+**Kind**: global function  
+<a name="fclear"></a>
 
-### pick~fclear()
+## fclear()
 Schedule a log clear at the cursor position.
 
-**Kind**: inner method of [<code>pick</code>](#pick)  
-<a name="pick..log"></a>
+**Kind**: global function  
+<a name="log"></a>
 
-### pick~log(...messages)
+## log(...messages)
 Log messages tout console output.
 
-**Kind**: inner method of [<code>pick</code>](#pick)  
+**Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | ...messages | <code>\*</code> | Messages to log |
 
-<a name="pick..flog"></a>
+<a name="flog"></a>
 
-### pick~flog(...messages)
+## flog(...messages)
 Schedule messages to be logged at the cursor position.
 
-**Kind**: inner method of [<code>pick</code>](#pick)  
+**Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -270,10 +275,11 @@ This won't have any effects if a value is already defined for `name`.
 
 <a name="getApiContext"></a>
 
-## getApiContext(midiOutput, textOutputLines)
+## getApiContext(midiOutput, textOutputLines) ⇒
 Initialise and return API context
 
 **Kind**: global function  
+**Returns**: the API context  
 
 | Param | Type | Description |
 | --- | --- | --- |
