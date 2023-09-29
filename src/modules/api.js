@@ -21,6 +21,14 @@ function now() {
 }
 
 /**
+ * Returns the current time cursor position
+ * @returns {number} the cursor position
+ */
+function cursor() {
+  return _cursor;
+}
+
+/**
  * Schedule the function `action` to be called at the cursor position.
  *
  * @param {Function} action - The action to schedule as a function
@@ -87,38 +95,6 @@ function repeat(action, interval, count = Infinity) {
 }
 
 /**
- * Clears the logs.
- */
-function clear() {
-  _textOutputLines.splice(0, _textOutputLines.length);
-}
-
-/**
- * Schedule a log clear at the cursor position.
- */
-function fclear() {
-  fire(() => clear());
-}
-
-/**
- * Log messages tout console output.
- *
- * @param {*} messages - Messages to log
- */
-function log(...messages) {
-  _textOutputLines.push(...messages);
-}
-
-/**
- * Schedule messages to be logged at the cursor position.
- *
- * @param {*} messages - Messages to log
- */
-function flog(...messages) {
-  fire(() => log(...messages));
-}
-
-/**
  * Move the cursor at position `time` expressed in seconds.
  *
  * @param {number} time - Time position in seconds
@@ -134,14 +110,6 @@ function at(time) {
  */
 function wait(duration) {
   _cursor += duration;
-}
-
-/**
- * Returns the current time cursor position
- * @returns the cursor position
- */
-function cursor() {
-  return _cursor;
 }
 
 /**
@@ -189,7 +157,7 @@ export function channel(channelNumber) {
  * - For other inputs, the output is a random value between 0 and 1
  *
  * @param {Array} [numberOrArrayOrElements] - choices to pick from as a number, an array or a string
- * @returns a randomly picked element
+ * @returns {*} a randomly picked element
  */
 function pick(...numberOrArrayOrElements) {
   const value = Math.random();
@@ -209,6 +177,38 @@ function pick(...numberOrArrayOrElements) {
       return value;
     }
   }
+
+  /**
+   * Clears the logs.
+   */
+  function clear() {
+    _textOutputLines.splice(0, _textOutputLines.length);
+  }
+
+  /**
+   * Schedule a log clear at the cursor position.
+   */
+  function fclear() {
+    fire(() => clear());
+  }
+
+  /**
+   * Log messages tout console output.
+   *
+   * @param {*} messages - Messages to log
+   */
+  function log(...messages) {
+    _textOutputLines.push(...messages);
+  }
+
+  /**
+   * Schedule messages to be logged at the cursor position.
+   *
+   * @param {*} messages - Messages to log
+   */
+  function flog(...messages) {
+    fire(() => log(...messages));
+  }
 }
 
 /**
@@ -216,7 +216,7 @@ function pick(...numberOrArrayOrElements) {
  * This won't have any effects if a value is already defined for `name`.
  * @param {string} name - The accessor name
  * @param {*} [defaultValue] - A default value
- * @return the named value
+ * @return {*} the named value
  */
 function define(name, defaultValue) {
   if (Object.prototype.hasOwnProperty.call(_env, name)) {
@@ -260,10 +260,6 @@ function set(name, value) {
   _env[name] = value;
 }
 
-/**
- * Returns the public programming interface.
- * @returns the public API
- */
 function getApi() {
   return {
     fire,

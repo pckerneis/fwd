@@ -5,32 +5,20 @@
 <dt><a href="#now">now()</a> ⇒ <code>number</code></dt>
 <dd><p>Returns the execution time</p>
 </dd>
+<dt><a href="#cursor">cursor()</a> ⇒ <code>number</code></dt>
+<dd><p>Returns the current time cursor position</p>
+</dd>
 <dt><a href="#fire">fire(action)</a></dt>
 <dd><p>Schedule the function <code>action</code> to be called at the cursor position.</p>
 </dd>
 <dt><a href="#repeat">repeat(action, interval, count)</a></dt>
 <dd><p>Repeatedly calls the function <code>action</code> every <code>interval</code> seconds <code>count</code> times, starting at the cursor position.</p>
 </dd>
-<dt><a href="#clear">clear()</a></dt>
-<dd><p>Clears the logs.</p>
-</dd>
-<dt><a href="#fclear">fclear()</a></dt>
-<dd><p>Schedule a log clear at the cursor position.</p>
-</dd>
-<dt><a href="#log">log(...messages)</a></dt>
-<dd><p>Log messages tout console output.</p>
-</dd>
-<dt><a href="#flog">flog(...messages)</a></dt>
-<dd><p>Schedule messages to be logged at the cursor position.</p>
-</dd>
 <dt><a href="#at">at(time)</a></dt>
 <dd><p>Move the cursor at position <code>time</code> expressed in seconds.</p>
 </dd>
 <dt><a href="#wait">wait(duration)</a></dt>
 <dd><p>Offset the cursor by <code>duration</code> expressed in seconds.</p>
-</dd>
-<dt><a href="#cursor">cursor()</a> ⇒</dt>
-<dd><p>Returns the current time cursor position</p>
 </dd>
 <dt><a href="#note">note(pitch, velocity, duration, [channel])</a></dt>
 <dd><p>Schedule a MIDI note to be played at the cursor position
@@ -42,7 +30,7 @@ with note number <code>pitch</code>, velocity <code>velocity</code> and duration
 <dt><a href="#channel">channel([channelNumber])</a></dt>
 <dd><p>Set the default value for next MIDI messages</p>
 </dd>
-<dt><a href="#pick">pick([...numberOrArrayOrElements])</a> ⇒</dt>
+<dt><a href="#pick">pick([...numberOrArrayOrElements])</a> ⇒ <code>*</code></dt>
 <dd><p>Pick an element among choices.</p>
 <ul>
 <li>If an array is provided, the output will be an element of the array</li>
@@ -51,7 +39,7 @@ with note number <code>pitch</code>, velocity <code>velocity</code> and duration
 <li>For other inputs, the output is a random value between 0 and 1</li>
 </ul>
 </dd>
-<dt><a href="#define">define(name, [defaultValue])</a> ⇒</dt>
+<dt><a href="#define">define(name, [defaultValue])</a> ⇒ <code>*</code></dt>
 <dd><p>Define variable in the execution context with an optional default value.
 This won&#39;t have any effects if a value is already defined for <code>name</code>.</p>
 </dd>
@@ -68,9 +56,6 @@ This won&#39;t have any effects if a value is already defined for <code>name</co
 <dd><p>Define or overwrite variable in the execution context with the provided value.
 This won&#39;t have any effects if a value is already defined for <code>name</code>.</p>
 </dd>
-<dt><a href="#getApi">getApi()</a> ⇒</dt>
-<dd><p>Returns the public programming interface.</p>
-</dd>
 <dt><a href="#getApiContext">getApiContext(midiOutput, textOutputLines)</a></dt>
 <dd><p>Initialise and return API context</p>
 </dd>
@@ -83,6 +68,13 @@ Returns the execution time
 
 **Kind**: global function  
 **Returns**: <code>number</code> - Current execution time  
+<a name="cursor"></a>
+
+## cursor() ⇒ <code>number</code>
+Returns the current time cursor position
+
+**Kind**: global function  
+**Returns**: <code>number</code> - the cursor position  
 <a name="fire"></a>
 
 ## fire(action)
@@ -107,40 +99,6 @@ Repeatedly calls the function `action` every `interval` seconds `count` times, s
 | interval | <code>number</code> | The repeat interval |
 | count | <code>number</code> | How many times to repeat |
 
-<a name="clear"></a>
-
-## clear()
-Clears the logs.
-
-**Kind**: global function  
-<a name="fclear"></a>
-
-## fclear()
-Schedule a log clear at the cursor position.
-
-**Kind**: global function  
-<a name="log"></a>
-
-## log(...messages)
-Log messages tout console output.
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| ...messages | <code>\*</code> | Messages to log |
-
-<a name="flog"></a>
-
-## flog(...messages)
-Schedule messages to be logged at the cursor position.
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| ...messages | <code>\*</code> | Messages to log |
-
 <a name="at"></a>
 
 ## at(time)
@@ -163,13 +121,6 @@ Offset the cursor by `duration` expressed in seconds.
 | --- | --- | --- |
 | duration | <code>number</code> | Duration in seconds |
 
-<a name="cursor"></a>
-
-## cursor() ⇒
-Returns the current time cursor position
-
-**Kind**: global function  
-**Returns**: the cursor position  
 <a name="note"></a>
 
 ## note(pitch, velocity, duration, [channel])
@@ -210,7 +161,7 @@ Set the default value for next MIDI messages
 
 <a name="pick"></a>
 
-## pick([...numberOrArrayOrElements]) ⇒
+## pick([...numberOrArrayOrElements]) ⇒ <code>\*</code>
 Pick an element among choices.
 - If an array is provided, the output will be an element of the array
 - If an string is provided, the output will be a character of the string
@@ -218,20 +169,61 @@ Pick an element among choices.
 - For other inputs, the output is a random value between 0 and 1
 
 **Kind**: global function  
-**Returns**: a randomly picked element  
+**Returns**: <code>\*</code> - a randomly picked element  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | [...numberOrArrayOrElements] | <code>Array</code> | choices to pick from as a number, an array or a string |
 
+
+* [pick([...numberOrArrayOrElements])](#pick) ⇒ <code>\*</code>
+    * [~clear()](#pick..clear)
+    * [~fclear()](#pick..fclear)
+    * [~log(...messages)](#pick..log)
+    * [~flog(...messages)](#pick..flog)
+
+<a name="pick..clear"></a>
+
+### pick~clear()
+Clears the logs.
+
+**Kind**: inner method of [<code>pick</code>](#pick)  
+<a name="pick..fclear"></a>
+
+### pick~fclear()
+Schedule a log clear at the cursor position.
+
+**Kind**: inner method of [<code>pick</code>](#pick)  
+<a name="pick..log"></a>
+
+### pick~log(...messages)
+Log messages tout console output.
+
+**Kind**: inner method of [<code>pick</code>](#pick)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ...messages | <code>\*</code> | Messages to log |
+
+<a name="pick..flog"></a>
+
+### pick~flog(...messages)
+Schedule messages to be logged at the cursor position.
+
+**Kind**: inner method of [<code>pick</code>](#pick)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ...messages | <code>\*</code> | Messages to log |
+
 <a name="define"></a>
 
-## define(name, [defaultValue]) ⇒
+## define(name, [defaultValue]) ⇒ <code>\*</code>
 Define variable in the execution context with an optional default value.
 This won't have any effects if a value is already defined for `name`.
 
 **Kind**: global function  
-**Returns**: the named value  
+**Returns**: <code>\*</code> - the named value  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -276,13 +268,6 @@ This won't have any effects if a value is already defined for `name`.
 | name | <code>string</code> | The accessor name |
 | value | <code>\*</code> | new value |
 
-<a name="getApi"></a>
-
-## getApi() ⇒
-Returns the public programming interface.
-
-**Kind**: global function  
-**Returns**: the public API  
 <a name="getApiContext"></a>
 
 ## getApiContext(midiOutput, textOutputLines)
