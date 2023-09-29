@@ -6,11 +6,16 @@ import {
   promptMidiOutputName,
 } from './prompt.js';
 import { runInSandbox } from './vm.js';
-import { initScheduler, startScheduler } from './scheduler.js';
+import {
+  initScheduler,
+  startScheduler,
+  toggleSchedulerPaused,
+} from './scheduler.js';
 import { startDisplay } from './display.js';
 import { tryToReadFile } from './file.js';
 import { dbg, DBG_MODE } from './dbg.js';
 import easymidi from 'easymidi';
+import readline from 'readline';
 
 /**
  * Runs the CLI
@@ -58,4 +63,22 @@ export async function run(file, output) {
       );
       runInSandbox(updatedFile.content, midiOutput, outlines, env);
     });
+
+  readline.emitKeypressEvents(process.stdin);
+
+  if (process.stdin.isTTY) process.stdin.setRawMode(true);
+
+  process.stdin.on('keypress', (chunk, key) => {
+    dbg(`Received key input "${key.name}".'`);
+    if (key) {
+      if (key.name === 'escape') {
+        console.log('Goodbye!');
+        process.exit();
+      }
+
+      if (key.name === 'space') {
+        toggleSchedulerPaused();
+      }
+    }
+  });
 }

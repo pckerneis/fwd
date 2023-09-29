@@ -3,11 +3,17 @@ import { EventQueue } from './event-queue.js';
 
 const scheduledEvents = new EventQueue();
 
-let startTime = 0;
+let paused = false;
 let currentEventTime = 0;
-let stopped = true;
+let previousTimeStamp = 0;
+let playTime = 0;
+
 let intervalHandle;
 let currentSchedulerId = 0;
+
+export function toggleSchedulerPaused() {
+  paused = !paused;
+}
 
 export function getCurrentEventTime() {
   return currentEventTime;
@@ -22,7 +28,11 @@ export function getCurrentSchedulerId() {
  * @returns 0 when stopped or elapsed time in seconds when running
  */
 export function clock() {
-  return stopped ? 0 : (Date.now() - startTime) / 1000;
+  return playTime;
+}
+
+export function isPaused() {
+  return paused;
 }
 
 /**
@@ -30,12 +40,12 @@ export function clock() {
  */
 export function initScheduler() {
   dbg('Initialise scheduler.');
-  stopped = true;
   clearInterval(intervalHandle);
   intervalHandle = null;
-  startTime = 0;
   currentEventTime = 0;
   currentSchedulerId = 0;
+  previousTimeStamp = 0;
+  playTime = 0;
 }
 
 /**
@@ -55,6 +65,26 @@ export function incrementSchedulerId() {
   currentSchedulerId++;
 }
 
+function processEvents(outputLines) {
+  const t = clock();
+
+  let next = scheduledEvents.next(t);
+
+  while (next != null) {
+    currentEventTime = next.time;
+
+    try {
+      next.event();
+    } catch (e) {
+      outputLines.push(e);
+    }
+
+    next = scheduledEvents.next(t);
+  }
+
+  currentEventTime = t;
+}
+
 /**
  * Starts the scheduler
  *
@@ -62,27 +92,20 @@ export function incrementSchedulerId() {
  */
 export function startScheduler(outputLines) {
   dbg('Start scheduler.');
-  stopped = false;
-
-  startTime = Date.now();
+  previousTimeStamp = Date.now();
 
   intervalHandle = setInterval(() => {
-    const t = clock();
+    const currentTimeStamp = Date.now();
 
-    let next = scheduledEvents.next(t);
-
-    while (next != null) {
-      currentEventTime = next.time;
-
-      try {
-        next.event();
-      } catch (e) {
-        outputLines.push(e);
-      }
-
-      next = scheduledEvents.next(t);
+    if (paused) {
+      previousTimeStamp = currentTimeStamp;
+      return;
     }
 
-    currentEventTime = t;
+    const elapsed = (currentTimeStamp - previousTimeStamp) / 1000;
+    playTime += elapsed;
+
+    processEvents(outputLines);
+    previousTimeStamp = currentTimeStamp;
   }, 1);
 }

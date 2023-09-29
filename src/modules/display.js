@@ -1,6 +1,6 @@
 import process from 'process';
 import { clearBuffer } from './rli.js';
-import { clock } from './scheduler.js';
+import { clock, isPaused } from './scheduler.js';
 import { getLastChangeDate } from './vm.js';
 import { getMidiSent, resetMidiSent } from './midi.js';
 
@@ -49,11 +49,17 @@ function drawOnce(outputLines, filePath, outputName) {
 
   const borderMargin = new Array(process.stdout.columns - 7).fill(' ').join('');
 
+  let clockString = (Math.round(clock() * 1000) / 1000).toFixed(3);
+
+  if (isPaused()) {
+    clockString += ' [paused]';
+  }
+
   console.log(
     `╔══${borderMargin}══╗
  in    ${truncatedPath} (at ${lastChangeTime})
  out   [${getMidiSent() ? 'x' : ' '}] ${truncatedOutput}
- time  ${clock()}
+ time  ${clockString}
 ╚══${borderMargin}══╝
 ${outputLines.join('\n')}`,
   );
