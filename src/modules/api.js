@@ -219,7 +219,7 @@ function flog(...messages) {
  * @return {*} the named value
  */
 function define(name, defaultValue) {
-  if (Object.prototype.hasOwnProperty.call(_env, name)) {
+  if (!Object.prototype.hasOwnProperty.call(_env, name)) {
     _env[name] = defaultValue;
   }
 

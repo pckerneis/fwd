@@ -1,4 +1,13 @@
-import { initScheduler, clock, schedule, startScheduler } from './scheduler.js';
+import {
+  initScheduler,
+  clock,
+  schedule,
+  startScheduler,
+  toggleSchedulerPaused,
+  isPaused,
+  incrementSchedulerId,
+  getCurrentSchedulerId,
+} from './scheduler.js';
 import { jest } from '@jest/globals';
 
 let currentTime = 0;
@@ -92,4 +101,24 @@ test('schedules actions with equal time in the right order', () => {
 
 test('throws error if time is invalid', () => {
   expect(() => schedule(null, () => {})).toThrow();
+});
+
+test('toggleSchedulerPaused() pauses and unpauses scheduler', () => {
+  mockDateNow(4537);
+  startScheduler([]);
+  toggleSchedulerPaused();
+  expect(isPaused()).toBeTruthy();
+
+  advanceTime(4000);
+  expect(clock()).toBe(0);
+
+  toggleSchedulerPaused();
+  expect(isPaused()).toBeFalsy();
+});
+
+test('incrementSchedulerId() increments scheduler ID', () => {
+  incrementSchedulerId();
+  incrementSchedulerId();
+
+  expect(getCurrentSchedulerId()).toBe(2);
 });

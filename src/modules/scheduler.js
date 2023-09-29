@@ -59,7 +59,7 @@ export function schedule(time, action) {
 }
 
 /**
- * Clear the list of scheduled events
+ * Increments scheduler ID
  */
 export function incrementSchedulerId() {
   currentSchedulerId++;

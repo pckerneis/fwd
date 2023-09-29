@@ -313,6 +313,22 @@ test('pick() picks a random value between 0 and 1', () => {
   }
 });
 
+test('pick(*) picks a random value between 0 and 1', () => {
+  const { pick } = getApiContext(midiOutput, messages);
+  const value = pick(null);
+  expect(value).toBeGreaterThanOrEqual(0);
+  expect(value).toBeLessThanOrEqual(1);
+});
+
+test('pick() picks a random rest parameter', () => {
+  const { pick } = getApiContext(midiOutput, messages);
+  const choices = ['a', 'b', 'c'];
+  for (let i = 0; i < 100; ++i) {
+    const value = pick(...choices);
+    expect(choices.includes(value)).toBeTruthy();
+  }
+});
+
 test('channel() resets default channel', () => {
   const output = [];
   const { at, program, channel } = getApiContext(midiOutput, output);
@@ -327,4 +343,32 @@ test('channel() resets default channel', () => {
     number: 12,
     channel: 0,
   });
+});
+
+test('def() adds to context', () => {
+  const apiContext = getApiContext(midiOutput, messages);
+  const variable = apiContext.def('forty-two', 42);
+  expect(variable).toBe(42);
+  expect(apiContext.fortyTwo).toBe(42);
+});
+
+test('def() does not overwrite', () => {
+  const apiContext = getApiContext(midiOutput, messages);
+  apiContext.def('fortyTwo', 42);
+  const variable = apiContext.def('fortyTwo', 48);
+  expect(variable).toBe(42);
+  expect(apiContext.fortyTwo).toBe(42);
+});
+
+test('ndef() deletes variable', () => {
+  const apiContext = getApiContext(midiOutput, messages);
+  apiContext.def('fortyTwo', 42);
+  apiContext.ndef('fortyTwo', 48);
+  expect(apiContext.fortyTwo).toBe(undefined);
+});
+
+test('set() overwrite variable', () => {
+  const apiContext = getApiContext(midiOutput, messages);
+  apiContext.set('fortyTwo', 48);
+  expect(apiContext.fortyTwo).toBe(48);
 });
