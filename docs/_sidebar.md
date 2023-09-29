@@ -1,3 +1,3 @@
-* [Home](/)
+* [Overview](/)
 * [CLI documentation](cli.md)
 * [API Reference](api-reference.md)

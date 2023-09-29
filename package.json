@@ -9,7 +9,8 @@
   },
   "scripts": {
     "start": "node \"./src/index.js\"",
-    "docs": "node \"./src/gendocs/generate-doc.js\"",
+    "gen-docs": "node \"./src/gendocs/generate-doc.js\"",
+    "serve-docs": "npx docsify-cli serve ./docs",
     "check": "npx tsc --project ./.jsconfig --noEmit",
     "lint": "npx eslint **/*.js",
     "pretty": "npx prettier . --write",
