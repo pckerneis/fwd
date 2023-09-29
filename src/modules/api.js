@@ -198,18 +198,25 @@ export function channel(channelNumber) {
  * - If a number is provided, the output will be a number between 0 and this number
  * - For other inputs, the output is a random value between 0 and 1
  *
- * @param {number|string|Array} [numberOrArray] - choices to pick from as a number, an array or a string
+ * @param {number|string|Array} [numberOrArrayOrElements] - choices to pick from as a number, an array or a string
  * @returns a randomly picked element
  */
-function pick(numberOrArray) {
+function pick(...numberOrArrayOrElements) {
   const value = Math.random();
 
-  if (Array.isArray(numberOrArray) || typeof numberOrArray === 'string') {
-    return numberOrArray[Math.floor(value * numberOrArray.length)];
-  } else if (typeof numberOrArray === 'number') {
-    return value * numberOrArray;
-  } else {
+  if (numberOrArrayOrElements?.length === 0) {
     return value;
+  } else if (numberOrArrayOrElements?.length > 1) {
+    return numberOrArrayOrElements[Math.floor(value * numberOrArrayOrElements.length)];
+  } else {
+    const numberOrArray = numberOrArrayOrElements[0];
+    if (Array.isArray(numberOrArray) || typeof numberOrArray === 'string') {
+      return numberOrArray[Math.floor(value * numberOrArray.length)];
+    } else if (typeof numberOrArray === 'number') {
+      return value * numberOrArray;
+    } else {
+      return value;
+    }
   }
 }
 
