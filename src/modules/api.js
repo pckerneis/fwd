@@ -3,7 +3,7 @@ import {
   getCurrentEventTime,
   schedule,
 } from './scheduler.js';
-import { playNote, sendProgramChange } from './midi.js';
+import { playNote, sendCC, sendProgramChange } from './midi.js';
 import { dbg } from './dbg.js';
 
 let _midiOutput;
@@ -50,10 +50,14 @@ function fire(action) {
  * Repeatedly calls the function `action` every `interval` seconds `count` times, starting at the cursor position.
  *
  * @param {Function} action - The action to repeat
- * @param {number} interval - The repeat interval
- * @param {number} count - How many times to repeat
+ * @param {number} interval - The repeat interval as a strictly positive number of seconds
+ * @param {number} count - How many times to repeat. Defaults to Infinity.
  */
 function repeat(action, interval, count = Infinity) {
+  if (Number.isNaN(interval) || interval == null || interval <= 0) {
+    return;
+  }
+
   let stepCount = 0;
   let nextCursor = _cursor;
   const schedulerId = getCurrentSchedulerId();
@@ -139,6 +143,18 @@ function program(program, channel) {
   channel = channel ?? defaultMidiChannel;
 
   fire(() => sendProgramChange(_midiOutput, program, channel));
+}
+
+/**
+ * Sends a MIDI continuous controller message.
+ * @param {number} controller - MIDI program number
+ * @param {number} value - new value
+ * @param {number} [channel] - MIDI channel to send to
+ */
+function cc(controller, value, channel) {
+  channel = channel ?? defaultMidiChannel;
+
+  fire(() => sendCC(_midiOutput, controller, value, channel));
 }
 
 /**
@@ -262,19 +278,24 @@ function set(name, value) {
 
 function getApi() {
   return {
-    fire,
-    log,
-    now,
-    note,
-    flog,
-    at,
-    wait,
     cursor,
+    now,
+
+    at,
+    fire,
     repeat,
+    wait,
+
+    note,
+    cc,
     program,
     channel,
+
     clear,
     fclear,
+    log,
+    flog,
+
     pick,
 
     define,

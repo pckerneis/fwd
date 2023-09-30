@@ -159,3 +159,17 @@ export function sendProgramChange(midiOutput, programNumber, channel) {
     channel: channel ?? 0,
   });
 }
+/**
+ * Send a continuous controller change message
+ * @param {*} midiOutput - MIDI output to send to
+ * @param {number} controllerNumber - MIDI program number
+ * @param {number} value - new value
+ * @param {number} [channel=0] - MIDI channel to send to
+ */
+export function sendCC(midiOutput, controllerNumber, value, channel) {
+  midiOutput.send('cc', {
+    controller: controllerNumber,
+    channel: channel ?? 0,
+    value,
+  });
+}

@@ -86,8 +86,8 @@ Repeatedly calls the function `action` every `interval` seconds `count` times, s
 | Param | Type | Description |
 | --- | --- | --- |
 | action | <code>function</code> | The action to repeat |
-| interval | <code>number</code> | The repeat interval |
-| count | <code>number</code> | How many times to repeat |
+| interval | <code>number</code> | The repeat interval as a strictly positive number of seconds |
+| count | <code>number</code> | How many times to repeat. Defaults to Infinity. |
 
 <a name="at"></a>
 
@@ -136,6 +136,19 @@ Sends a MIDI program change message.
 | Param | Type | Description |
 | --- | --- | --- |
 | program | <code>number</code> | MIDI program number |
+| [channel] | <code>number</code> | MIDI channel to send to |
+
+<a name="cc"></a>
+
+### cc(controller, value, [channel])
+Sends a MIDI continuous controller message.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| controller | <code>number</code> | MIDI program number |
+| value | <code>number</code> | new value |
 | [channel] | <code>number</code> | MIDI channel to send to |
 
 <a name="channel"></a>
