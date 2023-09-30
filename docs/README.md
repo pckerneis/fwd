@@ -1,6 +1,4 @@
-# fwd
-
-?> version 0.0.1
+# fwd 0.0.1
 
 A tiny environment for musical composition and live-coding in JavaScript.
 
