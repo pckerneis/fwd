@@ -17,7 +17,7 @@ Options:
   -h, --help             display help for command
 ```
 
-## Keybindings
+## Key bindings
 
 When the program is being executed, the CLI will bind key presses to the following actions:
 

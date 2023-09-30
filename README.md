@@ -1,6 +1,10 @@
-# fwd 0.0.1
+# fwd
+
+?> version 0.0.1
 
 A tiny environment for musical composition and live-coding in JavaScript.
+
+![Screenshot](docs/screenshot.png)
 
 ## Quick start
 
@@ -43,11 +47,11 @@ repeat((i) => log('Repeat #' + i), 0.25, 5);
 
 ## CLI documentation
 
-See [CLI documentation](https://pckerneis.github.io/fwd/#/cli).
+See [CLI documentation](https://pckerneis.github.io/fwd/#/cli.md).
 
 ## API reference
 
-See also [API reference](https://pckerneis.github.io/fwd/#/api-reference).
+See also [API reference](https://pckerneis.github.io/fwd/#/api-reference.md).
 
 <a name="now"></a>
 

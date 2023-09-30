@@ -23,13 +23,17 @@ function writeCliDocumentation() {
   });
 }
 
-async function writeReadmes() {
-  const template = fs.readFileSync('src/gendocs/readme-template.hbs', 'utf-8');
-  const example = fs.readFileSync('example.js', 'utf-8');
-
+async function writeReadme(
+  template,
+  example,
+  screenshotPath,
+  outputPath,
+  urlPrefix = '',
+) {
   const replaced = template
     .replace('{{example}}', example)
-    .replace('{{version}}', PACKAGE_VERSION);
+    .replace('{{version}}', PACKAGE_VERSION)
+    .replace('{{screenshotPath}}', screenshotPath);
 
   const output = await jsdoc2md.render({
     files: PATH_TO_API_JS,
@@ -38,18 +42,24 @@ async function writeReadmes() {
   });
 
   fs.writeFileSync(
-    'docs/README.md',
+    outputPath,
     output.replaceAll(
       /]\(([-\w]+)\)/gi,
-      (full, filename) => `](${filename}.md)`,
+      (full, filename) => `](${urlPrefix}${filename}.md)`,
     ),
   );
-  fs.writeFileSync(
+}
+
+async function writeReadmes() {
+  const template = fs.readFileSync('src/gendocs/readme-template.hbs', 'utf-8');
+  const example = fs.readFileSync('example.js', 'utf-8');
+  await writeReadme(template, example, 'screenshot.png', 'docs/README.md');
+  await writeReadme(
+    template,
+    example,
+    'docs/screenshot.png',
     'README.md',
-    output.replaceAll(
-      /]\(([-\w]+)\)/gi,
-      (full, filename) => `](https://pckerneis.github.io/fwd/#/${filename})`,
-    ),
+    'https://pckerneis.github.io/fwd/#/',
   );
 }
 
