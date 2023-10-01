@@ -27,15 +27,15 @@ Schedule the function `action` to be called at the cursor position.
 
 <a name="repeat"></a>
 
-## repeat(action, interval, count)
+## repeat(interval, action, count)
 Repeatedly calls the function `action` every `interval` seconds `count` times, starting at the cursor position.
 
 **Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| action | <code>function</code> | The action to repeat |
 | interval | <code>number</code> | The repeat interval as a strictly positive number of seconds |
+| action | <code>function</code> | The action to repeat |
 | count | <code>number</code> | How many times to repeat. Defaults to Infinity. |
 
 <a name="at"></a>
@@ -63,8 +63,7 @@ Offset the cursor by `duration` expressed in seconds.
 <a name="note"></a>
 
 ## note(pitch, velocity, duration, [channel])
-Schedule a MIDI note to be played at the cursor position
-with note number `pitch`, velocity `velocity` and duration `duration` on MIDI channel `channel`.
+Schedule a MIDI note to be played at the cursor positionwith note number `pitch`, velocity `velocity` and duration `duration` on MIDI channel `channel`.
 
 **Kind**: global function  
 
@@ -114,11 +113,7 @@ Set the default value for next MIDI messages
 <a name="pick"></a>
 
 ## pick([...numberOrArrayOrElements]) ⇒ <code>\*</code>
-Pick an element among choices.
-- If an array is provided, the output will be an element of the array
-- If an string is provided, the output will be a character of the string
-- If a number is provided, the output will be a number between 0 and this number
-- For other inputs, the output is a random value between 0 and 1
+Pick an element among choices.- If an array is provided, the output will be an element of the array- If an string is provided, the output will be a character of the string- If a number is provided, the output will be a number between 0 and this number- For other inputs, the output is a random value between 0 and 1
 
 **Kind**: global function  
 **Returns**: <code>\*</code> - a randomly picked element  
@@ -164,8 +159,7 @@ Schedule messages to be logged at the cursor position.
 <a name="define"></a>
 
 ## define(name, [defaultValue]) ⇒ <code>\*</code>
-Define variable in the execution context with an optional default value.
-This won't have any effects if a value is already defined for `name`.
+Define variable in the execution context with an optional default value.This won't have any effects if a value is already defined for `name`.
 
 **Kind**: global function  
 **Returns**: <code>\*</code> - the named value  
@@ -175,13 +169,6 @@ This won't have any effects if a value is already defined for `name`.
 | name | <code>string</code> | The accessor name |
 | [defaultValue] | <code>\*</code> | A default value |
 
-<a name="def"></a>
-
-## def()
-Alias for define.
-
-**Kind**: global function  
-**See**: define(name, defaultValue)  
 <a name="forget"></a>
 
 ## forget(name)
@@ -193,18 +180,10 @@ Undefine variable in the execution context with an optional default value.
 | --- | --- | --- |
 | name | <code>string</code> | The accessor name |
 
-<a name="ndef"></a>
-
-## ndef()
-Alias for forget.
-
-**Kind**: global function  
-**See**: forget(name)  
 <a name="set"></a>
 
 ## set(name, value)
-Define or overwrite variable in the execution context with the provided value.
-This won't have any effects if a value is already defined for `name`.
+Define or overwrite variable in the execution context with the provided value.This won't have any effects if a value is already defined for `name`.
 
 **Kind**: global function  
 
