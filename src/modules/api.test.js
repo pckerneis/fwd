@@ -99,7 +99,7 @@ test('repeat() should repeatedly call a function', () => {
 
   const action = jest.fn();
 
-  repeat(action, 1, 5);
+  repeat(1, action, 5);
 
   advanceTime(1);
   advanceTime(1000);
@@ -126,7 +126,7 @@ test('repeat() should skip past calls', () => {
 
   advanceTime(2000);
 
-  repeat(action, 1, 5);
+  repeat(1, action, 5);
 
   advanceTime(1);
   advanceTime(1000);
@@ -149,7 +149,7 @@ test('repeat() should skip all calls', () => {
 
   advanceTime(10000);
 
-  repeat(action, 1, 5);
+  repeat(1, action, 5);
 
   advanceTime(1);
   advanceTime(1000);
@@ -169,7 +169,7 @@ test('repeat() should repeat at infinity', () => {
 
   const action = jest.fn();
 
-  repeat(action, 1);
+  repeat(1, action);
 
   advanceTime(1);
   advanceTime(1000);
@@ -347,23 +347,23 @@ test('channel() resets default channel', () => {
 
 test('def() adds to context', () => {
   const apiContext = getApiContext(midiOutput, messages);
-  const variable = apiContext.def('fortyTwo', 42);
+  const variable = apiContext.define('fortyTwo', 42);
   expect(variable).toBe(42);
   expect(apiContext.fortyTwo).toBe(42);
 });
 
 test('def() does not overwrite', () => {
   const apiContext = getApiContext(midiOutput, messages);
-  apiContext.def('fortyTwo', 42);
-  const variable = apiContext.def('fortyTwo', 48);
+  apiContext.define('fortyTwo', 42);
+  const variable = apiContext.define('fortyTwo', 48);
   expect(variable).toBe(42);
   expect(apiContext.fortyTwo).toBe(42);
 });
 
 test('ndef() deletes variable', () => {
   const apiContext = getApiContext(midiOutput, messages);
-  apiContext.def('fortyTwo', 42);
-  apiContext.ndef('fortyTwo', 48);
+  apiContext.define('fortyTwo', 42);
+  apiContext.forget('fortyTwo');
   expect(apiContext.fortyTwo).toBe(undefined);
 });
 
