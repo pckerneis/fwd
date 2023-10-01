@@ -15,4 +15,4 @@ at(now() + 1);
 flog('1 second after now');
 
 at(3);
-repeat((i) => log('Repeat #' + i), 0.25, 5);
+repeat(0.25, (i) => log('Repeat #' + i), 5);
