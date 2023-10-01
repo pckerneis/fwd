@@ -49,12 +49,12 @@ function fire(action) {
 /**
  * Repeatedly calls the function `action` every `interval` seconds `count` times, starting at the cursor position.
  *
- * @param {Function} action - The action to repeat
  * @param {number} interval - The repeat interval as a strictly positive number of seconds
+ * @param {Function} action - The action to repeat
  * @param {number} count - How many times to repeat. Defaults to Infinity.
  */
-function repeat(action, interval, count = Infinity) {
-  if (Number.isNaN(interval) || interval == null || interval <= 0) {
+function repeat(interval, action, count = Infinity) {
+  if (typeof interval !== 'number' || Number.isNaN(interval) || interval <= 0) {
     return;
   }
 
@@ -243,27 +243,11 @@ function define(name, defaultValue) {
 }
 
 /**
- * Alias for define.
- * @see define(name, defaultValue)
- */
-function def(name, value) {
-  return define(name, value);
-}
-
-/**
  * Undefine variable in the execution context with an optional default value.
  * @param {string} name - The accessor name
  */
 function forget(name) {
   delete _env[name];
-}
-
-/**
- * Alias for forget.
- * @see forget(name)
- */
-function ndef(name) {
-  forget(name);
 }
 
 /**
@@ -282,27 +266,39 @@ function getApi() {
     now,
 
     at,
+    _a: at,
     fire,
+    _f: fire,
     repeat,
+    _r: repeat,
     wait,
+    _w: wait,
 
     note,
+    _n: note,
     cc,
+    _cc: cc,
     program,
+    _pc: program,
     channel,
+    _c: channel,
 
     clear,
+    cls: clear,
     fclear,
     log,
     flog,
 
     pick,
+    _p: pick,
 
     define,
+    _def: define,
+    _d: define,
     forget,
-    def,
-    ndef,
+    _ndef: forget,
     set,
+    _set: set,
   };
 }
 
