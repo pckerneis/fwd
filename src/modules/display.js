@@ -30,6 +30,18 @@ export function printWelcome(version) {
   `);
 }
 
+function toHHMMSS(seconds) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds - hours * 3600) / 60);
+  const sec = seconds - minutes * 60 - hours * 3600;
+
+  const hh = hours === 0 ? '00' : hours < 10 ? '0' + hours : hours;
+  const mm = minutes === 0 ? '00' : minutes < 10 ? '0' + minutes : minutes;
+  const ss =
+    sec === 0 ? '00:000' : sec < 10 ? '0' + sec.toFixed(3) : sec.toFixed(3);
+  return `${hh}:${mm}:${ss}`;
+}
+
 /**
  * Clear the terminal and print runner info.
  *
@@ -42,18 +54,20 @@ function drawOnce(outputLines, filePath, outputName, headless) {
   clearBuffer();
   truncateOutputLines(outputLines);
 
-  const maxPathLength = process.stdout.columns - 20;
+  const maxPathLength = process.stdout.columns - 21;
   const truncatedPath = filePath.substring(0, maxPathLength);
-  const maxOutputLength = process.stdout.columns - 10;
+  const maxOutputLength = process.stdout.columns - 11;
   const truncatedOutput = outputName.substring(0, maxOutputLength);
   const lastChangeTime = getLastChangeDate()?.toLocaleTimeString() ?? 'never';
 
   const borderMargin = new Array(process.stdout.columns - 7).fill(' ').join('');
 
-  let clockString = (Math.round(clock() * 1000) / 1000).toFixed(3);
+  const clockStrings = [];
+
+  clockStrings.push(toHHMMSS(clock()));
 
   if (isPaused()) {
-    clockString += ' [paused]';
+    clockStrings.push('[paused]');
   }
 
   if (headless) {
@@ -61,9 +75,9 @@ function drawOnce(outputLines, filePath, outputName, headless) {
   } else {
     console.log(
       `╔══${borderMargin}══╗
- in    ${truncatedPath} (at ${lastChangeTime})
- out   [${getMidiSent() ? 'x' : ' '}] ${truncatedOutput}
- time  ${clockString}
+  in    ${truncatedPath} (at ${lastChangeTime})
+  out   [${getMidiSent() ? 'x' : ' '}] ${truncatedOutput}
+  time  ${clockStrings.join(' ')}
 ╚══${borderMargin}══╝
 ${outputLines.join('\n')}`,
     );
