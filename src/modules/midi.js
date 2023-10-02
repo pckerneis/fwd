@@ -149,16 +149,13 @@ function sendNoteOffIfTriggerIdMatches(channel, note, midiOutput, triggerId) {
 export function playNote(midiOutput, channel, note, velocity, duration) {
   const triggerId = currentTriggerId++;
   note = Math.floor(note);
-  channel = Math.floor(channel ?? 0);
-  velocity = Math.floor(velocity ?? 127);
+  channel = Math.floor(channel);
+  velocity = Math.floor(velocity);
 
   if (
-    note < 0 ||
-    note > 127 ||
-    channel < 0 ||
-    channel > 15 ||
-    velocity < 0 ||
-    velocity > 127
+    isOutOfRange(note, 0, 127) ||
+    isOutOfRange(velocity, 0, 127) ||
+    isOutOfRange(channel, 0, 15)
   ) {
     return;
   }
@@ -177,13 +174,13 @@ export function playNote(midiOutput, channel, note, velocity, duration) {
  * @param {number} [channel=0] - MIDI channel to send to
  */
 export function sendProgramChange(midiOutput, programNumber, channel) {
-  if (programNumber < 0 || programNumber > 127 || channel < 0 || channel > 15) {
+  if (isOutOfRange(programNumber, 0, 127) || isOutOfRange(channel, 0, 15)) {
     return;
   }
 
   midiOutput.send('program', {
     number: Math.floor(programNumber),
-    channel: Math.floor(channel ?? 0),
+    channel: Math.floor(channel),
   });
 
   notifyMidiSent(channel);
@@ -197,21 +194,22 @@ export function sendProgramChange(midiOutput, programNumber, channel) {
  */
 export function sendCC(midiOutput, controllerNumber, value, channel) {
   if (
-    controllerNumber < 0 ||
-    controllerNumber > 127 ||
-    value < 0 ||
-    value > 127 ||
-    channel < 0 ||
-    channel > 15
+    isOutOfRange(controllerNumber, 0, 127) ||
+    isOutOfRange(value, 0, 127) ||
+    isOutOfRange(channel, 0, 15)
   ) {
     return;
   }
 
   midiOutput.send('cc', {
     controller: Math.floor(controllerNumber),
-    channel: Math.floor(channel ?? 0),
+    channel: Math.floor(channel),
     value: Math.floor(value),
   });
 
   notifyMidiSent(channel);
+}
+
+function isOutOfRange(v, min, max) {
+  return typeof v !== 'number' || v < min || v > max;
 }

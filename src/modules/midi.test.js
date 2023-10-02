@@ -1,10 +1,12 @@
 import { jest } from '@jest/globals';
 import {
+  getChannelVisualizationData,
   getMidiSent,
   playNote,
   resetMidiSent,
-  resetNotesCurrentlyOnState, sendCC,
-  sendProgramChange
+  resetNotesCurrentlyOnState,
+  sendCC,
+  sendProgramChange,
 } from './midi.js';
 
 let midiOutput;
@@ -37,31 +39,6 @@ test('should reset midi sent notification', () => {
   playNote(midiOutput, 0, 0, 0, 0);
   resetMidiSent();
   expect(getMidiSent().length).toBe(0);
-});
-
-test('should use default values', () => {
-  playNote(midiOutput, null, 0, null, 1);
-
-  expect(midiOutput.send).toHaveBeenLastCalledWith('noteon', {
-    note: 0,
-    velocity: 127,
-    channel: 0,
-  });
-
-  jest.runOnlyPendingTimers();
-
-  expect(midiOutput.send).toHaveBeenLastCalledWith('noteoff', {
-    note: 0,
-    velocity: 0,
-    channel: 0,
-  });
-
-  sendProgramChange(midiOutput, 1);
-
-  expect(midiOutput.send).toHaveBeenLastCalledWith('program', {
-    number: 1,
-    channel: 0,
-  });
 });
 
 test('should avoid overlapping notes', () => {
@@ -127,10 +104,10 @@ test('should ignore note with invalid parameters', () => {
       note: 0,
       velocity: 128,
     },
-  ].forEach(values => {
+  ].forEach((values) => {
     playNote(midiOutput, values.channel, values.note, values.velocity, 1);
     expect(midiOutput.send).not.toHaveBeenCalled();
-  })
+  });
 });
 
 test('should ignore program changes with invalid parameters', () => {
@@ -151,10 +128,10 @@ test('should ignore program changes with invalid parameters', () => {
       channel: 0,
       program: 128,
     },
-  ].forEach(values => {
+  ].forEach((values) => {
     sendProgramChange(midiOutput, values.program, values.channel);
     expect(midiOutput.send).not.toHaveBeenCalled();
-  })
+  });
 });
 
 test('should ignore control changes with invalid parameters', () => {
@@ -189,10 +166,10 @@ test('should ignore control changes with invalid parameters', () => {
       controller: 0,
       value: 128,
     },
-  ].forEach(values => {
+  ].forEach((values) => {
     sendCC(midiOutput, values.controller, values.value, values.channel);
     expect(midiOutput.send).not.toHaveBeenCalled();
-  })
+  });
 });
 
 test('should send program change message', () => {
@@ -201,4 +178,17 @@ test('should send program change message', () => {
     channel: 0,
     number: 0,
   });
+});
+
+test('should gather channel visualization data', () => {
+  playNote(midiOutput, 0, 42, 42, 1);
+  playNote(midiOutput, 0, 42, 127, 1);
+  playNote(midiOutput, 0, 36, 60, 1);
+  playNote(midiOutput, 1, 64, 0, 1);
+
+  const data = getChannelVisualizationData();
+
+  expect(data[0]).toBe(127);
+  expect(data[1]).toBe(0);
+  expect(data[2]).toBe(0);
 });
