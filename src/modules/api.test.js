@@ -162,6 +162,18 @@ test('repeat() should skip all calls', () => {
   expect(action).toBeCalledTimes(0);
 });
 
+test('repeat() ignore invalid intervals', () => {
+  const { repeat } = getApiContext(midiOutput, messages);
+
+  [0, null, -5, 'hey'].forEach((interval) => {
+    startScheduler([]);
+    const action = jest.fn();
+    repeat(interval, action, 5);
+    advanceTime(5000);
+    expect(action).toBeCalledTimes(0);
+  });
+});
+
 test('repeat() should repeat at infinity', () => {
   const { repeat } = getApiContext(midiOutput, messages);
 
@@ -275,6 +287,39 @@ test('program() schedules a MIDI program change with default channel', () => {
   expect(midiOutput.send).toHaveBeenLastCalledWith('program', {
     number: 12,
     channel: 9,
+  });
+});
+
+test('cc() schedules a MIDI continuous controller change', () => {
+  const output = [];
+  const { at, cc } = getApiContext(midiOutput, output);
+  startScheduler(output);
+
+  at(1);
+  cc(12, 42, 1);
+
+  advanceTime(2000);
+  expect(midiOutput.send).toHaveBeenLastCalledWith('cc', {
+    controller: 12,
+    value: 42,
+    channel: 1,
+  });
+});
+
+test('cc() schedules a MIDI cc change on default channel', () => {
+  const output = [];
+  const { at, cc, channel } = getApiContext(midiOutput, output);
+  startScheduler(output);
+
+  at(1);
+  channel(3);
+  cc(12, 42);
+
+  advanceTime(2000);
+  expect(midiOutput.send).toHaveBeenLastCalledWith('cc', {
+    controller: 12,
+    value: 42,
+    channel: 3,
   });
 });
 
