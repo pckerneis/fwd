@@ -1,6 +1,40 @@
-let midiSent = false;
+let midiSent = [];
 let notesCurrentlyOnState = {};
 let currentTriggerId = 0;
+
+export function getChannelVisualizationData() {
+  let result = [];
+  for (let c = 0; c < 16; ++c) {
+    let maxVelocity = 0;
+
+    if (notesCurrentlyOnState[c]) {
+      for (let n = 0; n < 128; ++n) {
+        if (notesCurrentlyOnState[c][n]) {
+          maxVelocity = Math.max(
+            maxVelocity,
+            notesCurrentlyOnState[c][n].velocity,
+          );
+        }
+      }
+    }
+
+    result.push(maxVelocity);
+  }
+
+  return result;
+}
+
+function notifyMidiSent(channel) {
+  if (!midiSent.includes(channel)) midiSent.push(channel);
+}
+
+export function resetMidiSent() {
+  midiSent = [];
+}
+
+export function getMidiSent() {
+  return midiSent;
+}
 
 /**
  * Reset state for pending MIDI notes
@@ -34,14 +68,15 @@ function getNoteTriggerId(channel, note) {
  * Mark a note as pending with a trigger ID
  * @param {number} channel - MIDI channel
  * @param {number} note - note number
+ * @param {number} velocity - note velocity
  * @param {number} triggerId - ID of the triggerer
  */
-function setNoteCurrentlyOn(channel, note, triggerId) {
+function setNoteCurrentlyOn(channel, note, velocity, triggerId) {
   if (notesCurrentlyOnState[channel] == null) {
     notesCurrentlyOnState[channel] = {};
   }
 
-  notesCurrentlyOnState[channel][note] = { triggerId };
+  notesCurrentlyOnState[channel][note] = { triggerId, velocity };
 }
 
 /**
@@ -53,27 +88,6 @@ function setNoteCurrentlyOff(channel, note) {
   if (notesCurrentlyOnState[channel]) {
     notesCurrentlyOnState[channel][note] = null;
   }
-}
-
-/**
- * Notify that MIDI signal was sent
- */
-function notifyMidiSent() {
-  midiSent = true;
-}
-
-/**
- * Reset notifications about sent MIDI signal
- */
-export function resetMidiSent() {
-  midiSent = false;
-}
-
-/**
- * @returns true if MIDI signal was sent since last reset
- */
-export function getMidiSent() {
-  return midiSent;
 }
 
 /**
@@ -94,8 +108,7 @@ function sendNoteOnWithNoOverlap(
   sendNoteOffIfCurrentlyOn(channel, note, midiOutput);
 
   midiOutput.send('noteon', { note, velocity, channel });
-  setNoteCurrentlyOn(channel, note, triggerId);
-  notifyMidiSent();
+  setNoteCurrentlyOn(channel, note, velocity, triggerId);
 }
 
 /**
@@ -108,7 +121,6 @@ function sendNoteOffIfCurrentlyOn(channel, note, midiOutput) {
   if (isNoteCurrentlyOn(channel, note)) {
     midiOutput.send('noteoff', { note, velocity: 0, channel });
     setNoteCurrentlyOff(channel, note);
-    notifyMidiSent();
   }
 }
 
@@ -123,7 +135,6 @@ function sendNoteOffIfTriggerIdMatches(channel, note, midiOutput, triggerId) {
   if (getNoteTriggerId(channel, note) === triggerId) {
     midiOutput.send('noteoff', { note, velocity: 0, channel });
     setNoteCurrentlyOff(channel, note);
-    notifyMidiSent();
   }
 }
 
@@ -141,6 +152,17 @@ export function playNote(midiOutput, channel, note, velocity, duration) {
   channel = Math.floor(channel ?? 0);
   velocity = Math.floor(velocity ?? 127);
 
+  if (
+    note < 0 ||
+    note > 127 ||
+    channel < 0 ||
+    channel > 15 ||
+    velocity < 0 ||
+    velocity > 127
+  ) {
+    return;
+  }
+
   sendNoteOnWithNoOverlap(channel, note, midiOutput, velocity, triggerId);
 
   setTimeout(() => {
@@ -155,10 +177,16 @@ export function playNote(midiOutput, channel, note, velocity, duration) {
  * @param {number} [channel=0] - MIDI channel to send to
  */
 export function sendProgramChange(midiOutput, programNumber, channel) {
+  if (programNumber < 0 || programNumber > 127 || channel < 0 || channel > 15) {
+    return;
+  }
+
   midiOutput.send('program', {
     number: Math.floor(programNumber),
     channel: Math.floor(channel ?? 0),
   });
+
+  notifyMidiSent(channel);
 }
 /**
  * Send a continuous controller change message
@@ -168,9 +196,22 @@ export function sendProgramChange(midiOutput, programNumber, channel) {
  * @param {number} [channel=0] - MIDI channel to send to
  */
 export function sendCC(midiOutput, controllerNumber, value, channel) {
+  if (
+    controllerNumber < 0 ||
+    controllerNumber > 127 ||
+    value < 0 ||
+    value > 127 ||
+    channel < 0 ||
+    channel > 15
+  ) {
+    return;
+  }
+
   midiOutput.send('cc', {
     controller: Math.floor(controllerNumber),
     channel: Math.floor(channel ?? 0),
     value: Math.floor(value),
   });
+
+  notifyMidiSent(channel);
 }

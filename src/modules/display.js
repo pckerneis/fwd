@@ -2,7 +2,12 @@ import process from 'process';
 import { clearBuffer } from './rli.js';
 import { clock, isPaused } from './scheduler.js';
 import { getLastChangeDate } from './vm.js';
-import { getMidiSent, resetMidiSent } from './midi.js';
+import {
+  getChannelVisualizationData,
+  getMidiSent,
+  resetMidiSent,
+} from './midi.js';
+import chalk from 'chalk';
 
 /**
  * Truncates an array so that it fits into terminal.
@@ -42,6 +47,35 @@ function toHHMMSS(seconds) {
   return `${hh}:${mm}:${ss}`;
 }
 
+const velocitySymbols = [
+  chalk.gray('\u2581'),
+  chalk.blue('\u2582'),
+  chalk.blue('\u2583'),
+  chalk.blue('\u2584'),
+  chalk.blue('\u2585'),
+  chalk.blue('\u2586'),
+  chalk.blue('\u2587'),
+  chalk.blue('\u2588'),
+];
+
+function buildMidiVisualization() {
+  const midiSent = getMidiSent();
+  resetMidiSent();
+
+  return getChannelVisualizationData()
+    .map((maxVelocity, channel) => {
+      const hasNonNoteSignal = midiSent.includes(channel);
+      const symbol =
+        velocitySymbols[
+          Math.floor((velocitySymbols.length * maxVelocity) / 128)
+        ];
+      const coloredSymbol =
+        maxVelocity > 0 ? chalk.blue(symbol) : chalk.gray(symbol);
+      return hasNonNoteSignal ? chalk.bgRed(coloredSymbol) : coloredSymbol;
+    })
+    .join('');
+}
+
 /**
  * Clear the terminal and print runner info.
  *
@@ -58,9 +92,14 @@ function drawOnce(outputLines, filePath, outputName, headless) {
   const truncatedPath = filePath.substring(0, maxPathLength);
   const maxOutputLength = process.stdout.columns - 11;
   const truncatedOutput = outputName.substring(0, maxOutputLength);
-  const lastChangeTime = getLastChangeDate()?.toLocaleTimeString() ?? 'never';
+  let lastChangeTime = getLastChangeDate()?.toLocaleTimeString() ?? 'never';
+
+  if (Date.now() - getLastChangeDate().getTime() < 1500) {
+    lastChangeTime = chalk.red(lastChangeTime);
+  }
 
   const borderMargin = new Array(process.stdout.columns - 7).fill(' ').join('');
+  const midiOutStr = buildMidiVisualization();
 
   const clockStrings = [];
 
@@ -76,7 +115,7 @@ function drawOnce(outputLines, filePath, outputName, headless) {
     console.log(
       `╔══${borderMargin}══╗
   in    ${truncatedPath} (at ${lastChangeTime})
-  out   [${getMidiSent() ? 'x' : ' '}] ${truncatedOutput}
+  out   [${midiOutStr}] ${truncatedOutput}
   time  ${clockStrings.join(' ')}
 ╚══${borderMargin}══╝
 ${outputLines.join('\n')}`,
@@ -95,7 +134,6 @@ ${outputLines.join('\n')}`,
 export function startDisplay(outputName, file, outputLines, headless) {
   setInterval(() => {
     drawOnce(outputLines, file, outputName, headless);
-    resetMidiSent();
   }, 100);
 
   process.stdout.on('resize', () =>
