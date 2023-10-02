@@ -64,6 +64,12 @@ export function schedule(time, action) {
 export function incrementSchedulerId() {
   currentSchedulerId++;
 }
+/**
+ * Decrements scheduler ID
+ */
+export function decrementSchedulerId() {
+  currentSchedulerId--;
+}
 
 function processEvents(outputLines) {
   const t = clock();
