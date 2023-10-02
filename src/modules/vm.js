@@ -2,6 +2,7 @@ import vm from 'node:vm';
 import { incrementSchedulerId } from './scheduler.js';
 import { dbg } from './dbg.js';
 import { getApiContext } from './api.js';
+import chalk from 'chalk';
 
 let lastChangeDate;
 
@@ -30,6 +31,6 @@ export function runInSandbox(userCode, midiOutput, textOutputLines) {
     lastChangeDate = new Date();
     dbg(`Finished execution (${lastChangeDate.toLocaleTimeString()})`);
   } catch (e) {
-    textOutputLines.push(e);
+    textOutputLines.push(chalk.red(e));
   }
 }
