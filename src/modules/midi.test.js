@@ -95,6 +95,106 @@ test('should avoid overlapping notes', () => {
   });
 });
 
+test('should ignore note with invalid parameters', () => {
+  [
+    {
+      channel: -1,
+      note: 0,
+      velocity: 127,
+    },
+    {
+      channel: 16,
+      note: 0,
+      velocity: 127,
+    },
+    {
+      channel: 0,
+      note: -1,
+      velocity: 127,
+    },
+    {
+      channel: 0,
+      note: 128,
+      velocity: 127,
+    },
+    {
+      channel: 0,
+      note: 0,
+      velocity: -1,
+    },
+    {
+      channel: 0,
+      note: 0,
+      velocity: 128,
+    },
+  ].forEach(values => {
+    playNote(midiOutput, values.channel, values.note, values.velocity, 1);
+    expect(midiOutput.send).not.toHaveBeenCalled();
+  })
+});
+
+test('should ignore program changes with invalid parameters', () => {
+  [
+    {
+      channel: -1,
+      program: 0,
+    },
+    {
+      channel: 16,
+      program: 0,
+    },
+    {
+      channel: 0,
+      program: -1,
+    },
+    {
+      channel: 0,
+      program: 128,
+    },
+  ].forEach(values => {
+    sendProgramChange(midiOutput, values.program, values.channel);
+    expect(midiOutput.send).not.toHaveBeenCalled();
+  })
+});
+
+test('should ignore control changes with invalid parameters', () => {
+  [
+    {
+      channel: -1,
+      controller: 0,
+      value: 127,
+    },
+    {
+      channel: 16,
+      controller: 0,
+      value: 127,
+    },
+    {
+      channel: 0,
+      controller: -1,
+      value: 127,
+    },
+    {
+      channel: 0,
+      controller: 128,
+      value: 127,
+    },
+    {
+      channel: 0,
+      controller: 0,
+      value: -1,
+    },
+    {
+      channel: 0,
+      controller: 0,
+      value: 128,
+    },
+  ].forEach(values => {
+    sendCC(midiOutput, values.controller, values.value, values.channel);
+    expect(midiOutput.send).not.toHaveBeenCalled();
+  })
+});
+
 test('should send program change message', () => {
   sendProgramChange(midiOutput, 0, 0);
   expect(midiOutput.send).toHaveBeenLastCalledWith('program', {
