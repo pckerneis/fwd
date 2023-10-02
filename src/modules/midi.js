@@ -137,8 +137,9 @@ function sendNoteOffIfTriggerIdMatches(channel, note, midiOutput, triggerId) {
  */
 export function playNote(midiOutput, channel, note, velocity, duration) {
   const triggerId = currentTriggerId++;
-  channel = channel ?? 0;
-  velocity = velocity ?? 127;
+  note = Math.floor(note);
+  channel = Math.floor(channel ?? 0);
+  velocity = Math.floor(velocity ?? 127);
 
   sendNoteOnWithNoOverlap(channel, note, midiOutput, velocity, triggerId);
 
@@ -155,8 +156,8 @@ export function playNote(midiOutput, channel, note, velocity, duration) {
  */
 export function sendProgramChange(midiOutput, programNumber, channel) {
   midiOutput.send('program', {
-    number: programNumber,
-    channel: channel ?? 0,
+    number: Math.floor(programNumber),
+    channel: Math.floor(channel ?? 0),
   });
 }
 /**
@@ -168,8 +169,8 @@ export function sendProgramChange(midiOutput, programNumber, channel) {
  */
 export function sendCC(midiOutput, controllerNumber, value, channel) {
   midiOutput.send('cc', {
-    controller: controllerNumber,
-    channel: channel ?? 0,
-    value,
+    controller: Math.floor(controllerNumber),
+    channel: Math.floor(channel ?? 0),
+    value: Math.floor(value),
   });
 }
