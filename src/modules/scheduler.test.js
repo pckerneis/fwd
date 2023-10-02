@@ -7,6 +7,7 @@ import {
   isPaused,
   incrementSchedulerId,
   getCurrentSchedulerId,
+  decrementSchedulerId,
 } from './scheduler.js';
 import { jest } from '@jest/globals';
 
@@ -119,8 +120,17 @@ test('toggleSchedulerPaused() pauses and unpauses scheduler', () => {
 });
 
 test('incrementSchedulerId() increments scheduler ID', () => {
+  initScheduler();
   incrementSchedulerId();
   incrementSchedulerId();
 
   expect(getCurrentSchedulerId()).toBe(2);
+});
+
+test('decrementSchedulerId() decrements scheduler ID', () => {
+  initScheduler();
+  decrementSchedulerId();
+  decrementSchedulerId();
+
+  expect(getCurrentSchedulerId()).toBe(-2);
 });
