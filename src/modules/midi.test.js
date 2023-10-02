@@ -3,8 +3,8 @@ import {
   getMidiSent,
   playNote,
   resetMidiSent,
-  resetNotesCurrentlyOnState,
-  sendProgramChange,
+  resetNotesCurrentlyOnState, sendCC,
+  sendProgramChange
 } from './midi.js';
 
 let midiOutput;
@@ -25,14 +25,18 @@ afterEach(() => {
 });
 
 test('should notify when midi signal gets sent', () => {
-  playNote(midiOutput, 0, 0, 0, 0);
-  expect(getMidiSent()).toBeTruthy();
+  sendCC(midiOutput, 0, 0, 0);
+  sendCC(midiOutput, 8, 10, 0);
+  sendCC(midiOutput, 80, 100, 2);
+  expect(getMidiSent().length).toBe(2);
+  expect(getMidiSent().includes(0)).toBeTruthy();
+  expect(getMidiSent().includes(2)).toBeTruthy();
 });
 
 test('should reset midi sent notification', () => {
   playNote(midiOutput, 0, 0, 0, 0);
   resetMidiSent();
-  expect(getMidiSent()).toBeFalsy();
+  expect(getMidiSent().length).toBe(0);
 });
 
 test('should use default values', () => {
