@@ -28,12 +28,19 @@ export function pick(...numberOrArrayOrElements) {
   }
 }
 
+/**
+ * For each element of `iterableOrNumber`, call a function `callback`.
+ * It can iterate over an iterable (such as an Array or a string) or on positive
+ * integers starting from zero.
+ * @param iterableOrNumber
+ * @param callback
+ */
 export function iter(iterableOrNumber, callback) {
   if (typeof iterableOrNumber === 'number') {
     for (let i = 0; i < Math.abs(iterableOrNumber); i++) {
       callback(i);
     }
-  } else if(typeof iterableOrNumber?.[Symbol.iterator]) {
+  } else if (typeof iterableOrNumber?.[Symbol.iterator]) {
     for (let e of iterableOrNumber) {
       callback(e);
     }

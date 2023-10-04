@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import { exec } from 'node:child_process';
 import PACKAGE_VERSION from '../package-version.cjs';
 
-const PATH_TO_API_JS = 'src/modules/api.js';
+const PATH_TO_API_JS = 'src/modules/api/**/*.js';
 
 async function writeApiReference() {
   const outputFile = 'docs/api-reference.md';

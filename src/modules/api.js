@@ -1,9 +1,17 @@
-import { at, cursor, fire, now, repeat, resetCursor, wait } from './api/api.scheduler.js';
+import {
+  at,
+  cursor,
+  fire,
+  now,
+  repeat,
+  resetCursor,
+  wait,
+} from './api/api.scheduler.js';
 import { _env, setEnv, setLogLines, setMidiOutput } from './api/api.shared.js';
 import { cc, channel, note, program } from './api/api.midi.js';
 import { clear, fclear, flog, log } from './api/api.log.js';
 import { define, set } from './api/api.env.js';
-import { pick } from './api/api.utils.js';
+import { iter, pick } from './api/api.utils.js';
 
 function getApi() {
   return {
@@ -36,6 +44,7 @@ function getApi() {
 
     pick,
     _p: pick,
+    iter,
 
     define,
     def: define,
@@ -57,7 +66,7 @@ export function getApiContext(midiOutput, textOutputLines) {
 
   setEnv({
     ..._env,
-    ...getApi()
+    ...getApi(),
   });
 
   return _env;

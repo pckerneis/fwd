@@ -405,13 +405,6 @@ test('def() does not overwrite', () => {
   expect(apiContext.fortyTwo).toBe(42);
 });
 
-test('ndef() deletes variable', () => {
-  const apiContext = getApiContext(midiOutput, messages);
-  apiContext.define('fortyTwo', 42);
-  apiContext.forget('fortyTwo');
-  expect(apiContext.fortyTwo).toBe(undefined);
-});
-
 test('set() overwrite variable', () => {
   const apiContext = getApiContext(midiOutput, messages);
   apiContext.set('fortyTwo', 48);

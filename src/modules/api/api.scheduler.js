@@ -1,4 +1,8 @@
-import { getCurrentEventTime, getCurrentSchedulerId, schedule } from '../scheduler.js';
+import {
+  getCurrentEventTime,
+  getCurrentSchedulerId,
+  schedule,
+} from '../scheduler.js';
 
 let _cursor;
 

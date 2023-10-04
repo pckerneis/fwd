@@ -8,7 +8,7 @@ import { _env } from './api.shared.js';
  * @return {*} the named value
  */
 export function define(name, defaultValue) {
-  if (_env.defaultValue === undefined) {
+  if (_env[name] === undefined) {
     _env[name] = defaultValue;
   }
 
