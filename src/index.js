@@ -1,7 +1,7 @@
 import { Command } from 'commander';
-import { run } from './modules/run.js';
-import { printWelcome } from './modules/display.js';
-import { setDebug } from './modules/dbg.js';
+import { run } from './modules/cli/run.js';
+import { printWelcome } from './modules/cli/display.js';
+import { setDebug } from './modules/cli/dbg.js';
 import PACKAGE_VERSION from './package-version.cjs';
 
 printWelcome(PACKAGE_VERSION);

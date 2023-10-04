@@ -94,7 +94,7 @@ function drawOnce(outputLines, filePath, outputName, headless) {
   const truncatedOutput = outputName.substring(0, maxOutputLength);
   let lastChangeTime = getLastChangeDate()?.toLocaleTimeString() ?? 'never';
 
-  if (Date.now() - getLastChangeDate().getTime() < 1500) {
+  if (Date.now() - getLastChangeDate()?.getTime() < 1500) {
     lastChangeTime = chalk.red(lastChangeTime);
   }
 

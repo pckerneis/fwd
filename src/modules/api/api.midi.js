@@ -1,5 +1,5 @@
-import { dbg } from '../dbg.js';
-import { playNote, sendCC, sendProgramChange } from '../midi.js';
+import { dbg } from '../cli/dbg.js';
+import { playNote, sendCC, sendProgramChange } from '../cli/midi.js';
 import { _midiOutput } from './api.shared.js';
 import { fire } from './api.scheduler.js';
 
