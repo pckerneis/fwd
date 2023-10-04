@@ -1,7 +1,7 @@
 import { getApiContext } from './api.js';
 import { jest } from '@jest/globals';
-import { initScheduler, startScheduler } from './scheduler.js';
-import { resetNotesCurrentlyOnState } from './midi.js';
+import { initScheduler, startScheduler } from './cli/scheduler.js';
+import { resetNotesCurrentlyOnState } from './cli/midi.js';
 
 let currentTime = 0;
 let messages = [];

@@ -2,7 +2,7 @@ import {
   getCurrentEventTime,
   getCurrentSchedulerId,
   schedule,
-} from '../scheduler.js';
+} from '../cli/scheduler.js';
 
 let _cursor;
 

@@ -1,7 +1,7 @@
 import vm from 'node:vm';
 import { decrementSchedulerId, incrementSchedulerId } from './scheduler.js';
 import { dbg } from './dbg.js';
-import { getApiContext } from './api.js';
+import { getApiContext } from '../api.js';
 import chalk from 'chalk';
 
 let lastChangeDate;
