@@ -207,6 +207,25 @@ Repeatedly calls the function `action` every `interval` seconds `count` times, s
 | action | <code>function</code> | The action to repeat |
 | count | <code>number</code> | How many times to repeat. Defaults to Infinity. |
 
+<a name="loop"></a>
+
+### loop(name, action)
+Define a named loop or replace an existing one. The function `action` will be
+called repeatedly if the cursor moves by a positive amount.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | The loop's name |
+| action | <code>function</code> | The action to repeat |
+
+<a name="deactivatePendingLoops"></a>
+
+### deactivatePendingLoops()
+Mark all loops as inactive. Inactive loops won't repeat until reactivated.
+
+**Kind**: global function  
 <a name="at"></a>
 
 ### at(time)

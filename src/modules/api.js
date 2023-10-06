@@ -3,6 +3,7 @@ import {
   cursor,
   fire,
   getSpeed,
+  loop,
   now,
   repeat,
   resetCursor,
@@ -28,6 +29,8 @@ function getApi() {
     _f: fire,
     repeat,
     _r: repeat,
+    loop,
+    _l: loop,
     wait,
     _w: wait,
 
