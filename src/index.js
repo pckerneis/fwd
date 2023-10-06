@@ -18,7 +18,7 @@ program
   .option('-d, --debug', 'launch with debug output')
   .option('--no-watch', 'do not re-execute program when file changes')
   .action(async (options) => {
-    setDebug(options.D);
+    setDebug(options.debug);
     await run(options.file, options.output, options.headless, options.watch);
   });
 

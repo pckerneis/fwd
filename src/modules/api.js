@@ -2,6 +2,7 @@ import {
   at,
   cursor,
   fire,
+  loop,
   now,
   repeat,
   resetCursor,
@@ -23,6 +24,8 @@ function getApi() {
     _f: fire,
     repeat,
     _r: repeat,
+    loop,
+    _l: loop,
     wait,
     _w: wait,
 
@@ -48,6 +51,7 @@ function getApi() {
 
     define,
     def: define,
+    _d: define,
     set,
   };
 }
