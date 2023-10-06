@@ -41,8 +41,9 @@ export function iter(iterableOrNumber, callback) {
       callback(i);
     }
   } else if (typeof iterableOrNumber?.[Symbol.iterator]) {
+    let i = 0;
     for (let e of iterableOrNumber) {
-      callback(e);
+      callback(e, i++);
     }
   } else {
     callback(iterableOrNumber);
