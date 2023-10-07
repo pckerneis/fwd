@@ -231,15 +231,15 @@ integers starting from zero.
 
 <a name="ring"></a>
 
-## ring(elements) ⇒ [<code>Ring</code>](#Ring)
+## ring(...elements) ⇒ [<code>Ring</code>](#Ring)
 Creates a Ring.
 
 **Kind**: global function  
-**Returns**: [<code>Ring</code>](#Ring) - - a Ring containing `elements`.  
+**Returns**: [<code>Ring</code>](#Ring) - a Ring containing `elements`.  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| elements | <code>\*</code> | Elements to circle through |
+| ...elements | <code>\*</code> | Elements to circle through |
 
 <a name="Ring"></a>
 

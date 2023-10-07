@@ -63,8 +63,8 @@ export function iter(iterableOrNumber, callback) {
 /**
  * Creates a Ring.
  *
- * @param {*} elements - Elements to circle through
- * @return {Ring} - a Ring containing `elements`.
+ * @param {...*} elements - Elements to circle through
+ * @return {Ring} a Ring containing `elements`.
  */
 export function ring(...elements) {
   let index = 0;
