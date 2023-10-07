@@ -229,3 +229,26 @@ integers starting from zero.
 | iterableOrNumber | 
 | callback | 
 
+<a name="ring"></a>
+
+## ring(...elements) ⇒ [<code>Ring</code>](#Ring)
+Creates a Ring.
+
+**Kind**: global function  
+**Returns**: [<code>Ring</code>](#Ring) - a Ring containing `elements`.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ...elements | <code>\*</code> | Elements to circle through |
+
+<a name="Ring"></a>
+
+## Ring
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| next | <code>function</code> | advance and return the next element of the Ring. |
+| peek | <code>function</code> | return the current element of the Ring. |
+

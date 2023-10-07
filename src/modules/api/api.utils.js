@@ -49,3 +49,28 @@ export function iter(iterableOrNumber, callback) {
     callback(iterableOrNumber);
   }
 }
+
+/**
+ * @typedef Ring
+ *
+ * A Ring (or circular buffer) acts like a list whose end is connected to its start.
+ * Call `next()` to get next element in list, or `peek()` to read the current element.
+ *
+ * @property {Function} next - advance and return the next element of the Ring.
+ * @property {Function} peek - return the current element of the Ring.
+ */
+
+/**
+ * Creates a Ring.
+ *
+ * @param {...*} elements - Elements to circle through
+ * @return {Ring} a Ring containing `elements`.
+ */
+export function ring(...elements) {
+  let index = 0;
+
+  return {
+    next: () => elements[index++ % elements.length],
+    peek: () => elements[index % elements.length],
+  };
+}

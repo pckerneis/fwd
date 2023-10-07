@@ -13,7 +13,7 @@ import { _env, setEnv, setLogLines, setMidiOutput } from './api/api.shared.js';
 import { cc, channel, note, program } from './api/api.midi.js';
 import { clear, fclear, flog, log } from './api/api.log.js';
 import { define, set } from './api/api.env.js';
-import { iter, pick } from './api/api.utils.js';
+import { iter, pick, ring } from './api/api.utils.js';
 
 function getApi() {
   return {
@@ -54,6 +54,8 @@ function getApi() {
 
     setSpeed,
     getSpeed,
+
+    ring,
   };
 }
 
