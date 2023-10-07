@@ -178,6 +178,27 @@ Offset the cursor by `duration` expressed in seconds.
 | --- | --- | --- |
 | duration | <code>number</code> | Duration in seconds |
 
+<a name="setSpeed"></a>
+
+## setSpeed(newSpeed)
+Sets the scheduler's playback speed. Defaults to 1.
+`newSpeed` must be a strictly positive number, or the function call won't have
+any effect.
+If speed is set to 2, time will tick twice as fast. This is useful for defining
+a global tempo value.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| newSpeed | <code>number</code> | The new speed value |
+
+<a name="getSpeed"></a>
+
+## getSpeed() ⇒ <code>number</code>
+Returns the current scheduler's playback speed.
+
+**Kind**: global function  
 <a name="pick"></a>
 
 ## pick([numberOrArrayOrElements]) ⇒ <code>\*</code>

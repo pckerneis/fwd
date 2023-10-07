@@ -1,5 +1,6 @@
 import { dbg } from './dbg.js';
 import { EventQueue } from './event-queue.js';
+import chalk from 'chalk';
 
 const scheduledEvents = new EventQueue();
 
@@ -7,9 +8,9 @@ let paused = false;
 let currentEventTime = 0;
 let previousTimeStamp = 0;
 let playTime = 0;
-
 let intervalHandle;
 let currentSchedulerId = 0;
+let speed = 1;
 
 export function toggleSchedulerPaused() {
   paused = !paused;
@@ -31,6 +32,18 @@ export function clock() {
   return playTime;
 }
 
+export function setSchedulerSpeed(newSpeed) {
+  if (typeof speed !== 'number' || speed <= 0) {
+    throw new Error('Speed should be a positive number.');
+  }
+
+  speed = newSpeed;
+}
+
+export function getSchedulerSpeed() {
+  return speed;
+}
+
 export function isPaused() {
   return paused;
 }
@@ -46,6 +59,7 @@ export function initScheduler() {
   currentSchedulerId = 0;
   previousTimeStamp = 0;
   playTime = 0;
+  speed = 1;
 }
 
 /**
@@ -82,7 +96,7 @@ function processEvents(outputLines) {
     try {
       next.event();
     } catch (e) {
-      outputLines.push(e);
+      outputLines.push(chalk.red(e));
     }
 
     next = scheduledEvents.next(t);
@@ -109,7 +123,7 @@ export function startScheduler(outputLines) {
     }
 
     const elapsed = (currentTimeStamp - previousTimeStamp) / 1000;
-    playTime += elapsed;
+    playTime += elapsed * speed;
 
     processEvents(outputLines);
     previousTimeStamp = currentTimeStamp;

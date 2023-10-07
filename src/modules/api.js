@@ -2,9 +2,11 @@ import {
   at,
   cursor,
   fire,
+  getSpeed,
   now,
   repeat,
   resetCursor,
+  setSpeed,
   wait,
 } from './api/api.scheduler.js';
 import { _env, setEnv, setLogLines, setMidiOutput } from './api/api.shared.js';
@@ -49,6 +51,9 @@ function getApi() {
     define,
     def: define,
     set,
+
+    setSpeed,
+    getSpeed,
   };
 }
 
