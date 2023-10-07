@@ -1,7 +1,9 @@
 import {
   getCurrentEventTime,
   getCurrentSchedulerId,
+  getSchedulerSpeed,
   schedule,
+  setSchedulerSpeed,
 } from '../cli/scheduler.js';
 
 let _cursor;
@@ -115,4 +117,25 @@ export function at(time) {
  */
 export function wait(duration) {
   _cursor += duration;
+}
+
+/**
+ * Sets the scheduler's playback speed. Defaults to 1.
+ * `newSpeed` must be a strictly positive number, or the function call won't have
+ * any effect.
+ * If speed is set to 2, time will tick twice as fast. This is useful for defining
+ * a global tempo value.
+ *
+ * @param {number} newSpeed - The new speed value
+ */
+export function setSpeed(newSpeed) {
+  setSchedulerSpeed(newSpeed);
+}
+
+/**
+ * Returns the current scheduler's playback speed.
+ * @return {number}
+ */
+export function getSpeed() {
+  return getSchedulerSpeed();
 }

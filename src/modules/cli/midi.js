@@ -1,3 +1,5 @@
+import { getSchedulerSpeed } from './scheduler.js';
+
 let midiSent = [];
 let notesCurrentlyOnState = {};
 let currentTriggerId = 0;
@@ -162,9 +164,12 @@ export function playNote(midiOutput, channel, note, velocity, duration) {
 
   sendNoteOnWithNoOverlap(channel, note, midiOutput, velocity, triggerId);
 
-  setTimeout(() => {
-    sendNoteOffIfTriggerIdMatches(channel, note, midiOutput, triggerId);
-  }, duration * 1000);
+  setTimeout(
+    () => {
+      sendNoteOffIfTriggerIdMatches(channel, note, midiOutput, triggerId);
+    },
+    (duration * 1000) / getSchedulerSpeed(),
+  );
 }
 
 /**
