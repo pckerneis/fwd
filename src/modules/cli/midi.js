@@ -1,5 +1,4 @@
 import { getSchedulerSpeed } from './scheduler.js';
-
 let midiSent = [];
 let notesCurrentlyOnState = {};
 let currentTriggerId = 0;
