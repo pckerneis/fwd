@@ -139,3 +139,17 @@ export function setSpeed(newSpeed) {
 export function getSpeed() {
   return getSchedulerSpeed();
 }
+
+/**
+ * Shortcut for setting and getting scheduler's playback speed.
+ * @param {number} [newSpeed] - New speed value. If you pass null, undefined or omit
+ * the value, the scheduler's speed won't change.
+ * @return {number} Scheduler playback speed after eventual modification
+ */
+export function speed(newSpeed) {
+  if (newSpeed !== undefined) {
+    setSpeed(newSpeed);
+  }
+
+  return getSpeed();
+}

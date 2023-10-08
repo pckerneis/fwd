@@ -7,6 +7,7 @@ import {
   repeat,
   resetCursor,
   setSpeed,
+  speed,
   wait,
 } from './api/api.scheduler.js';
 import { _env, setEnv, setLogLines, setMidiOutput } from './api/api.shared.js';
@@ -54,6 +55,7 @@ function getApi() {
 
     setSpeed,
     getSpeed,
+    speed,
 
     ring,
   };

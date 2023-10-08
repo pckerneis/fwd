@@ -250,6 +250,18 @@ a global tempo value.
 Returns the current scheduler's playback speed.
 
 **Kind**: global function  
+<a name="speed"></a>
+
+### speed([newSpeed]) ⇒ <code>number</code>
+Shortcut for setting and getting scheduler's playback speed.
+
+**Kind**: global function  
+**Returns**: <code>number</code> - Scheduler playback speed after eventual modification  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [newSpeed] | <code>number</code> | New speed value. If you pass null, undefined or omit the value, the scheduler's speed won't change. |
+
 <a name="pick"></a>
 
 ### pick([numberOrArrayOrElements]) ⇒ <code>\*</code>
