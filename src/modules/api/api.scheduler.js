@@ -5,6 +5,7 @@ import {
   schedule,
   setSchedulerSpeed,
 } from '../cli/scheduler.js';
+import { channel, getDefaultMidiChannel } from './api.midi.js';
 
 let _cursor;
 
@@ -38,13 +39,11 @@ export function resetCursor() {
  */
 export function fire(action) {
   const memoizedCursor = _cursor;
+  const memoizedChannel = getDefaultMidiChannel();
 
   if (_cursor >= now()) {
     schedule(_cursor, () => {
-      const timeOutside = _cursor;
-      _cursor = memoizedCursor;
-      action();
-      _cursor = timeOutside;
+      callScoped(memoizedCursor, memoizedChannel, action);
     });
   }
 }
@@ -61,11 +60,11 @@ export function repeat(interval, action, count = Infinity) {
     return;
   }
 
+  const memoizedChannel = getDefaultMidiChannel();
+  const schedulerId = getCurrentSchedulerId();
+  const t = now();
   let stepCount = 0;
   let nextCursor = _cursor;
-  const schedulerId = getCurrentSchedulerId();
-
-  const t = now();
 
   for (;;) {
     if (nextCursor >= t) {
@@ -85,12 +84,7 @@ export function repeat(interval, action, count = Infinity) {
   const scheduleNext = () => {
     schedule(nextCursor, () => {
       if (schedulerId === getCurrentSchedulerId() && count > 0) {
-        const timeOutside = _cursor;
-        _cursor = nextCursor;
-
-        action(stepCount++);
-        _cursor = timeOutside;
-
+        callScoped(nextCursor, memoizedChannel, () => action(stepCount++));
         count -= 1;
         nextCursor += interval;
         scheduleNext();
@@ -99,6 +93,19 @@ export function repeat(interval, action, count = Infinity) {
   };
 
   scheduleNext();
+}
+
+function callScoped(cursor, midiChannel, action) {
+  const channelOutside = getDefaultMidiChannel();
+  channel(midiChannel);
+
+  const timeOutside = _cursor;
+  _cursor = cursor;
+
+  action();
+
+  _cursor = timeOutside;
+  channel(channelOutside);
 }
 
 /**

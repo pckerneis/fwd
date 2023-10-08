@@ -5,6 +5,10 @@ import { fire } from './api.scheduler.js';
 
 let defaultMidiChannel = 0;
 
+export function getDefaultMidiChannel() {
+  return defaultMidiChannel;
+}
+
 /**
  * Schedule a MIDI note to be played at the cursor position
  * with note number `pitch`, velocity `velocity` and duration `duration` on MIDI channel `channel`.
