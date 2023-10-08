@@ -16,6 +16,7 @@ import { clear, fclear, flog, log } from './api/api.log.js';
 import { define, set } from './api/api.env.js';
 import { iter, pick, ring } from './api/api.utils.js';
 import { getNoteNumberConstants } from './api/api.notes.js';
+import { getPattern } from 'euclidean-rhythms';
 
 function getApi() {
   return {
@@ -61,6 +62,8 @@ function getApi() {
     ring,
 
     ...getNoteNumberConstants(),
+
+    euclid: getPattern,
   };
 }
 
