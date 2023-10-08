@@ -15,6 +15,7 @@ import { cc, channel, note, program } from './api/api.midi.js';
 import { clear, fclear, flog, log } from './api/api.log.js';
 import { define, set } from './api/api.env.js';
 import { iter, pick, ring } from './api/api.utils.js';
+import { getNoteNumberConstants } from './api/api.notes.js';
 
 function getApi() {
   return {
@@ -58,6 +59,8 @@ function getApi() {
     speed,
 
     ring,
+
+    ...getNoteNumberConstants(),
   };
 }
 
