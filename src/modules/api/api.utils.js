@@ -67,10 +67,10 @@ export function iter(iterableOrNumber, callback) {
  * @return {Ring} a Ring containing `elements`.
  */
 export function ring(...elements) {
-  let index = 0;
+  let index = -1;
 
   return {
-    next: () => elements[index++ % elements.length],
+    next: () => elements[++index % elements.length],
     peek: () => elements[index % elements.length],
   };
 }
