@@ -56,9 +56,10 @@ export function iter(iterableOrNumber, callback) {
  * A Ring (or circular buffer) acts like a list whose end is connected to its start.
  * Call `next()` to get next element in list, or `peek()` to read the current element.
  *
- * @property {Function} next - advance and return the next element of the Ring.
- * @property {Function} peek - return the current element of the Ring.
  * @property {Function} get - return an element at given position.
+ * @property {Function} get - moves cursor at given position and return the pointed element
+ * @property {Function} next - advance cursor and return the next element of the Ring.
+ * @property {Function} peek - return the currently pointed element of the Ring.
  */
 
 /**
@@ -72,9 +73,18 @@ export function ring(...elements) {
 
   const get = (i) => elements[i % elements.length];
 
+  const move = (i) => {
+    index = i;
+    return get(index);
+  };
+
+  const next = () => get(++index);
+  const peek = () => get(index);
+
   return {
     get,
-    next: () => get(++index),
-    peek: () => get(index),
+    move,
+    next,
+    peek,
   };
 }
