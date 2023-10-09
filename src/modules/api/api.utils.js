@@ -58,6 +58,7 @@ export function iter(iterableOrNumber, callback) {
  *
  * @property {Function} next - advance and return the next element of the Ring.
  * @property {Function} peek - return the current element of the Ring.
+ * @property {Function} get - return an element at given position.
  */
 
 /**
@@ -69,8 +70,11 @@ export function iter(iterableOrNumber, callback) {
 export function ring(...elements) {
   let index = -1;
 
+  const get = (i) => elements[i % elements.length];
+
   return {
-    next: () => elements[++index % elements.length],
-    peek: () => elements[index % elements.length],
+    get,
+    next: () => get(++index),
+    peek: () => get(index),
   };
 }

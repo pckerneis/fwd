@@ -263,4 +263,5 @@ Creates a Ring.
 | --- | --- | --- |
 | next | <code>function</code> | advance and return the next element of the Ring. |
 | peek | <code>function</code> | return the current element of the Ring. |
+| get | <code>function</code> | return an element at given position. |
 
