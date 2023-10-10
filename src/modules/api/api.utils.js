@@ -57,7 +57,7 @@ export function iter(iterableOrNumber, callback) {
  * Call `next()` to get next element in list, or `peek()` to read the current element.
  *
  * @property {Function} get - return an element at given position.
- * @property {Function} get - moves cursor at given position and return the pointed element
+ * @property {Function} move - moves cursor at given position and return the pointed element
  * @property {Function} next - advance cursor and return the next element of the Ring.
  * @property {Function} peek - return the currently pointed element of the Ring.
  */
