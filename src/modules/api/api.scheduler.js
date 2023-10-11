@@ -8,8 +8,8 @@ import {
 import { getDefaultMidiChannel } from './api.midi.js';
 import { getCurrentScope, popScope, pushScope } from './api.scope.js';
 
-const loops = {};
-const activeLoops = {};
+let loops = {};
+let activeLoops = {};
 
 /**
  * Returns the execution time
@@ -107,7 +107,7 @@ function beginLoop(name, action) {
       return;
     }
 
-    if (!activeLoops[name]) {
+    if (!isLoopActive(name)) {
       loops[name] = null;
       return;
     }
@@ -154,10 +154,19 @@ export function loop(name, action) {
   }
 }
 
+export function isLoopActive(name) {
+  return activeLoops[name] === true;
+}
+
 export function deactivatePendingLoops() {
   for (let name of Object.keys(loops)) {
     activeLoops[name] = false;
   }
+}
+
+export function clearPendingLoops() {
+  loops = {};
+  activeLoops = {};
 }
 
 /**

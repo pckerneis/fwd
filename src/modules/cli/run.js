@@ -16,6 +16,11 @@ import { dbg, DBG_MODE } from './dbg.js';
 import easymidi from 'easymidi';
 import readline from 'readline';
 
+/**
+ * Get an existing MIDI output name
+ * @param {string} output - An optional MIDI output name
+ * @returns {Promise<null|string|*>} the MIDI output or null
+ */
 async function getExistingMidiOutput(output) {
   const outputs = easymidi.getOutputs();
 
@@ -28,6 +33,12 @@ async function getExistingMidiOutput(output) {
   }
 }
 
+/**
+ * Start watching a file for changes and run it in the sandbox when it changes
+ * @param existingFile
+ * @param midiOutput
+ * @param outlines
+ */
 function startWatching(existingFile, midiOutput, outlines) {
   chokidar
     .watch(existingFile.path, {
@@ -44,6 +55,9 @@ function startWatching(existingFile, midiOutput, outlines) {
     });
 }
 
+/**
+ * Add key bindings to the CLI
+ */
 function addKeyBindings() {
   readline.emitKeypressEvents(process.stdin);
 

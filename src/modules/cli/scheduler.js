@@ -33,7 +33,12 @@ export function clock() {
 }
 
 export function setSchedulerSpeed(newSpeed) {
-  if (typeof speed !== 'number' || speed <= 0) {
+  if (
+    typeof newSpeed !== 'number' ||
+    newSpeed <= 0 ||
+    Number.isNaN(newSpeed) ||
+    !Number.isFinite(newSpeed)
+  ) {
     throw new Error('Speed should be a positive number.');
   }
 

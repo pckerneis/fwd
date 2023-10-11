@@ -40,7 +40,7 @@ export function iter(iterableOrNumber, callback) {
     for (let i = 0; i < Math.abs(iterableOrNumber); i++) {
       callback(i);
     }
-  } else if (typeof iterableOrNumber?.[Symbol.iterator]) {
+  } else if (typeof iterableOrNumber?.[Symbol.iterator] === 'function') {
     let i = 0;
     for (let e of iterableOrNumber) {
       callback(e, i++);

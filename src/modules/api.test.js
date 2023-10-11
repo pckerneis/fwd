@@ -2,6 +2,11 @@ import { getApiContext } from './api.js';
 import { jest } from '@jest/globals';
 import { initScheduler, startScheduler } from './cli/scheduler.js';
 import { resetNotesCurrentlyOnState } from './cli/midi.js';
+import {
+  clearPendingLoops,
+  deactivatePendingLoops,
+  isLoopActive,
+} from './api/api.scheduler.js';
 
 let currentTime = 0;
 let messages = [];
@@ -27,6 +32,7 @@ beforeEach(() => {
   initScheduler();
   mockDateNow(4537);
   resetNotesCurrentlyOnState();
+  clearPendingLoops();
 });
 
 afterEach(() => {
@@ -409,4 +415,396 @@ test('set() overwrite variable', () => {
   const apiContext = getApiContext(midiOutput, messages);
   apiContext.set('fortyTwo', 48);
   expect(apiContext.fortyTwo).toBe(48);
+});
+
+test('setSpeed() sets speed', () => {
+  const apiContext = getApiContext(midiOutput, messages);
+  apiContext.setSpeed(42);
+  expect(apiContext.getSpeed()).toBe(42);
+});
+
+test('speed() sets speed', () => {
+  const apiContext = getApiContext(midiOutput, messages);
+  apiContext.speed(42);
+  expect(apiContext.getSpeed()).toBe(42);
+});
+
+test('speed() should not set invalid speed', () => {
+  const apiContext = getApiContext(midiOutput, messages);
+  expect(() => apiContext.speed('hello')).toThrow();
+});
+
+test('speed() should not set negative speed', () => {
+  const apiContext = getApiContext(midiOutput, messages);
+  expect(() => apiContext.speed(-1)).toThrow();
+});
+
+test('speed() should not set speed to zero', () => {
+  const apiContext = getApiContext(midiOutput, messages);
+  expect(() => apiContext.speed(0)).toThrow();
+});
+
+test('speed() should not set speed to NaN', () => {
+  const apiContext = getApiContext(midiOutput, messages);
+  expect(() => apiContext.speed(NaN)).toThrow();
+});
+
+test('speed() should not set speed to Infinity', () => {
+  const apiContext = getApiContext(midiOutput, messages);
+  expect(() => apiContext.speed(Infinity)).toThrow();
+});
+
+test('speed() without parameter only returns current value', () => {
+  const apiContext = getApiContext(midiOutput, messages);
+  apiContext.setSpeed(42);
+  expect(apiContext.speed()).toBe(42);
+});
+
+test('ring() creates a ring', () => {
+  const apiContext = getApiContext(midiOutput, messages);
+  const ring = apiContext.ring('hello', 123, 42, null);
+  expect(ring.get(0)).toBe('hello');
+  expect(ring.get(1)).toBe(123);
+  expect(ring.get(2)).toBe(42);
+  expect(ring.get(3)).toBe(null);
+  expect(ring.get(4)).toBe('hello');
+  expect(ring.get(5)).toBe(123);
+  expect(ring.get(6)).toBe(42);
+  expect(ring.get(7)).toBe(null);
+});
+
+test('ring() iterates over elements', () => {
+  const apiContext = getApiContext(midiOutput, messages);
+  const ring = apiContext.ring('hello', 123, 42, null);
+  const values = [];
+
+  for (let i = 0; i < 10; ++i) {
+    values.push(ring.next());
+  }
+
+  expect(values).toEqual([
+    'hello',
+    123,
+    42,
+    null,
+    'hello',
+    123,
+    42,
+    null,
+    'hello',
+    123,
+  ]);
+});
+
+test('ring() iterates over elements with move', () => {
+  const apiContext = getApiContext(midiOutput, messages);
+  const ring = apiContext.ring('hello', 123, 42, null);
+  const values = [];
+
+  for (let i = 0; i < 10; ++i) {
+    values.push(ring.move(i));
+    values.push(ring.peek());
+  }
+
+  expect(values).toEqual([
+    'hello',
+    'hello',
+    123,
+    123,
+    42,
+    42,
+    null,
+    null,
+    'hello',
+    'hello',
+    123,
+    123,
+    42,
+    42,
+    null,
+    null,
+    'hello',
+    'hello',
+    123,
+    123,
+  ]);
+});
+
+test('iter() iterates over numbers', () => {
+  const apiContext = getApiContext(midiOutput, messages);
+  const values = [];
+
+  apiContext.iter(5, (i) => values.push(i));
+
+  expect(values).toEqual([0, 1, 2, 3, 4]);
+});
+
+test('iter() iterates over strings', () => {
+  const apiContext = getApiContext(midiOutput, messages);
+  const values = [];
+
+  apiContext.iter('hello', (i) => values.push(i));
+
+  expect(values).toEqual(['h', 'e', 'l', 'l', 'o']);
+});
+
+test('iter() iterates over arrays', () => {
+  const apiContext = getApiContext(midiOutput, messages);
+  const values = [];
+
+  apiContext.iter([1, 2, 3], (i) => values.push(i));
+
+  expect(values).toEqual([1, 2, 3]);
+});
+
+test("iter() doesn't iterate over non-iterable arguments", () => {
+  const apiContext = getApiContext(midiOutput, messages);
+  const values = [];
+
+  apiContext.iter(null, (i) => values.push(i));
+
+  expect(values).toEqual([null]);
+});
+
+test('loop() loops over elements', () => {
+  const { loop, wait } = getApiContext(midiOutput, messages);
+
+  startScheduler([]);
+
+  const fn = jest.fn();
+
+  const action = () => {
+    wait(1);
+    fn();
+  };
+
+  loop('loop', action);
+
+  advanceTime(1);
+  advanceTime(1000);
+  advanceTime(1000);
+
+  expect(fn).toBeCalledTimes(3);
+
+  advanceTime(1000);
+  advanceTime(1000);
+  advanceTime(1000);
+  advanceTime(1000);
+
+  expect(fn).toBeCalledTimes(7);
+});
+
+test('loop() can redefine on-going loop', () => {
+  const { loop, wait } = getApiContext(midiOutput, messages);
+
+  startScheduler([]);
+
+  const fn1 = jest.fn();
+  const fn2 = jest.fn();
+
+  const action1 = () => {
+    wait(1);
+    fn1();
+  };
+
+  const action2 = () => {
+    wait(2);
+    fn2();
+  };
+
+  loop('loop', action1);
+
+  advanceTime(1);
+  advanceTime(1000);
+  advanceTime(1000);
+
+  expect(fn1).toBeCalledTimes(3);
+
+  loop('loop', action2);
+
+  advanceTime(1000);
+  advanceTime(1000);
+  advanceTime(1000);
+  advanceTime(1000);
+
+  expect(fn2).toBeCalledTimes(2);
+});
+
+test('loop() can be deactivated', () => {
+  const { loop, wait } = getApiContext(midiOutput, messages);
+
+  startScheduler([]);
+
+  const fn = jest.fn();
+
+  const action = () => {
+    wait(1);
+    fn();
+  };
+
+  loop('loop', action);
+
+  advanceTime(1);
+  advanceTime(1000);
+  advanceTime(1000);
+
+  expect(fn).toBeCalledTimes(3);
+
+  deactivatePendingLoops();
+
+  advanceTime(1000);
+  advanceTime(1000);
+  advanceTime(1000);
+  advanceTime(1000);
+
+  expect(fn).toBeCalledTimes(3);
+});
+
+test('loop() can be cleared', () => {
+  const { loop, wait } = getApiContext(midiOutput, messages);
+
+  startScheduler([]);
+
+  const fn = jest.fn();
+
+  const action = () => {
+    wait(1);
+    fn();
+  };
+
+  loop('loop', action);
+
+  advanceTime(1);
+  advanceTime(1000);
+  advanceTime(1000);
+
+  expect(fn).toBeCalledTimes(3);
+
+  clearPendingLoops();
+
+  advanceTime(1000);
+  advanceTime(1000);
+  advanceTime(1000);
+  advanceTime(1000);
+
+  expect(fn).toBeCalledTimes(3);
+});
+
+test.skip("loop() can be deactivated and won't be rescheduled in past", () => {
+  const { at, loop, wait } = getApiContext(midiOutput, messages);
+
+  startScheduler([]);
+
+  const fn = jest.fn();
+
+  const action = () => {
+    wait(1);
+    fn();
+  };
+
+  loop('loop', action);
+
+  advanceTime(1);
+  advanceTime(1000);
+  advanceTime(1000);
+
+  expect(fn).toBeCalledTimes(3);
+
+  deactivatePendingLoops();
+
+  advanceTime(1000);
+  advanceTime(1000);
+  advanceTime(1000);
+  advanceTime(1000);
+
+  expect(fn).toBeCalledTimes(3);
+
+  at(0);
+  loop('loop', action);
+
+  advanceTime(1000);
+  advanceTime(1000);
+  advanceTime(1000);
+  advanceTime(1000);
+
+  expect(fn).toBeCalledTimes(3);
+});
+
+test('loop() ignores invalid name parameter', () => {
+  const { loop, wait } = getApiContext(midiOutput, messages);
+
+  startScheduler([]);
+
+  const fn = jest.fn();
+
+  const action = () => {
+    wait(1);
+    fn();
+  };
+
+  loop(42, action);
+
+  advanceTime(1);
+  advanceTime(1000);
+  advanceTime(1000);
+
+  expect(fn).toBeCalledTimes(0);
+});
+
+test('loop() ignores invalid action parameter', () => {
+  const { loop } = getApiContext(midiOutput, messages);
+
+  startScheduler([]);
+
+  loop('loop', 42);
+
+  advanceTime(1);
+  advanceTime(1000);
+  advanceTime(1000);
+
+  expect(isLoopActive('loop')).toBeFalsy();
+});
+
+test('past loop() should be ignored', () => {
+  const { loop, wait } = getApiContext(midiOutput, messages);
+
+  startScheduler([]);
+
+  const fn = jest.fn();
+
+  const action = () => {
+    wait(1);
+    fn();
+  };
+
+  advanceTime(1000);
+
+  loop('loop', action);
+
+  advanceTime(1000);
+  advanceTime(1000);
+  advanceTime(1000);
+
+  expect(fn).toBeCalledTimes(0);
+});
+
+test('loop() should not repeat in past', () => {
+  const { loop, wait } = getApiContext(midiOutput, messages);
+
+  startScheduler([]);
+
+  const fn = jest.fn();
+
+  const action = () => {
+    wait(-1);
+    fn();
+  };
+
+  loop('loop', action);
+
+  advanceTime(1);
+  advanceTime(1000);
+  advanceTime(1000);
+
+  expect(fn).toBeCalledTimes(1);
 });
