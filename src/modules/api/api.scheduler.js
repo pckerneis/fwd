@@ -9,6 +9,9 @@ import { channel, getDefaultMidiChannel } from './api.midi.js';
 
 let _cursor;
 
+const loops = {};
+const activeLoops = {};
+
 /**
  * Returns the execution time
  * @returns {number} Current execution time
@@ -106,6 +109,77 @@ function callScoped(cursor, midiChannel, action) {
 
   _cursor = timeOutside;
   channel(channelOutside);
+}
+
+function beginLoop(name, action) {
+  loops[name] = action;
+
+  const memoizedChannel = getDefaultMidiChannel();
+  let memoizedCursor = _cursor;
+
+  const doItOnce = () => {
+    if (loops[name] == null) {
+      return;
+    }
+
+    if (!activeLoops[name]) {
+      loops[name] = null;
+      return;
+    }
+
+    const timeOutside = _cursor;
+    _cursor = memoizedCursor;
+
+    if (_cursor >= now()) {
+      schedule(_cursor, () => {
+        const channelOutside = getDefaultMidiChannel();
+        channel(memoizedChannel);
+
+        _cursor = memoizedCursor;
+
+        loops[name]();
+
+        if (_cursor > memoizedCursor) {
+          schedule(_cursor, doItOnce);
+        }
+
+        memoizedCursor = _cursor;
+        channel(channelOutside);
+        _cursor = timeOutside;
+      });
+    }
+  };
+
+  doItOnce();
+}
+
+/**
+ * Define a named loop or replace an existing one and start it at current cursor
+ * position.
+ * The function `action` will be called repeatedly if the cursor moves by a positive
+ * amount inside the action.
+ *
+ * @param {string} name - The loop's name
+ * @param {function} action - The action to repeat
+ */
+export function loop(name, action) {
+  if (typeof name !== 'string' || typeof action !== 'function') {
+    return;
+  }
+
+  activeLoops[name] = true;
+
+  if (loops[name] == null) {
+    beginLoop(name, action);
+  } else {
+    loops[name] = action;
+  }
+}
+
+export function deactivatePendingLoops() {
+  for (let name of Object.keys(loops)) {
+    activeLoops[name] = false;
+  }
 }
 
 /**

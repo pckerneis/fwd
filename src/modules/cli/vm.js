@@ -3,6 +3,7 @@ import { decrementSchedulerId, incrementSchedulerId } from './scheduler.js';
 import { dbg } from './dbg.js';
 import { getApiContext } from '../api.js';
 import chalk from 'chalk';
+import { deactivatePendingLoops } from '../api/api.scheduler.js';
 
 let lastChangeDate;
 
@@ -21,6 +22,7 @@ export function getLastChangeDate() {
  */
 export function runInSandbox(userCode, midiOutput, textOutputLines) {
   incrementSchedulerId();
+  deactivatePendingLoops();
 
   const context = vm.createContext(getApiContext(midiOutput, textOutputLines));
 
