@@ -111,6 +111,48 @@ function callScoped(cursor, midiChannel, action) {
   channel(channelOutside);
 }
 
+function beginLoop(name, action) {
+  loops[name] = action;
+
+  const memoizedChannel = getDefaultMidiChannel();
+  let memoizedCursor = _cursor;
+
+  const doItOnce = () => {
+    if (loops[name] == null) {
+      return;
+    }
+
+    if (!activeLoops[name]) {
+      loops[name] = null;
+      return;
+    }
+
+    const timeOutside = _cursor;
+    _cursor = memoizedCursor;
+
+    if (_cursor >= now()) {
+      schedule(_cursor, () => {
+        const channelOutside = getDefaultMidiChannel();
+        channel(memoizedChannel);
+
+        _cursor = memoizedCursor;
+
+        loops[name]();
+
+        if (_cursor > memoizedCursor) {
+          schedule(_cursor, doItOnce);
+        }
+
+        memoizedCursor = _cursor;
+        channel(channelOutside);
+        _cursor = timeOutside;
+      });
+    }
+  };
+
+  doItOnce();
+}
+
 /**
  * Define a named loop or replace an existing one and start it at current cursor
  * position.
@@ -128,31 +170,7 @@ export function loop(name, action) {
   activeLoops[name] = true;
 
   if (loops[name] == null) {
-    loops[name] = action;
-
-    let memoizedCursor = _cursor;
-
-    const doItOnce = () => {
-      if (loops[name] != null) {
-        if (!activeLoops[name]) {
-          loops[name] = null;
-          return;
-        }
-
-        const timeOutside = _cursor;
-        _cursor = memoizedCursor;
-        loops[name]();
-
-        if (_cursor > memoizedCursor) {
-          fire(doItOnce);
-        }
-
-        memoizedCursor = _cursor;
-        _cursor = timeOutside;
-      }
-    };
-
-    doItOnce();
+    beginLoop(name, action);
   } else {
     loops[name] = action;
   }
