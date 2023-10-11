@@ -112,8 +112,10 @@ function callScoped(cursor, midiChannel, action) {
 }
 
 /**
- * Define a named loop or replace an existing one. The function `action` will be
- * called repeatedly if the cursor moves by a positive amount.
+ * Define a named loop or replace an existing one and start it at current cursor
+ * position.
+ * The function `action` will be called repeatedly if the cursor moves by a positive
+ * amount inside the action.
  *
  * @param {string} name - The loop's name
  * @param {function} action - The action to repeat
@@ -142,10 +144,9 @@ export function loop(name, action) {
         loops[name]();
 
         if (_cursor > memoizedCursor) {
-          schedule(_cursor, () => {
-            doItOnce();
-          });
+          fire(doItOnce);
         }
+
         memoizedCursor = _cursor;
         _cursor = timeOutside;
       }

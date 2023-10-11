@@ -159,8 +159,10 @@ Repeatedly calls the function `action` every `interval` seconds `count` times, s
 <a name="loop"></a>
 
 ## loop(name, action)
-Define a named loop or replace an existing one. The function `action` will be
-called repeatedly if the cursor moves by a positive amount.
+Define a named loop or replace an existing one and start it at current cursor
+position.
+The function `action` will be called repeatedly if the cursor moves by a positive amount
+inside the action.
 
 **Kind**: global function  
 
