@@ -126,12 +126,6 @@ Returns the current time cursor position
 
 **Kind**: global function  
 **Returns**: <code>number</code> - the cursor position  
-<a name="resetCursor"></a>
-
-## resetCursor()
-Reset the cursor to 0
-
-**Kind**: global function  
 <a name="fire"></a>
 
 ## fire(action)
