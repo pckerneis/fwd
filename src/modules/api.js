@@ -6,7 +6,6 @@ import {
   loop,
   now,
   repeat,
-  resetCursor,
   setSpeed,
   speed,
   wait,
@@ -18,6 +17,7 @@ import { define, set } from './api/api.env.js';
 import { iter, pick, ring } from './api/api.utils.js';
 import { getNoteNumberConstants } from './api/api.notes.js';
 import { getPattern } from 'euclidean-rhythms';
+import { resetScopes } from './api/api.scope.js';
 
 function getApi() {
   return {
@@ -78,7 +78,7 @@ function getApi() {
  * @ignore
  */
 export function getApiContext(midiOutput, textOutputLines) {
-  resetCursor();
+  resetScopes();
   setMidiOutput(midiOutput);
   setLogLines(textOutputLines);
 
