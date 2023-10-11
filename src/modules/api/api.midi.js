@@ -2,11 +2,10 @@ import { dbg } from '../cli/dbg.js';
 import { playNote, sendCC, sendProgramChange } from '../cli/midi.js';
 import { _midiOutput } from './api.shared.js';
 import { fire } from './api.scheduler.js';
-
-let defaultMidiChannel = 0;
+import { getCurrentScope } from './api.scope.js';
 
 export function getDefaultMidiChannel() {
-  return defaultMidiChannel;
+  return getCurrentScope().midiChannel;
 }
 
 /**
@@ -19,7 +18,7 @@ export function getDefaultMidiChannel() {
  * @param {number} [channel] - MIDI channel to send to
  */
 export function note(pitch, velocity, duration, channel) {
-  channel = channel ?? defaultMidiChannel;
+  channel = channel ?? getDefaultMidiChannel();
 
   fire(() => {
     dbg('About to play note');
@@ -33,7 +32,7 @@ export function note(pitch, velocity, duration, channel) {
  * @param {number} [channel] - MIDI channel to send to
  */
 export function program(program, channel) {
-  channel = channel ?? defaultMidiChannel;
+  channel = channel ?? getDefaultMidiChannel();
 
   fire(() => sendProgramChange(_midiOutput, program, channel));
 }
@@ -45,7 +44,7 @@ export function program(program, channel) {
  * @param {number} [channel] - MIDI channel to send to
  */
 export function cc(controller, value, channel) {
-  channel = channel ?? defaultMidiChannel;
+  channel = channel ?? getDefaultMidiChannel();
 
   fire(() => sendCC(_midiOutput, controller, value, channel));
 }
@@ -55,5 +54,5 @@ export function cc(controller, value, channel) {
  * @param {number} [channelNumber] - Default MIDI channel
  */
 export function channel(channelNumber) {
-  defaultMidiChannel = channelNumber ?? 0;
+  getCurrentScope().midiChannel = channelNumber ?? 0;
 }

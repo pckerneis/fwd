@@ -5,9 +5,8 @@ import {
   schedule,
   setSchedulerSpeed,
 } from '../cli/scheduler.js';
-import { channel, getDefaultMidiChannel } from './api.midi.js';
-
-let _cursor;
+import { getDefaultMidiChannel } from './api.midi.js';
+import { getCurrentScope, popScope, pushScope } from './api.scope.js';
 
 const loops = {};
 const activeLoops = {};
@@ -25,14 +24,7 @@ export function now() {
  * @returns {number} the cursor position
  */
 export function cursor() {
-  return _cursor;
-}
-
-/**
- * Reset the cursor to 0
- */
-export function resetCursor() {
-  _cursor = 0;
+  return getCurrentScope().cursor;
 }
 
 /**
@@ -41,11 +33,11 @@ export function resetCursor() {
  * @param {Function} action - The action to schedule as a function
  */
 export function fire(action) {
-  const memoizedCursor = _cursor;
+  const memoizedCursor = cursor();
   const memoizedChannel = getDefaultMidiChannel();
 
-  if (_cursor >= now()) {
-    schedule(_cursor, () => {
+  if (cursor() >= now()) {
+    schedule(cursor(), () => {
       callScoped(memoizedCursor, memoizedChannel, action);
     });
   }
@@ -67,7 +59,7 @@ export function repeat(interval, action, count = Infinity) {
   const schedulerId = getCurrentSchedulerId();
   const t = now();
   let stepCount = 0;
-  let nextCursor = _cursor;
+  let nextCursor = cursor();
 
   for (;;) {
     if (nextCursor >= t) {
@@ -99,23 +91,16 @@ export function repeat(interval, action, count = Infinity) {
 }
 
 function callScoped(cursor, midiChannel, action) {
-  const channelOutside = getDefaultMidiChannel();
-  channel(midiChannel);
-
-  const timeOutside = _cursor;
-  _cursor = cursor;
-
+  pushScope({ cursor, midiChannel });
   action();
-
-  _cursor = timeOutside;
-  channel(channelOutside);
+  popScope();
 }
 
 function beginLoop(name, action) {
   loops[name] = action;
 
   const memoizedChannel = getDefaultMidiChannel();
-  let memoizedCursor = _cursor;
+  let nextCursor = cursor();
 
   const doItOnce = () => {
     if (loops[name] == null) {
@@ -127,25 +112,18 @@ function beginLoop(name, action) {
       return;
     }
 
-    const timeOutside = _cursor;
-    _cursor = memoizedCursor;
-
-    if (_cursor >= now()) {
-      schedule(_cursor, () => {
-        const channelOutside = getDefaultMidiChannel();
-        channel(memoizedChannel);
-
-        _cursor = memoizedCursor;
+    if (nextCursor >= now()) {
+      schedule(nextCursor, () => {
+        pushScope({ midiChannel: memoizedChannel, cursor: nextCursor });
 
         loops[name]();
 
-        if (_cursor > memoizedCursor) {
-          schedule(_cursor, doItOnce);
+        if (cursor() > nextCursor) {
+          schedule(cursor(), doItOnce);
         }
 
-        memoizedCursor = _cursor;
-        channel(channelOutside);
-        _cursor = timeOutside;
+        nextCursor = cursor();
+        popScope();
       });
     }
   };
@@ -188,7 +166,7 @@ export function deactivatePendingLoops() {
  * @param {number} time - Time position in seconds
  */
 export function at(time) {
-  _cursor = time;
+  getCurrentScope().cursor = time;
 }
 
 /**
@@ -197,7 +175,7 @@ export function at(time) {
  * @param {number} duration - Duration in seconds
  */
 export function wait(duration) {
-  _cursor += duration;
+  getCurrentScope().cursor += duration;
 }
 
 /**
