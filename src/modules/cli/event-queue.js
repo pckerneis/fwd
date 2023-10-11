@@ -76,7 +76,7 @@ export class EventQueue {
       return min;
     }
 
-    let pivot = (Math.random() * range + min) | 0;
+    let pivot = (range / 2 + min) | 0;
     let timeAtPivot = this.events[pivot].time;
 
     while (timeAtPivot === time) {
