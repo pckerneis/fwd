@@ -176,9 +176,6 @@ export function loop(name, action) {
   }
 }
 
-/**
- * Mark all loops as inactive. Inactive loops won't repeat until reactivated.
- */
 export function deactivatePendingLoops() {
   for (let name of Object.keys(loops)) {
     activeLoops[name] = false;

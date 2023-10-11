@@ -171,12 +171,6 @@ amount inside the action.
 | name | <code>string</code> | The loop's name |
 | action | <code>function</code> | The action to repeat |
 
-<a name="deactivatePendingLoops"></a>
-
-## deactivatePendingLoops()
-Mark all loops as inactive. Inactive loops won't repeat until reactivated.
-
-**Kind**: global function  
 <a name="at"></a>
 
 ## at(time)
