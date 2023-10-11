@@ -161,8 +161,8 @@ Repeatedly calls the function `action` every `interval` seconds `count` times, s
 ## loop(name, action)
 Define a named loop or replace an existing one and start it at current cursor
 position.
-The function `action` will be called repeatedly if the cursor moves by a positive amount
-inside the action.
+The function `action` will be called repeatedly if the cursor moves by a positive
+amount inside the action.
 
 **Kind**: global function  
 
