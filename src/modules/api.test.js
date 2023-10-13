@@ -808,3 +808,52 @@ test('loop() should not repeat in past', () => {
 
   expect(fn).toBeCalledTimes(1);
 });
+
+test('next() should move cursor to next multiple of interval', () => {
+  const { next, cursor } = getApiContext(midiOutput, messages);
+
+  startScheduler([]);
+
+  advanceTime(1000);
+
+  next(10);
+  expect(cursor()).toBe(10);
+
+  advanceTime(9000);
+
+  next(10);
+  expect(cursor()).toBe(10);
+
+  advanceTime(1);
+
+  next(10);
+  expect(cursor()).toBe(20);
+
+  next(7);
+  expect(cursor()).toBe(14);
+});
+
+test('next() should ignore invalid interval', () => {
+  const { at, next, cursor } = getApiContext(midiOutput, messages);
+
+  startScheduler([]);
+
+  at(42);
+
+  advanceTime(1000);
+
+  next(0);
+  expect(cursor()).toBe(42);
+
+  next(-1);
+  expect(cursor()).toBe(42);
+
+  next(null);
+  expect(cursor()).toBe(42);
+
+  next(Infinity);
+  expect(cursor()).toBe(42);
+
+  next('hello');
+  expect(cursor()).toBe(42);
+});
