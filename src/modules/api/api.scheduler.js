@@ -232,7 +232,7 @@ export function next(interval) {
   }
 
   const t = now();
-  let nextCursor = cursor();
+  let nextCursor = 0;
 
   for (;;) {
     if (nextCursor >= t) {
