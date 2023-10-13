@@ -281,8 +281,9 @@ Creates a Ring.
 
 | Name | Type | Description |
 | --- | --- | --- |
+| elements | <code>Array</code> | return the elements array. |
 | get | <code>function</code> | return an element at given position. |
-| move | <code>function</code> | moves cursor at given position and return the pointed element |
+| move | <code>function</code> | moves cursor at given position and return the pointed element. |
 | next | <code>function</code> | advance cursor and return the next element of the Ring. |
 | peek | <code>function</code> | return the currently pointed element of the Ring. |
 
