@@ -107,17 +107,12 @@ test('repeat() should repeatedly call a function', () => {
 
   repeat(1, action, 5);
 
-  advanceTime(1);
-  advanceTime(1000);
-  advanceTime(1000);
+  advanceTime(2000);
 
   expect(action).toBeCalledTimes(3);
   expect(action).toHaveBeenLastCalledWith(2);
 
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
+  advanceTime(4000);
 
   expect(action).toBeCalledTimes(5);
   expect(action).toHaveBeenLastCalledWith(4);
@@ -134,13 +129,7 @@ test('repeat() should skip past calls', () => {
 
   repeat(1, action, 5);
 
-  advanceTime(1);
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
+  advanceTime(6000);
 
   expect(action).toBeCalledTimes(3);
   expect(action).toHaveBeenLastCalledWith(4);
@@ -157,13 +146,7 @@ test('repeat() should skip all calls', () => {
 
   repeat(1, action, 5);
 
-  advanceTime(1);
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
+  advanceTime(6000);
 
   expect(action).toBeCalledTimes(0);
 });
@@ -189,13 +172,7 @@ test('repeat() should repeat at infinity', () => {
 
   repeat(1, action);
 
-  advanceTime(1);
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
+  advanceTime(6000);
 
   expect(action).toBeCalledTimes(7);
 });
@@ -579,18 +556,10 @@ test('loop() loops over elements', () => {
   };
 
   loop('loop', action);
-
-  advanceTime(1);
-  advanceTime(1000);
-  advanceTime(1000);
-
+  advanceTime(2000);
   expect(fn).toBeCalledTimes(3);
 
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-
+  advanceTime(4000);
   expect(fn).toBeCalledTimes(7);
 });
 
@@ -613,20 +582,11 @@ test('loop() can redefine on-going loop', () => {
   };
 
   loop('loop', action1);
-
-  advanceTime(1);
-  advanceTime(1000);
-  advanceTime(1000);
-
+  advanceTime(2000);
   expect(fn1).toBeCalledTimes(3);
 
   loop('loop', action2);
-
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-
+  advanceTime(4000);
   expect(fn2).toBeCalledTimes(2);
 });
 
@@ -643,20 +603,11 @@ test('loop() can be deactivated', () => {
   };
 
   loop('loop', action);
-
-  advanceTime(1);
-  advanceTime(1000);
-  advanceTime(1000);
-
+  advanceTime(2000);
   expect(fn).toBeCalledTimes(3);
 
   deactivatePendingLoops();
-
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-
+  advanceTime(4000);
   expect(fn).toBeCalledTimes(3);
 });
 
@@ -673,20 +624,11 @@ test('loop() can be cleared', () => {
   };
 
   loop('loop', action);
-
-  advanceTime(1);
-  advanceTime(1000);
-  advanceTime(1000);
-
+  advanceTime(2000);
   expect(fn).toBeCalledTimes(3);
 
   clearPendingLoops();
-
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-
+  advanceTime(4000);
   expect(fn).toBeCalledTimes(3);
 });
 
@@ -703,30 +645,16 @@ test.skip("loop() can be deactivated and won't be rescheduled in past", () => {
   };
 
   loop('loop', action);
-
-  advanceTime(1);
-  advanceTime(1000);
-  advanceTime(1000);
-
+  advanceTime(2000);
   expect(fn).toBeCalledTimes(3);
 
   deactivatePendingLoops();
-
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-
+  advanceTime(4000);
   expect(fn).toBeCalledTimes(3);
 
   at(0);
   loop('loop', action);
-
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
-
+  advanceTime(4000);
   expect(fn).toBeCalledTimes(3);
 });
 
@@ -744,9 +672,7 @@ test('loop() ignores invalid name parameter', () => {
 
   loop(42, action);
 
-  advanceTime(1);
-  advanceTime(1000);
-  advanceTime(1000);
+  advanceTime(2000);
 
   expect(fn).toBeCalledTimes(0);
 });
@@ -758,9 +684,7 @@ test('loop() ignores invalid action parameter', () => {
 
   loop('loop', 42);
 
-  advanceTime(1);
-  advanceTime(1000);
-  advanceTime(1000);
+  advanceTime(2000);
 
   expect(isLoopActive('loop')).toBeFalsy();
 });
@@ -781,9 +705,7 @@ test('past loop() should be ignored', () => {
 
   loop('loop', action);
 
-  advanceTime(1000);
-  advanceTime(1000);
-  advanceTime(1000);
+  advanceTime(3000);
 
   expect(fn).toBeCalledTimes(0);
 });
@@ -802,9 +724,7 @@ test('loop() should not repeat in past', () => {
 
   loop('loop', action);
 
-  advanceTime(1);
-  advanceTime(1000);
-  advanceTime(1000);
+  advanceTime(2000);
 
   expect(fn).toBeCalledTimes(1);
 });
