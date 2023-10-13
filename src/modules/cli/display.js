@@ -21,6 +21,8 @@ function truncateOutputLines(textOutputLines) {
   }
 }
 
+const unstableVersionWarning = `This is an early version of Musch. Consider the API unstable and very likely to break in future versions.`;
+
 /**
  * Clear the terminal and print a welcome header.
  *
@@ -29,9 +31,11 @@ function truncateOutputLines(textOutputLines) {
 export function printWelcome(version) {
   clearBuffer();
   console.log(`
- ▄▀▀ █ █ █ █▀▄
- █▀  ▀█▀█▀ █▄█
-          v${version}
+█▀▄▀█ █░█ █▀ █▀▀ █░█
+█░▀░█ █▄█ ▄█ █▄▄ █▀█
+               v${version}
+          
+${unstableVersionWarning}
   `);
 }
 

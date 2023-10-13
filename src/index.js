@@ -9,7 +9,7 @@ printWelcome(PACKAGE_VERSION);
 const program = new Command();
 
 program
-  .name('fwd')
+  .name('musch')
   .version(PACKAGE_VERSION)
   .description('CLI to run musical programs in JS')
   .option('-f, --file <file>', 'path to the program file to run')

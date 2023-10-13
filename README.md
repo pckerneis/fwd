@@ -1,4 +1,4 @@
-# fwd 0.0.1
+# Musch 0.0.1
 
 A tiny environment for musical composition and live-coding in JavaScript.
 
@@ -11,7 +11,7 @@ To run from the sources:
 - clone the project
 - install the NPM dependencies with `npm ci`
 - install the command-line runner with `npm install -g .`
-- run with `fwd`
+- run with `musch`
 
 You'll be prompted a text file to read from, and a MIDI output to send to.
 
@@ -45,11 +45,11 @@ repeat(0.25, (i) => log('Repeat #' + i), 5);
 
 ## CLI documentation
 
-See [CLI documentation](https://pckerneis.github.io/fwd/#/cli.md).
+See [CLI documentation](https://pckerneis.github.io/musch/#/cli.md).
 
 ## API reference
 
-See also [API reference](https://pckerneis.github.io/fwd/#/api-reference.md).
+See also [API reference](https://pckerneis.github.io/musch/#/api-reference.md).
 
 <a name="define"></a>
 

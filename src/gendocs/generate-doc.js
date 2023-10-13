@@ -16,7 +16,7 @@ async function writeApiReference() {
 function writeCliDocumentation() {
   const outputFile = 'docs/cli.md';
   const template = fs.readFileSync('src/gendocs/cli-template.hbs', 'utf-8');
-  const childProcess = exec('fwd -h');
+  const childProcess = exec('musch -h');
 
   childProcess.stdout.on('data', function (data) {
     fs.writeFileSync(outputFile, template.replace('{{help}}', data));
@@ -59,7 +59,7 @@ async function writeReadmes() {
     example,
     'docs/screenshot.png',
     'README.md',
-    'https://pckerneis.github.io/fwd/#/',
+    'https://pckerneis.github.io/musch/#/',
   );
 }
 

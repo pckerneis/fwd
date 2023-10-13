@@ -1,11 +1,11 @@
 {
-  "name": "fwd-cli",
+  "name": "musch",
   "version": "0.0.1",
   "main": "index.js",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "fwd": "bin/fwd.js"
+    "musch": "bin/musch.js"
   },
   "scripts": {
     "start": "node \"./src/index.js\"",
