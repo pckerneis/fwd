@@ -2,7 +2,7 @@
 
 A tiny environment for musical composition and live-coding in JavaScript.
 
-![Screenshot](screenshot.png)
+![Screenshot](hello-musch.gif)
 
 ## Quick start
 

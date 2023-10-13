@@ -3,7 +3,7 @@
 ## Command line arguments
 
 ```
-Usage: fwd [options]
+Usage: musch [options]
 
 CLI to run musical programs in JS
 

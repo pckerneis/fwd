@@ -53,11 +53,11 @@ async function writeReadme(
 async function writeReadmes() {
   const template = fs.readFileSync('src/gendocs/readme-template.hbs', 'utf-8');
   const example = fs.readFileSync('example.js', 'utf-8');
-  await writeReadme(template, example, 'screenshot.png', 'docs/README.md');
+  await writeReadme(template, example, 'hello-musch.gif', 'docs/README.md');
   await writeReadme(
     template,
     example,
-    'docs/screenshot.png',
+    'docs/hello-musch.gif',
     'README.md',
     'https://pckerneis.github.io/musch/#/',
   );
