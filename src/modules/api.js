@@ -4,6 +4,7 @@ import {
   fire,
   getSpeed,
   loop,
+  next,
   now,
   repeat,
   setSpeed,
@@ -33,6 +34,7 @@ function getApi() {
     _l: loop,
     wait,
     _w: wait,
+    next,
 
     note,
     _n: note,

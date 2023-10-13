@@ -221,3 +221,26 @@ export function speed(newSpeed) {
 
   return getSpeed();
 }
+
+/**
+ * Moves the cursor to the next multiple of `interval`.
+ * @param interval - Time interval
+ */
+export function next(interval) {
+  if (typeof interval !== 'number' || Number.isNaN(interval) || interval <= 0) {
+    return;
+  }
+
+  const t = now();
+  let nextCursor = cursor();
+
+  for (;;) {
+    if (nextCursor >= t) {
+      break;
+    }
+
+    nextCursor += interval;
+  }
+
+  getCurrentScope().cursor = nextCursor;
+}
