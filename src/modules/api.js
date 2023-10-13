@@ -33,7 +33,8 @@ function getApi() {
     loop,
     _l: loop,
     wait,
-    _w: wait,    next,
+    _w: wait,
+    next,
 
     note,
     _n: note,
