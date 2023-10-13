@@ -227,7 +227,7 @@ export function speed(newSpeed) {
  * @param interval - Time interval
  */
 export function next(interval) {
-  if (typeof interval !== 'number' || Number.isNaN(interval) || interval <= 0) {
+  if (typeof interval !== 'number' || Number.isNaN(interval) || interval <= 0 || interval === Infinity) {
     return;
   }
 
