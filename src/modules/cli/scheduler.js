@@ -1,6 +1,7 @@
 import { dbg } from './dbg.js';
 import { EventQueue } from './event-queue.js';
 import chalk from 'chalk';
+import { isFinitePositiveNumber } from '../utils.js';
 
 const scheduledEvents = new EventQueue();
 
@@ -42,13 +43,8 @@ export function clock() {
 }
 
 export function setSchedulerSpeed(newSpeed) {
-  if (
-    typeof newSpeed !== 'number' ||
-    newSpeed <= 0 ||
-    Number.isNaN(newSpeed) ||
-    !Number.isFinite(newSpeed)
-  ) {
-    throw new Error('Speed should be a positive number.');
+  if (!isFinitePositiveNumber(newSpeed)) {
+    throw new Error('Speed should be a finite positive number.');
   }
 
   speed = newSpeed;

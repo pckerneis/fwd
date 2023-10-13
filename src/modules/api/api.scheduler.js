@@ -7,18 +7,10 @@ import {
 } from '../cli/scheduler.js';
 import { getDefaultMidiChannel } from './api.midi.js';
 import { getCurrentScope, popScope, pushScope } from './api.scope.js';
+import { isFinitePositiveNumber } from '../utils.js';
 
 let loops = {};
 let activeLoops = {};
-
-function isFinitePositiveNumber(value) {
-  return (
-    typeof value === 'number' &&
-    !Number.isNaN(value) &&
-    value > 0 &&
-    value !== Infinity
-  );
-}
 
 /**
  * Returns the execution time
