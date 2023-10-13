@@ -11,6 +11,15 @@ import { getCurrentScope, popScope, pushScope } from './api.scope.js';
 let loops = {};
 let activeLoops = {};
 
+function isFinitePositiveNumber(value) {
+  return (
+    typeof value === 'number' &&
+    !Number.isNaN(value) &&
+    value > 0 &&
+    value !== Infinity
+  );
+}
+
 /**
  * Returns the execution time
  * @returns {number} Current execution time
@@ -51,7 +60,11 @@ export function fire(action) {
  * @param {number} count - How many times to repeat. Defaults to Infinity.
  */
 export function repeat(interval, action, count = Infinity) {
-  if (typeof interval !== 'number' || Number.isNaN(interval) || interval <= 0) {
+  if (
+    !isFinitePositiveNumber(interval) ||
+    typeof action !== 'function' ||
+    count < 0
+  ) {
     return;
   }
 
@@ -227,7 +240,7 @@ export function speed(newSpeed) {
  * @param interval - Time interval
  */
 export function next(interval) {
-  if (typeof interval !== 'number' || Number.isNaN(interval) || interval <= 0 || interval === Infinity) {
+  if (!isFinitePositiveNumber(interval)) {
     return;
   }
 
