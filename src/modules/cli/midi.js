@@ -145,7 +145,7 @@ function sendNoteOffIfTriggerIdMatches(channel, note, midiOutput, triggerId) {
  * @param {number} channel - MIDI channel number (from 0 to 15)
  * @param {number} note - MIDI note number
  * @param {number} velocity - Note velocity
- * @param {number} duration - Note duration in seconds
+ * @param {number} duration - Note duration
  */
 export function playNote(midiOutput, channel, note, velocity, duration) {
   const triggerId = currentTriggerId++;

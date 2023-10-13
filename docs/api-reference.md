@@ -140,13 +140,13 @@ Schedule the function `action` to be called at the cursor position.
 <a name="repeat"></a>
 
 ## repeat(interval, action, count)
-Repeatedly calls the function `action` every `interval` seconds `count` times, starting at the cursor position.
+Repeatedly calls the function `action` every `interval`, `count` times, starting at the cursor position.
 
 **Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| interval | <code>number</code> | The repeat interval as a strictly positive number of seconds |
+| interval | <code>number</code> | The repeat interval as a strictly positive number |
 | action | <code>function</code> | The action to repeat |
 | count | <code>number</code> | How many times to repeat. Defaults to Infinity. |
 
@@ -168,24 +168,24 @@ amount inside the action.
 <a name="at"></a>
 
 ## at(time)
-Move the cursor at position `time` expressed in seconds.
+Move the cursor at position `time`.
 
 **Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| time | <code>number</code> | Time position in seconds |
+| time | <code>number</code> | Time position to move the cursor to |
 
 <a name="wait"></a>
 
 ## wait(duration)
-Offset the cursor by `duration` expressed in seconds.
+Offset the cursor by `duration`.
 
 **Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| duration | <code>number</code> | Duration in seconds |
+| duration | <code>number</code> | Duration to move the cursor by |
 
 <a name="setSpeed"></a>
 
@@ -219,6 +219,17 @@ Shortcut for setting and getting scheduler's playback speed.
 | Param | Type | Description |
 | --- | --- | --- |
 | [newSpeed] | <code>number</code> | New speed value. If you pass null, undefined or omit the value, the scheduler's speed won't change. |
+
+<a name="next"></a>
+
+## next(interval)
+Moves the cursor to the next multiple of `interval`.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| interval | Time interval |
 
 <a name="pick"></a>
 

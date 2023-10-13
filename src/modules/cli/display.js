@@ -1,6 +1,6 @@
 import process from 'process';
 import { clearBuffer } from './rli.js';
-import { clock, isPaused } from './scheduler.js';
+import { clock, getElapsedSeconds, isPaused } from './scheduler.js';
 import { getLastChangeDate } from './vm.js';
 import {
   getChannelVisualizationData,
@@ -103,7 +103,7 @@ function drawOnce(outputLines, filePath, outputName, headless) {
 
   const clockStrings = [];
 
-  clockStrings.push(toHHMMSS(clock()));
+  clockStrings.push(toHHMMSS(getElapsedSeconds()));
 
   if (isPaused()) {
     clockStrings.push('[paused]');
@@ -116,7 +116,7 @@ function drawOnce(outputLines, filePath, outputName, headless) {
       `╔══${borderMargin}══╗
   in    ${truncatedPath} (at ${lastChangeTime})
   out   [${midiOutStr}] ${truncatedOutput}
-  time  ${clockStrings.join(' ')}
+  time  ${clock().toFixed(3)} - ${clockStrings.join(' ')}
 ╚══${borderMargin}══╝
 ${outputLines.join('\n')}`,
     );

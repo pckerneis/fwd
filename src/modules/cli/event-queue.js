@@ -6,7 +6,7 @@
  *
  * @type {object}
  * @property {string} ref - a unique identifier.
- * @property {number} time - time position in seconds.
+ * @property {number} time - time position.
  * @property {Function} event - action to perform.
  */
 

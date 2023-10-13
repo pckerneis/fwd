@@ -7,10 +7,11 @@ const scheduledEvents = new EventQueue();
 let paused = false;
 let currentEventTime = 0;
 let previousTimeStamp = 0;
-let playTime = 0;
 let intervalHandle;
 let currentSchedulerId = 0;
+let elapsedSeconds = 0;
 let speed = 1;
+let playTime = 0;
 
 export function toggleSchedulerPaused() {
   paused = !paused;
@@ -26,7 +27,15 @@ export function getCurrentSchedulerId() {
 
 /**
  * Returns the elapsed time in seconds since scheduler start
- * @returns 0 when stopped or elapsed time in seconds when running
+ * @returns {number} elapsed time in seconds
+ */
+export function getElapsedSeconds() {
+  return elapsedSeconds;
+}
+
+/**
+ * Returns the current time cursor position.
+ * @returns {number} the cursor position
  */
 export function clock() {
   return playTime;
@@ -65,11 +74,12 @@ export function initScheduler() {
   previousTimeStamp = 0;
   playTime = 0;
   speed = 1;
+  elapsedSeconds = 0;
 }
 
 /**
  * Schedule an action at a given time position
- * @param {number} time the time in seconds at which the action should be performed
+ * @param {number} time the time at which the action should be performed
  * @param {Function} action the function to be called
  */
 export function schedule(time, action) {
@@ -91,7 +101,7 @@ export function decrementSchedulerId() {
 }
 
 function processEvents(outputLines) {
-  const t = clock();
+  const t = playTime;
 
   let next = scheduledEvents.next(t);
 
@@ -128,6 +138,7 @@ export function startScheduler(outputLines) {
     }
 
     const elapsed = (currentTimeStamp - previousTimeStamp) / 1000;
+    elapsedSeconds += elapsed;
     playTime += elapsed * speed;
 
     processEvents(outputLines);

@@ -44,9 +44,9 @@ export function fire(action) {
 }
 
 /**
- * Repeatedly calls the function `action` every `interval` seconds `count` times, starting at the cursor position.
+ * Repeatedly calls the function `action` every `interval`, `count` times, starting at the cursor position.
  *
- * @param {number} interval - The repeat interval as a strictly positive number of seconds
+ * @param {number} interval - The repeat interval as a strictly positive number
  * @param {Function} action - The action to repeat
  * @param {number} count - How many times to repeat. Defaults to Infinity.
  */
@@ -170,18 +170,18 @@ export function clearPendingLoops() {
 }
 
 /**
- * Move the cursor at position `time` expressed in seconds.
+ * Move the cursor at position `time`.
  *
- * @param {number} time - Time position in seconds
+ * @param {number} time - Time position to move the cursor to
  */
 export function at(time) {
   getCurrentScope().cursor = time;
 }
 
 /**
- * Offset the cursor by `duration` expressed in seconds.
+ * Offset the cursor by `duration`.
  *
- * @param {number} duration - Duration in seconds
+ * @param {number} duration - Duration to move the cursor by
  */
 export function wait(duration) {
   getCurrentScope().cursor += duration;

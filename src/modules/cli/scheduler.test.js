@@ -8,6 +8,8 @@ import {
   incrementSchedulerId,
   getCurrentSchedulerId,
   decrementSchedulerId,
+  getElapsedSeconds,
+  setSchedulerSpeed,
 } from './scheduler.js';
 import { jest } from '@jest/globals';
 
@@ -24,8 +26,8 @@ function advanceTime(duration) {
 
 beforeEach(() => {
   jest.useFakeTimers();
-
   jest.spyOn(global.Date, 'now').mockImplementation(() => currentTime);
+  initScheduler();
 });
 
 afterEach(() => {
@@ -42,11 +44,27 @@ test('clock() returns 0 when scheduler has just started', () => {
   expect(clock()).toBe(0);
 });
 
-test('clock() returns elapsed time in seconds when scheduler is running', () => {
+test('clock() returns elapsed time when scheduler is running', () => {
   mockDateNow(4537);
   startScheduler([]);
   advanceTime(4000);
   expect(clock()).toBe(4);
+});
+
+test('clock() output is affected by scheduler speed', () => {
+  mockDateNow(4537);
+  startScheduler([]);
+  setSchedulerSpeed(10);
+  advanceTime(4000);
+  expect(clock()).toBe(40);
+});
+
+test('getElapsedSeconds() returns the elapsed time in seconds since scheduler start', () => {
+  mockDateNow(4537);
+  startScheduler([]);
+  setSchedulerSpeed(10);
+  advanceTime(4000);
+  expect(getElapsedSeconds()).toBe(4);
 });
 
 test('initScheduler() stops execution', () => {
