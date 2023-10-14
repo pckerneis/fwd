@@ -21,7 +21,7 @@ next(4);
 repeat(0.25, (i) => log('Repeat #' + i), 5);
 
 // Sets the default MIDI channel to 9
-channel(9)
+channel(9);
 
 // Play a kick drum every 0.5 seconds.
 // You can change the loop while it's playing.
