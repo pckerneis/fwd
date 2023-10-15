@@ -7,6 +7,7 @@ import {
   deactivatePendingLoops,
   isLoopActive,
 } from './api/api.scheduler.js';
+import { setEnv } from './api/api.shared.js';
 
 let currentTime = 0;
 let messages = [];
@@ -29,6 +30,7 @@ beforeEach(() => {
 
   currentTime = 0;
   messages = [];
+  setEnv({});
   initScheduler();
   mockDateNow(4537);
   resetNotesCurrentlyOnState();
@@ -49,8 +51,29 @@ test('fire() schedules an action at current time cursor', () => {
   at(10);
   fire(() => spy());
 
-  advanceTime(10001);
+  advanceTime(10000);
   expect(spy).toBeCalled();
+});
+
+test('fire() schedules a named action at current time cursor', () => {
+  const { define, fire, at } = getApiContext(midiOutput, messages);
+
+  startScheduler([]);
+
+  const spy = jest.fn();
+  define('action', () => spy());
+  at(10);
+  fire('action');
+
+  advanceTime(10000);
+  expect(spy).toBeCalled();
+});
+
+test('fire() schedules an action at current time cursor', () => {
+  const { fire } = getApiContext(midiOutput, messages);
+  startScheduler([]);
+  fire('action');
+  advanceTime(1000);
 });
 
 test('fire() does not schedule in past', () => {
@@ -58,13 +81,13 @@ test('fire() does not schedule in past', () => {
 
   startScheduler([]);
 
-  advanceTime(10001);
+  advanceTime(10000);
 
   const spy = jest.fn();
   at(5);
   fire(() => spy());
 
-  advanceTime(10001);
+  advanceTime(10000);
 
   expect(spy).not.toBeCalled();
 });
@@ -87,7 +110,7 @@ test('flog() schedules a log message', () => {
 
   expect(messages.length).toBe(0);
 
-  advanceTime(10001);
+  advanceTime(10000);
   expect(messages.length).toBe(1);
 });
 
@@ -106,6 +129,28 @@ test('repeat() should repeatedly call a function', () => {
   const action = jest.fn();
 
   repeat(1, action, 5);
+
+  advanceTime(2000);
+
+  expect(action).toBeCalledTimes(3);
+  expect(action).toHaveBeenLastCalledWith(2);
+
+  advanceTime(4000);
+
+  expect(action).toBeCalledTimes(5);
+  expect(action).toHaveBeenLastCalledWith(4);
+});
+
+test('repeat() should repeatedly call a named function', () => {
+  const { repeat, define } = getApiContext(midiOutput, messages);
+
+  startScheduler([]);
+
+  const action = jest.fn();
+
+  define('action', action);
+
+  repeat(1, 'action', 5);
 
   advanceTime(2000);
 
@@ -185,12 +230,12 @@ test('note() should schedule MIDI note', () => {
   at(1);
   note(64, 64, 1, 0);
 
-  advanceTime(10001);
+  advanceTime(10000);
 
   // note on
   expect(midiOutput.send).toBeCalledTimes(1);
 
-  advanceTime(10001);
+  advanceTime(10000);
 
   // note off
   expect(midiOutput.send).toBeCalledTimes(2);
@@ -205,7 +250,7 @@ test('note() should schedule MIDI note with default channel', () => {
   at(1);
   note(64, 64, 1);
 
-  advanceTime(10001);
+  advanceTime(10000);
 
   // note on
   expect(midiOutput.send).toHaveBeenLastCalledWith('noteon', {

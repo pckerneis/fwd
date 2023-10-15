@@ -135,7 +135,7 @@ Schedule the function `action` to be called at the cursor position.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| action | <code>function</code> | The action to schedule as a function |
+| action | <code>function</code> \| <code>string</code> | The action to schedule as a function or a key |
 
 <a name="repeat"></a>
 
@@ -147,7 +147,7 @@ Repeatedly calls the function `action` every `interval`, `count` times, starting
 | Param | Type | Description |
 | --- | --- | --- |
 | interval | <code>number</code> | The repeat interval as a strictly positive number |
-| action | <code>function</code> | The action to repeat |
+| action | <code>function</code> \| <code>string</code> | The action to repeat as a function or a key |
 | count | <code>number</code> | How many times to repeat. Defaults to Infinity. |
 
 <a name="loop"></a>
