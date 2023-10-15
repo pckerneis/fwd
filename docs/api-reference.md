@@ -150,21 +150,6 @@ Repeatedly calls the function `action` every `interval`, `count` times, starting
 | action | <code>function</code> \| <code>string</code> | The action to repeat as a function or a key |
 | count | <code>number</code> | How many times to repeat. Defaults to Infinity. |
 
-<a name="loop"></a>
-
-## loop(name, action)
-Define a named loop or replace an existing one and start it at current cursor
-position.
-The function `action` will be called repeatedly if the cursor moves by a positive
-amount inside the action.
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| name | <code>string</code> | The loop's name |
-| action | <code>function</code> | The action to repeat |
-
 <a name="at"></a>
 
 ## at(time)

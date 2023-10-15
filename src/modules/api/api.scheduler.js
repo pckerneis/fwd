@@ -10,9 +10,6 @@ import { getCurrentScope, popScope, pushScope } from './api.scope.js';
 import { isFinitePositiveNumber } from '../utils.js';
 import { _env } from './api.shared.js';
 
-let loops = {};
-let activeLoops = {};
-
 /**
  * Returns the execution time
  * @returns {number} Current execution time
@@ -106,79 +103,6 @@ function callScoped(cursor, midiChannel, action) {
   pushScope({ cursor, midiChannel });
   callAction(action);
   popScope();
-}
-
-function beginLoop(name, action) {
-  loops[name] = action;
-
-  const memoizedChannel = getDefaultMidiChannel();
-  let nextCursor = cursor();
-
-  const doItOnce = () => {
-    if (loops[name] == null) {
-      return;
-    }
-
-    if (!isLoopActive(name)) {
-      loops[name] = null;
-      return;
-    }
-
-    if (nextCursor >= now()) {
-      schedule(nextCursor, () => {
-        pushScope({ midiChannel: memoizedChannel, cursor: nextCursor });
-
-        loops[name]();
-
-        if (cursor() > nextCursor) {
-          schedule(cursor(), doItOnce);
-        }
-
-        nextCursor = cursor();
-        popScope();
-      });
-    }
-  };
-
-  doItOnce();
-}
-
-/**
- * Define a named loop or replace an existing one and start it at current cursor
- * position.
- * The function `action` will be called repeatedly if the cursor moves by a positive
- * amount inside the action.
- *
- * @param {string} name - The loop's name
- * @param {function} action - The action to repeat
- */
-export function loop(name, action) {
-  if (typeof name !== 'string' || typeof action !== 'function') {
-    return;
-  }
-
-  activeLoops[name] = true;
-
-  if (loops[name] == null) {
-    beginLoop(name, action);
-  } else {
-    loops[name] = action;
-  }
-}
-
-export function isLoopActive(name) {
-  return activeLoops[name] === true;
-}
-
-export function deactivatePendingLoops() {
-  for (let name of Object.keys(loops)) {
-    activeLoops[name] = false;
-  }
-}
-
-export function clearPendingLoops() {
-  loops = {};
-  activeLoops = {};
 }
 
 /**
