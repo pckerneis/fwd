@@ -630,3 +630,45 @@ test('next() should ignore invalid interval', () => {
   next('hello');
   expect(cursor()).toBe(42);
 });
+
+test('random() should return a predictable random number', () => {
+  const { random, setSeed } = getApiContext(midiOutput, messages);
+  setSeed('hello, musch!');
+  expect(random()).toBe(0.6235711870582765);
+});
+
+test('random() should return random numbers with a positive max value', () => {
+  const { random, setSeed } = getApiContext(midiOutput, messages);
+  setSeed('hello, musch!');
+  expect(random(42)).toBe(0.6235711870582765 * 42);
+});
+
+test('random() should return random numbers with a negative max value', () => {
+  const { random, setSeed } = getApiContext(midiOutput, messages);
+  setSeed('hello, musch!');
+  expect(random(-42)).toBe(-0.6235711870582765 * 42);
+});
+
+test('random() should return 0 if max is 0', () => {
+  const { random, setSeed } = getApiContext(midiOutput, messages);
+  setSeed('hello, musch!');
+  expect(random(0)).toBe(0);
+});
+
+test('random() should return random numbers between 0 and 1 if arguments are not numbers', () => {
+  const { random, setSeed } = getApiContext(midiOutput, messages);
+  setSeed('hello, musch!');
+  expect(random('hello')).toBe(0.6235711870582765);
+});
+
+test('random() should return random numbers between min and max values', () => {
+  const { random, setSeed } = getApiContext(midiOutput, messages);
+  setSeed('hello, musch!');
+  expect(random(10, 42)).toBe(10 + 0.6235711870582765 * 32);
+});
+
+test('random() should return random numbers between max and min values', () => {
+  const { random, setSeed } = getApiContext(midiOutput, messages);
+  setSeed('hello, musch!');
+  expect(random(42, 10)).toBe(10 + 0.6235711870582765 * 32);
+});
