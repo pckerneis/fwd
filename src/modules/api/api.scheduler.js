@@ -8,6 +8,7 @@ import {
 import { getDefaultMidiChannel } from './api.midi.js';
 import { getCurrentScope, popScope, pushScope } from './api.scope.js';
 import { isFinitePositiveNumber } from '../utils.js';
+import { _env } from './api.shared.js';
 
 /**
  * Returns the execution time
@@ -28,7 +29,7 @@ export function cursor() {
 /**
  * Schedule the function `action` to be called at the cursor position.
  *
- * @param {Function} action - The action to schedule as a function
+ * @param {Function|string} action - The action to schedule as a function or a key
  */
 export function fire(action) {
   const memoizedCursor = cursor();
@@ -45,15 +46,11 @@ export function fire(action) {
  * Repeatedly calls the function `action` every `interval`, `count` times, starting at the cursor position.
  *
  * @param {number} interval - The repeat interval as a strictly positive number
- * @param {Function} action - The action to repeat
+ * @param {Function|string} action - The action to repeat as a function or a key
  * @param {number} count - How many times to repeat. Defaults to Infinity.
  */
 export function repeat(interval, action, count = Infinity) {
-  if (
-    !isFinitePositiveNumber(interval) ||
-    typeof action !== 'function' ||
-    count < 0
-  ) {
+  if (!isFinitePositiveNumber(interval) || count < 0) {
     return;
   }
 
@@ -81,7 +78,9 @@ export function repeat(interval, action, count = Infinity) {
   const scheduleNext = () => {
     schedule(nextCursor, () => {
       if (schedulerId === getCurrentSchedulerId() && count > 0) {
-        callScoped(nextCursor, memoizedChannel, () => action(stepCount++));
+        callScoped(nextCursor, memoizedChannel, () => {
+          callAction(action, stepCount++);
+        });
         count -= 1;
         nextCursor += interval;
         scheduleNext();
@@ -92,9 +91,17 @@ export function repeat(interval, action, count = Infinity) {
   scheduleNext();
 }
 
+function callAction(action, ...args) {
+  if (typeof action === 'function') {
+    action(...args);
+  } else {
+    _env[action](...args);
+  }
+}
+
 function callScoped(cursor, midiChannel, action) {
   pushScope({ cursor, midiChannel });
-  action();
+  callAction(action);
   popScope();
 }
 
