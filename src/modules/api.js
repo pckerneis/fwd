@@ -18,6 +18,7 @@ import { iter, pick, ring } from './api/api.utils.js';
 import { getNoteNumberConstants } from './api/api.notes.js';
 import { getPattern } from 'euclidean-rhythms';
 import { resetScopes } from './api/api.scope.js';
+import { random, setSeed } from './api/api.random.js';
 
 function getApi() {
   return {
@@ -32,6 +33,10 @@ function getApi() {
     wait,
     _w: wait,
     next,
+
+    setSpeed,
+    getSpeed,
+    speed,
 
     note,
     _n: note,
@@ -49,19 +54,16 @@ function getApi() {
     log,
     flog,
 
-    pick,
-    _p: pick,
-    iter,
-
     define,
     def: define,
     set,
 
-    setSpeed,
-    getSpeed,
-    speed,
-
+    pick,
+    _p: pick,
+    iter,
     ring,
+    setSeed,
+    random,
 
     ...getNoteNumberConstants(),
 

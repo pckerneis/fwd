@@ -1,3 +1,5 @@
+import { random } from './api.random.js';
+
 /**
  * Pick an element among choices.
  * - If an array is provided, the output will be an element of the array
@@ -9,7 +11,7 @@
  * @returns {*} a randomly picked element
  */
 export function pick(...numberOrArrayOrElements) {
-  const value = Math.random();
+  const value = random();
 
   if (numberOrArrayOrElements?.length === 0) {
     return value;

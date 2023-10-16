@@ -112,6 +112,32 @@ Set the default value for next MIDI messages
 | --- | --- | --- |
 | [channelNumber] | <code>number</code> | Default MIDI channel |
 
+<a name="setSeed"></a>
+
+## setSeed(seed)
+Sets the seed for the random number generator
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| seed | <code>\*</code> | the seed to use |
+
+<a name="random"></a>
+
+## random([min], [max]) ⇒ <code>number</code>
+Returns a random number between 0 and 1 with optional min and max values.
+If both min and max are specified, the returned number will be between min and max.
+If only min is specified, the returned number will be between 0 and min.
+
+**Kind**: global function  
+**Returns**: <code>number</code> - a random number between 0 and 1  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [min] | <code>number</code> | if both arguments are numbers, the minimum value of the random number, else the maximum value |
+| [max] | <code>number</code> | if specified, the maximum value of the random number |
+
 <a name="now"></a>
 
 ## now() ⇒ <code>number</code>
