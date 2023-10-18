@@ -18,7 +18,7 @@ export function stepper(pattern, mapper, continuation = '~') {
     const handler = mapper[step];
 
     if (!handler) {
-      return () => {};
+      return null;
     }
 
     return handler;
@@ -45,7 +45,8 @@ export function stepper(pattern, mapper, continuation = '~') {
       return getHandler(index);
     },
     at: (index) => {
-      return getHandler(index)(getStepLength(index));
+      const handler = getHandler(index);
+      return handler ? handler(getStepLength(index)) : null;
     },
     stepLength: (index) => {
       return getStepLength(index);
