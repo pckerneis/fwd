@@ -299,6 +299,20 @@ Moves the cursor to the next multiple of `interval`.
 | --- | --- |
 | interval | Time interval |
 
+<a name="stepper"></a>
+
+### stepper(pattern, mapper, [continuation]) ⇒ [<code>Stepper</code>](#Stepper)
+Creates a stepper object
+
+**Kind**: global function  
+**Returns**: [<code>Stepper</code>](#Stepper) - the stepper object  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| pattern | <code>string</code> \| <code>Array</code> |  | The pattern to play |
+| mapper | <code>\*</code> |  | A dictionary mapping each step value to a handler function |
+| [continuation] | <code>string</code> | <code>&quot;&#x27;~&#x27;&quot;</code> | The step continuation character |
+
 <a name="pick"></a>
 
 ### pick([numberOrArrayOrElements]) ⇒ <code>\*</code>
@@ -340,6 +354,18 @@ Creates a Ring.
 | Param | Type | Description |
 | --- | --- | --- |
 | ...elements | <code>\*</code> | Elements to circle through |
+
+<a name="Stepper"></a>
+
+### Stepper : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| get | <code>function</code> | Returns a stepper handler function at the given step |
+| at | <code>function</code> | Trigger a stepper handler function at the given step |
+| stepLength | <code>function</code> | Returns the length of the step at the given index |
 
 <a name="Ring"></a>
 
