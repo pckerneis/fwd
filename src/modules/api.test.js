@@ -716,9 +716,13 @@ test('stepper() should return a stepper with default continuation', () => {
 test('stepper() should return a stepper with custom continuation', () => {
   const { stepper } = getApiContext(midiOutput, messages);
   const fn1 = jest.fn();
-  const step = stepper('1.~~.~~', {
-    1: fn1,
-  }, '.');
+  const step = stepper(
+    '1.~~.~~',
+    {
+      1: fn1,
+    },
+    '.',
+  );
 
   step.at(0);
   expect(fn1).toHaveBeenLastCalledWith(2);

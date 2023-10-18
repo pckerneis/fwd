@@ -50,6 +50,6 @@ export function stepper(pattern, mapper, continuation = '~') {
     },
     stepLength: (index) => {
       return getStepLength(index);
-    }
+    },
   };
 }
