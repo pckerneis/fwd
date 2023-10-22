@@ -710,7 +710,6 @@ test('stepper() should return a stepper with default continuation', () => {
 
   step.at(0);
   expect(fn1).toHaveBeenLastCalledWith(3);
-  expect(step.stepLength(0)).toBe(3);
 });
 
 test('stepper() should return a stepper with custom continuation', () => {
@@ -726,40 +725,34 @@ test('stepper() should return a stepper with custom continuation', () => {
 
   step.at(0);
   expect(fn1).toHaveBeenLastCalledWith(2);
-  expect(step.stepLength(0)).toBe(2);
 });
 
-test('stepper() should give step length with wrapping', () => {
-  const { stepper } = getApiContext(midiOutput, messages);
-  const step = stepper('~~..1~~');
-
-  expect(step.stepLength(4)).toBe(5);
-});
-
-test('stepper() should give max step length', () => {
-  const { stepper } = getApiContext(midiOutput, messages);
-  const step = stepper('~~~~~~');
-
-  expect(step.stepLength(0)).toBe(6);
-});
-
-test('Stepper#get() should return a stepper handler function at the given step', () => {
+test('stepper() should call multiple handlers', () => {
   const { stepper } = getApiContext(midiOutput, messages);
   const fn1 = jest.fn();
   const fn2 = jest.fn();
-  const fn3 = jest.fn();
-  const step = stepper('123~', {
-    1: fn1,
-    2: fn2,
-    3: fn3,
-  });
+  const step = stepper(
+`aa.
+ab
+`,
+    {
+      a: fn1,
+      b: fn2,
+    }
+  );
 
-  expect(step.get(0)).toBe(fn1);
-  expect(step.get(1)).toBe(fn2);
-  expect(step.get(2)).toBe(fn3);
-  expect(step.get(3)).toBe(null);
-  expect(step.get(4)).toBe(fn1);
-  expect(step.get(5)).toBe(fn2);
-  expect(step.get(6)).toBe(fn3);
-  expect(step.get(7)).toBe(null);
+  step.at(0);
+  expect(fn1).toHaveBeenCalledTimes(2);
+
+  step.at(1);
+  expect(fn1).toHaveBeenCalledTimes(3);
+  expect(fn2).toHaveBeenCalledTimes(1);
+
+  step.at(2);
+  expect(fn1).toHaveBeenCalledTimes(3);
+  expect(fn2).toHaveBeenCalledTimes(1);
+
+  step.at(3);
+  expect(fn1).toHaveBeenCalledTimes(5);
+  expect(fn2).toHaveBeenCalledTimes(1);
 });
