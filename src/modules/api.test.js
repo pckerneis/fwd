@@ -3,7 +3,11 @@ import { jest } from '@jest/globals';
 import { initScheduler, startScheduler } from './cli/scheduler.js';
 import { resetNotesCurrentlyOnState } from './cli/midi.js';
 import { setEnv } from './api/api.shared.js';
-import {getMuteChannels, getSoloChannels, resetMuteAndSolo} from './api/api.midi.js';
+import {
+  getMuteChannels,
+  getSoloChannels,
+  resetMuteAndSolo,
+} from './api/api.midi.js';
 
 let currentTime = 0;
 let messages = [];
