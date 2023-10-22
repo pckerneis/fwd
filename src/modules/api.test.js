@@ -681,21 +681,21 @@ test('Stepper#at() should call the handler function', () => {
   step.at(0);
   expect(handler).toHaveBeenLastCalledWith({
     duration: 1,
-    symbol: '1',
+    symbol: 1,
     line: 0,
   });
   expect(handler).toHaveBeenCalledTimes(1);
   step.at(1);
   expect(handler).toHaveBeenLastCalledWith({
     duration: 1,
-    symbol: '2',
+    symbol: 2,
     line: 0,
   });
   expect(handler).toHaveBeenCalledTimes(2);
   step.at(2);
   expect(handler).toHaveBeenLastCalledWith({
     duration: 2,
-    symbol: '3',
+    symbol: 3,
     line: 0,
   });
   expect(handler).toHaveBeenCalledTimes(3);
@@ -704,21 +704,21 @@ test('Stepper#at() should call the handler function', () => {
   step.at(4);
   expect(handler).toHaveBeenLastCalledWith({
     duration: 1,
-    symbol: '1',
+    symbol: 1,
     line: 0,
   });
   expect(handler).toHaveBeenCalledTimes(4);
   step.at(5);
   expect(handler).toHaveBeenLastCalledWith({
     duration: 1,
-    symbol: '2',
+    symbol: 2,
     line: 0,
   });
   expect(handler).toHaveBeenCalledTimes(5);
   step.at(6);
   expect(handler).toHaveBeenLastCalledWith({
     duration: 2,
-    symbol: '3',
+    symbol: 3,
     line: 0,
   });
   expect(handler).toHaveBeenCalledTimes(6);
@@ -734,7 +734,7 @@ test('stepper() should return a stepper with default continuation', () => {
   step.at(0);
   expect(handler).toHaveBeenLastCalledWith({
     duration: 3,
-    symbol: '1',
+    symbol: 1,
     line: 0,
   });
 });
@@ -747,7 +747,7 @@ test('stepper() should return a stepper with custom continuation', () => {
   step.at(0);
   expect(handler).toHaveBeenLastCalledWith({
     duration: 2,
-    symbol: '1',
+    symbol: 1,
     line: 0,
   });
 });
