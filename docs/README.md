@@ -26,16 +26,22 @@ Here is a simple program that demonstrates the API basics :
 // Log some text
 log('Hello, World!');
 
-// Play a MIDI note
+// Play a MIDI note with note number 36, velocity 127, and duration 1
 note(36, 127, 1);
 
 // Offset time cursor
 wait(2);
-flog('Waited for 2. Now is ' + cursor());
-note(40, 127, 1);
 
-// Move time cursor after current clock position.
-// Try saving the program to trigger these instructions again
+// `flog` logs to the console at the current cursor position
+// `cursor` returns the current cursor position
+flog('Waited for 2. Now is ' + cursor());
+
+// Play another MIDI note 2 seconds after the first one
+// The fourth argument (optional) is the MIDI channel
+note(40, 127, 1, 1);
+
+// Move time cursor 1 second after current clock position
+// Try saving the program to trigger the following instructions again
 at(now() + 1);
 flog('1 second after now');
 
@@ -45,7 +51,7 @@ next(4);
 // Repeat an action 5 times every 0.25 seconds
 repeat(0.25, (i) => log('Repeat #' + i), 5);
 
-// Sets the default MIDI channel to 9
+// Sets the default MIDI channel to 9 for subsequent calls to `note` without a channel argument
 channel(9);
 ```
 
@@ -301,7 +307,7 @@ Moves the cursor to the next multiple of `interval`.
 
 <a name="stepper"></a>
 
-### stepper(pattern, handler, [continuation]) ⇒ [<code>Stepper</code>](#Stepper)
+### stepper(pattern, handler, [continuation], [silence]) ⇒ [<code>Stepper</code>](#Stepper)
 Creates a stepper object
 
 **Kind**: global function  
@@ -310,8 +316,9 @@ Creates a stepper object
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | pattern | <code>string</code> |  | The pattern to play |
-| handler | [<code>StepperHandler</code>](#StepperHandler) |  | A function to be called for each step |
+| handler | [<code>StepHandler</code>](#StepHandler) |  | A function to be called for each step |
 | [continuation] | <code>string</code> | <code>&quot;&#x27;~&#x27;&quot;</code> | The step continuation character |
+| [silence] | <code>string</code> | <code>&quot;&#x27;_&#x27;&quot;</code> | The step silence character |
 
 <a name="pick"></a>
 
@@ -365,26 +372,26 @@ Creates a Ring.
 | --- | --- | --- |
 | at | <code>function</code> | Calls the handler function for the given step index |
 
-<a name="Step"></a>
+<a name="StepHandlerParameters"></a>
 
-### Step : <code>Object</code>
+### StepHandlerParameters : <code>Object</code>
 **Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
 | duration | <code>number</code> | The duration of the step |
-| symbol | <code>string</code> | The symbol of the step |
+| symbol | <code>string</code> \| <code>number</code> | The symbol of the step as a number (integer) or a string (character) |
 | line | <code>number</code> | The line of the step |
 
-<a name="StepperHandler"></a>
+<a name="StepHandler"></a>
 
-### StepperHandler : <code>function</code>
+### StepHandler : <code>function</code>
 **Kind**: global typedef  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| step | [<code>Step</code>](#Step) | The step object |
+| step | [<code>StepHandlerParameters</code>](#StepHandlerParameters) | The step object |
 
 <a name="Ring"></a>
 
