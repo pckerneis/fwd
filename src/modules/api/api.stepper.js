@@ -4,15 +4,15 @@
  */
 
 /**
- * @typedef {Object} Step
+ * @typedef {Object} StepHandlerParameters
  * @property {number} duration - The duration of the step
- * @property {string} symbol - The symbol of the step
+ * @property {string|number} symbol - The symbol of the step as a number (integer) or a string (character)
  * @property {number} line - The line of the step
  */
 
 /**
- * @callback StepperHandler
- * @param {Step} step - The step object
+ * @callback StepHandler
+ * @param {StepHandlerParameters} step - The step object
  */
 
 /**
@@ -28,7 +28,7 @@ function removeWhitespaces(line) {
 /**
  * Creates a stepper object
  * @param {string} pattern - The pattern to play
- * @param {StepperHandler} handler - A function to be called for each step
+ * @param {StepHandler} handler - A function to be called for each step
  * @param {string} [continuation='~'] - The step continuation character
  * @param {string} [silence='_'] - The step silence character
  * @returns {Stepper} the stepper object
@@ -70,10 +70,14 @@ export function stepper(pattern, handler, continuation = '~', silence = '_') {
           symbol.length > 0
         ) {
           const duration = getStepDuration(index, line);
-          if ('0123456789'.includes(symbol)) {
-            symbol = parseInt(symbol, 10);
-          }
-          handler({ duration, symbol, line });
+
+          handler({
+            duration,
+            symbol: '0123456789'.includes(symbol)
+              ? parseInt(symbol, 10)
+              : symbol,
+            line,
+          });
         }
       });
     },
