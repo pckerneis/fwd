@@ -244,7 +244,7 @@ Moves the cursor to the next multiple of `interval`.
 
 <a name="stepper"></a>
 
-## stepper(pattern, mapper, [continuation]) ⇒ [<code>Stepper</code>](#Stepper)
+## stepper(pattern, handler, [continuation]) ⇒ [<code>Stepper</code>](#Stepper)
 Creates a stepper object
 
 **Kind**: global function  
@@ -253,7 +253,7 @@ Creates a stepper object
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | pattern | <code>string</code> |  | The pattern to play |
-| mapper | <code>\*</code> |  | A dictionary mapping each step value to a handler function |
+| handler | [<code>StepperHandler</code>](#StepperHandler) |  | A function to be called for each step |
 | [continuation] | <code>string</code> | <code>&quot;&#x27;~&#x27;&quot;</code> | The step continuation character |
 
 <a name="pick"></a>
@@ -306,7 +306,28 @@ Creates a Ring.
 
 | Name | Type | Description |
 | --- | --- | --- |
-| at | <code>function</code> | Trigger a stepper handler function at the given step |
+| at | <code>function</code> | Calls the handler function for the given step index |
+
+<a name="Step"></a>
+
+## Step : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| duration | <code>number</code> | The duration of the step |
+| symbol | <code>string</code> | The symbol of the step |
+| line | <code>number</code> | The line of the step |
+
+<a name="StepperHandler"></a>
+
+## StepperHandler : <code>function</code>
+**Kind**: global typedef  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| step | [<code>Step</code>](#Step) | The step object |
 
 <a name="Ring"></a>
 

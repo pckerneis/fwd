@@ -673,106 +673,136 @@ test('random() should return random numbers between max and min values', () => {
   expect(random(42, 10)).toBe(10 + 0.6235711870582765 * 32);
 });
 
-test('Stepper#at() should call the right function', () => {
+test('Stepper#at() should call the handler function', () => {
   const { stepper } = getApiContext(midiOutput, messages);
-  const fn1 = jest.fn();
-  const fn2 = jest.fn();
-  const fn3 = jest.fn();
-  const step = stepper('123~', {
-    1: fn1,
-    2: fn2,
-    3: fn3,
-  });
+  const handler = jest.fn();
+  const step = stepper('123~', handler);
 
   step.at(0);
-  expect(fn1).toHaveBeenLastCalledWith({ duration: 1, symbol: '1', line: 0 });
+  expect(handler).toHaveBeenLastCalledWith({
+    duration: 1,
+    symbol: '1',
+    line: 0,
+  });
+  expect(handler).toHaveBeenCalledTimes(1);
   step.at(1);
-  expect(fn2).toHaveBeenLastCalledWith({ duration: 1, symbol: '2', line: 0 });
+  expect(handler).toHaveBeenLastCalledWith({
+    duration: 1,
+    symbol: '2',
+    line: 0,
+  });
+  expect(handler).toHaveBeenCalledTimes(2);
   step.at(2);
-  expect(fn3).toHaveBeenLastCalledWith({ duration: 2, symbol: '3', line: 0 });
+  expect(handler).toHaveBeenLastCalledWith({
+    duration: 2,
+    symbol: '3',
+    line: 0,
+  });
+  expect(handler).toHaveBeenCalledTimes(3);
   step.at(3);
+  expect(handler).toHaveBeenCalledTimes(3);
   step.at(4);
+  expect(handler).toHaveBeenLastCalledWith({
+    duration: 1,
+    symbol: '1',
+    line: 0,
+  });
+  expect(handler).toHaveBeenCalledTimes(4);
   step.at(5);
+  expect(handler).toHaveBeenLastCalledWith({
+    duration: 1,
+    symbol: '2',
+    line: 0,
+  });
+  expect(handler).toHaveBeenCalledTimes(5);
   step.at(6);
+  expect(handler).toHaveBeenLastCalledWith({
+    duration: 2,
+    symbol: '3',
+    line: 0,
+  });
+  expect(handler).toHaveBeenCalledTimes(6);
   step.at(7);
-
-  expect(fn1).toBeCalledTimes(2);
-  expect(fn2).toBeCalledTimes(2);
-  expect(fn3).toBeCalledTimes(2);
+  expect(handler).toHaveBeenCalledTimes(6);
 });
 
 test('stepper() should return a stepper with default continuation', () => {
   const { stepper } = getApiContext(midiOutput, messages);
-  const fn1 = jest.fn();
-  const step = stepper('1~~.~~', {
-    1: fn1,
-  });
+  const handler = jest.fn();
+  const step = stepper('1~~.~~', handler);
 
   step.at(0);
-  expect(fn1).toHaveBeenLastCalledWith({ duration: 3, symbol: '1', line: 0 });
+  expect(handler).toHaveBeenLastCalledWith({
+    duration: 3,
+    symbol: '1',
+    line: 0,
+  });
 });
 
 test('stepper() should return a stepper with custom continuation', () => {
   const { stepper } = getApiContext(midiOutput, messages);
-  const fn1 = jest.fn();
-  const step = stepper(
-    '1.~~.~~',
-    {
-      1: fn1,
-    },
-    '.',
-  );
+  const handler = jest.fn();
+  const step = stepper('1.~~.~~', handler, '.');
 
   step.at(0);
-  expect(fn1).toHaveBeenLastCalledWith({ duration: 2, symbol: '1', line: 0 });
+  expect(handler).toHaveBeenLastCalledWith({
+    duration: 2,
+    symbol: '1',
+    line: 0,
+  });
 });
 
-test('stepper() should call multiple handlers', () => {
+test('stepper() should handle multiline patterns', () => {
   const { stepper } = getApiContext(midiOutput, messages);
-  const fn1 = jest.fn();
-  const fn2 = jest.fn();
+  const handler = jest.fn();
   const step = stepper(
     `aa.
 ab
 `,
-    {
-      a: fn1,
-      b: fn2,
-    },
+    handler,
   );
 
   step.at(0);
-  expect(fn1).toHaveBeenCalledTimes(2);
-  expect(fn1).toHaveBeenNthCalledWith(1, { duration: 1, symbol: 'a', line: 0 });
-  expect(fn1).toHaveBeenNthCalledWith(2, { duration: 1, symbol: 'a', line: 1 });
+  expect(handler).toHaveBeenCalledTimes(2);
+  expect(handler).toHaveBeenNthCalledWith(1, {
+    duration: 1,
+    symbol: 'a',
+    line: 0,
+  });
+  expect(handler).toHaveBeenNthCalledWith(2, {
+    duration: 1,
+    symbol: 'a',
+    line: 1,
+  });
 
   step.at(1);
-  expect(fn1).toHaveBeenCalledTimes(3);
-  expect(fn1).toHaveBeenLastCalledWith({ duration: 1, symbol: 'a', line: 0 });
-  expect(fn2).toHaveBeenCalledTimes(1);
-  expect(fn2).toHaveBeenLastCalledWith({ duration: 1, symbol: 'b', line: 1 });
+  expect(handler).toHaveBeenCalledTimes(4);
+  expect(handler).toHaveBeenNthCalledWith(3, {
+    duration: 1,
+    symbol: 'a',
+    line: 0,
+  });
+  expect(handler).toHaveBeenNthCalledWith(4, {
+    duration: 1,
+    symbol: 'b',
+    line: 1,
+  });
 
   step.at(2);
-  expect(fn1).toHaveBeenCalledTimes(3);
-  expect(fn2).toHaveBeenCalledTimes(1);
+  expect(handler).toHaveBeenCalledTimes(5);
 
   step.at(3);
-  expect(fn1).toHaveBeenCalledTimes(5);
-  expect(fn2).toHaveBeenCalledTimes(1);
+  expect(handler).toHaveBeenCalledTimes(7);
 });
 
 test('stepper() should ignore whitespace', () => {
   const { stepper } = getApiContext(midiOutput, messages);
-  const fn1 = jest.fn();
-  const step = stepper(`a   b\tc`, {
-    a: fn1,
-    b: fn1,
-    c: fn1,
-  });
+  const handler = jest.fn();
+  const step = stepper(`a   b\tc`, handler);
   step.at(0);
-  expect(fn1).toHaveBeenCalledTimes(1);
+  expect(handler).toHaveBeenCalledTimes(1);
   step.at(1);
-  expect(fn1).toHaveBeenCalledTimes(2);
+  expect(handler).toHaveBeenCalledTimes(2);
   step.at(2);
-  expect(fn1).toHaveBeenCalledTimes(3);
+  expect(handler).toHaveBeenCalledTimes(3);
 });
