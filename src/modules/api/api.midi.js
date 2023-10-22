@@ -4,6 +4,10 @@ import { _midiOutput } from './api.shared.js';
 import { fire } from './api.scheduler.js';
 import { getCurrentScope } from './api.scope.js';
 
+const soloChannels = [];
+const muteChannels = [];
+const ALL_CHANNELS = Array.from({ length: 16 }, (_, i) => i);
+
 export function getDefaultMidiChannel() {
   return getCurrentScope().midiChannel;
 }
@@ -22,6 +26,11 @@ export function note(pitch, velocity, duration, channel) {
 
   fire(() => {
     dbg('About to play note');
+
+    if (!isChannelActive(channel)) {
+      return;
+    }
+
     playNote(_midiOutput, channel, pitch, velocity, duration);
   });
 }
@@ -34,7 +43,13 @@ export function note(pitch, velocity, duration, channel) {
 export function program(program, channel) {
   channel = channel ?? getDefaultMidiChannel();
 
-  fire(() => sendProgramChange(_midiOutput, program, channel));
+  fire(() => {
+    if (!isChannelActive(channel)) {
+      return;
+    }
+
+    sendProgramChange(_midiOutput, program, channel);
+  });
 }
 
 /**
@@ -46,7 +61,13 @@ export function program(program, channel) {
 export function cc(controller, value, channel) {
   channel = channel ?? getDefaultMidiChannel();
 
-  fire(() => sendCC(_midiOutput, controller, value, channel));
+  fire(() => {
+    if (!isChannelActive(channel)) {
+      return;
+    }
+
+    sendCC(_midiOutput, controller, value, channel);
+  });
 }
 
 /**
@@ -55,4 +76,95 @@ export function cc(controller, value, channel) {
  */
 export function channel(channelNumber) {
   getCurrentScope().midiChannel = channelNumber ?? 0;
+}
+
+export function mute(...channelNumbers) {
+  fire(() => {
+    if (channelNumbers.length === 0) {
+      muteChannels.splice(0, muteChannels.length, ...ALL_CHANNELS);
+      return;
+    }
+
+    channelNumbers.forEach((channelNumber) => {
+      if (!muteChannels.includes(channelNumber)) {
+        muteChannels.push(channelNumber);
+      }
+    });
+  });
+}
+
+export function unmute(...channelNumbers) {
+  fire(() => {
+    if (channelNumbers.length === 0) {
+      muteChannels.splice(0, muteChannels.length);
+      return;
+    }
+
+    channelNumbers.forEach((channelNumber) => {
+      const index = muteChannels.indexOf(channelNumber);
+      if (index >= 0) {
+        muteChannels.splice(index, 1);
+      }
+    });
+  });
+}
+
+export function solo(...channelNumbers) {
+  fire(() => {
+    if (channelNumbers.length === 0) {
+      soloChannels.splice(0, soloChannels.length, ...ALL_CHANNELS);
+      return;
+    }
+
+    channelNumbers.forEach((channelNumber) => {
+      if (!soloChannels.includes(channelNumber)) {
+        soloChannels.push(channelNumber);
+      }
+    });
+  });
+}
+
+export function unsolo(...channelNumbers) {
+  fire(() => {
+    if (channelNumbers.length === 0) {
+      soloChannels.splice(0, soloChannels.length);
+      return;
+    }
+
+    channelNumbers.forEach((channelNumber) => {
+      const index = soloChannels.indexOf(channelNumber);
+      if (index >= 0) {
+        soloChannels.splice(index, 1);
+      }
+    });
+  });
+}
+
+function getActiveChannels() {
+  if (soloChannels.length > 0) {
+    return soloChannels;
+  }
+
+  if (muteChannels.length > 0) {
+    return ALL_CHANNELS.filter((channel) => !muteChannels.includes(channel));
+  }
+
+  return ALL_CHANNELS;
+}
+
+function isChannelActive(channel) {
+  return getActiveChannels().includes(channel);
+}
+
+export function resetMuteAndSolo() {
+  muteChannels.splice(0, muteChannels.length);
+  soloChannels.splice(0, soloChannels.length);
+}
+
+export function getSoloChannels() {
+  return soloChannels;
+}
+
+export function getMuteChannels() {
+  return muteChannels;
 }
