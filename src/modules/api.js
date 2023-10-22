@@ -11,7 +11,16 @@ import {
   wait,
 } from './api/api.scheduler.js';
 import { _env, setEnv, setLogLines, setMidiOutput } from './api/api.shared.js';
-import { cc, channel, note, program } from './api/api.midi.js';
+import {
+  cc,
+  channel,
+  mute,
+  note,
+  program,
+  solo,
+  unmute,
+  unsolo,
+} from './api/api.midi.js';
 import { clear, fclear, flog, log } from './api/api.log.js';
 import { define, set } from './api/api.env.js';
 import { iter, pick, ring } from './api/api.utils.js';
@@ -47,6 +56,10 @@ function getApi() {
     _pc: program,
     channel,
     _c: channel,
+    mute,
+    unmute,
+    solo,
+    unsolo,
 
     clear,
     cls: clear,
