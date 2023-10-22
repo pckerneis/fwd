@@ -252,7 +252,7 @@ Creates a stepper object
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| pattern | <code>string</code> \| <code>Array</code> |  | The pattern to play |
+| pattern | <code>string</code> |  | The pattern to play |
 | mapper | <code>\*</code> |  | A dictionary mapping each step value to a handler function |
 | [continuation] | <code>string</code> | <code>&quot;&#x27;~&#x27;&quot;</code> | The step continuation character |
 
@@ -306,9 +306,7 @@ Creates a Ring.
 
 | Name | Type | Description |
 | --- | --- | --- |
-| get | <code>function</code> | Returns a stepper handler function at the given step |
 | at | <code>function</code> | Trigger a stepper handler function at the given step |
-| stepLength | <code>function</code> | Returns the length of the step at the given index |
 
 <a name="Ring"></a>
 

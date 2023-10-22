@@ -15,16 +15,15 @@ function removeWhitespaces(line) {
  * @returns {Stepper} the stepper object
  */
 export function stepper(pattern, mapper, continuation = '~') {
-  const lines = pattern.split('\n')
-    .map((line) => removeWhitespaces(line));
+  const lines = pattern.split('\n').map((line) => removeWhitespaces(line));
 
   const maxLineLength = Math.max(...lines.map((line) => line.length));
 
-  const getSymbols = (index) => lines
-    .map((line) => line[index % maxLineLength]);
+  const getSymbols = (index) =>
+    lines.map((line) => line[index % maxLineLength]);
 
-  const getHandlers = (index) => getSymbols(index)
-    .map((symbol) => mapper[symbol]);
+  const getHandlers = (index) =>
+    getSymbols(index).map((symbol) => mapper[symbol]);
 
   const getStepDuration = (index, lineIndex) => {
     const line = lines[lineIndex];
@@ -52,7 +51,7 @@ export function stepper(pattern, mapper, continuation = '~') {
           const duration = getStepDuration(index, handlerIndex);
           const symbol = getSymbols(index)[handlerIndex];
           const line = handlerIndex;
-          handler({duration, symbol, line});
+          handler({ duration, symbol, line });
         }
       });
     },

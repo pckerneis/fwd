@@ -685,11 +685,11 @@ test('Stepper#at() should call the right function', () => {
   });
 
   step.at(0);
-  expect(fn1).toHaveBeenLastCalledWith({duration: 1, symbol: '1', line: 0});
+  expect(fn1).toHaveBeenLastCalledWith({ duration: 1, symbol: '1', line: 0 });
   step.at(1);
-  expect(fn2).toHaveBeenLastCalledWith({duration: 1, symbol: '2', line: 0});
+  expect(fn2).toHaveBeenLastCalledWith({ duration: 1, symbol: '2', line: 0 });
   step.at(2);
-  expect(fn3).toHaveBeenLastCalledWith({duration: 2, symbol: '3', line: 0});
+  expect(fn3).toHaveBeenLastCalledWith({ duration: 2, symbol: '3', line: 0 });
   step.at(3);
   step.at(4);
   step.at(5);
@@ -709,7 +709,7 @@ test('stepper() should return a stepper with default continuation', () => {
   });
 
   step.at(0);
-  expect(fn1).toHaveBeenLastCalledWith({duration: 3, symbol: '1', line: 0});
+  expect(fn1).toHaveBeenLastCalledWith({ duration: 3, symbol: '1', line: 0 });
 });
 
 test('stepper() should return a stepper with custom continuation', () => {
@@ -732,13 +732,13 @@ test('stepper() should call multiple handlers', () => {
   const fn1 = jest.fn();
   const fn2 = jest.fn();
   const step = stepper(
-`aa.
+    `aa.
 ab
 `,
     {
       a: fn1,
       b: fn2,
-    }
+    },
   );
 
   step.at(0);
@@ -762,16 +762,13 @@ ab
 });
 
 test('stepper() should ignore whitespace', () => {
-  const {stepper} = getApiContext(midiOutput, messages);
+  const { stepper } = getApiContext(midiOutput, messages);
   const fn1 = jest.fn();
-  const step = stepper(
-    `a   b\tc`,
-    {
-      a: fn1,
-      b: fn1,
-      c: fn1,
-    }
-  );
+  const step = stepper(`a   b\tc`, {
+    a: fn1,
+    b: fn1,
+    c: fn1,
+  });
   step.at(0);
   expect(fn1).toHaveBeenCalledTimes(1);
   step.at(1);
