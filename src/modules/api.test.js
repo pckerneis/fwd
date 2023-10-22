@@ -685,11 +685,11 @@ test('Stepper#at() should call the right function', () => {
   });
 
   step.at(0);
-  expect(fn1).toHaveBeenLastCalledWith(1);
+  expect(fn1).toHaveBeenLastCalledWith({duration: 1, symbol: '1', line: 0});
   step.at(1);
-  expect(fn2).toHaveBeenLastCalledWith(1);
+  expect(fn2).toHaveBeenLastCalledWith({duration: 1, symbol: '2', line: 0});
   step.at(2);
-  expect(fn3).toHaveBeenLastCalledWith(2);
+  expect(fn3).toHaveBeenLastCalledWith({duration: 2, symbol: '3', line: 0});
   step.at(3);
   step.at(4);
   step.at(5);
@@ -709,7 +709,7 @@ test('stepper() should return a stepper with default continuation', () => {
   });
 
   step.at(0);
-  expect(fn1).toHaveBeenLastCalledWith(3);
+  expect(fn1).toHaveBeenLastCalledWith({duration: 3, symbol: '1', line: 0});
 });
 
 test('stepper() should return a stepper with custom continuation', () => {
@@ -724,7 +724,7 @@ test('stepper() should return a stepper with custom continuation', () => {
   );
 
   step.at(0);
-  expect(fn1).toHaveBeenLastCalledWith(2);
+  expect(fn1).toHaveBeenLastCalledWith({ duration: 2, symbol: '1', line: 0 });
 });
 
 test('stepper() should call multiple handlers', () => {
@@ -743,10 +743,14 @@ ab
 
   step.at(0);
   expect(fn1).toHaveBeenCalledTimes(2);
+  expect(fn1).toHaveBeenNthCalledWith(1, { duration: 1, symbol: 'a', line: 0 });
+  expect(fn1).toHaveBeenNthCalledWith(2, { duration: 1, symbol: 'a', line: 1 });
 
   step.at(1);
   expect(fn1).toHaveBeenCalledTimes(3);
+  expect(fn1).toHaveBeenLastCalledWith({ duration: 1, symbol: 'a', line: 0 });
   expect(fn2).toHaveBeenCalledTimes(1);
+  expect(fn2).toHaveBeenLastCalledWith({ duration: 1, symbol: 'b', line: 1 });
 
   step.at(2);
   expect(fn1).toHaveBeenCalledTimes(3);

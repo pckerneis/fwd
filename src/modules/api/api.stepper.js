@@ -20,9 +20,9 @@ export function stepper(pattern, mapper, continuation = '~') {
   const getHandlers = (index) => getSymbols(index)
     .map((symbol) => mapper[symbol]);
 
-  const getStepLength = (index, lineIndex) => {
+  const getStepDuration = (index, lineIndex) => {
     const line = lines[lineIndex];
-    let length = 1;
+    let duration = 1;
 
     for (let i = index + 1; i < index + maxLineLength; i++) {
       const symbol = line[i % maxLineLength];
@@ -30,21 +30,23 @@ export function stepper(pattern, mapper, continuation = '~') {
       if (symbol !== continuation) {
         break;
       } else {
-        length++;
+        duration++;
       }
     }
 
-    return length;
+    return duration;
   };
 
   return {
     at: (index) => {
       const handlers = getHandlers(index);
 
-      handlers.forEach((handler) => {
+      handlers.forEach((handler, handlerIndex) => {
         if (typeof handler === 'function') {
-          const length = getStepLength(index, handlers.indexOf(handler));
-          handler(length);
+          const duration = getStepDuration(index, handlerIndex);
+          const symbol = getSymbols(index)[handlerIndex];
+          const line = handlerIndex;
+          handler({duration, symbol, line});
         }
       });
     },
