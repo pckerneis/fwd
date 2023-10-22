@@ -244,7 +244,7 @@ Moves the cursor to the next multiple of `interval`.
 
 <a name="stepper"></a>
 
-## stepper(pattern, handler, [continuation]) ⇒ [<code>Stepper</code>](#Stepper)
+## stepper(pattern, handler, [continuation], [silence]) ⇒ [<code>Stepper</code>](#Stepper)
 Creates a stepper object
 
 **Kind**: global function  
@@ -253,8 +253,9 @@ Creates a stepper object
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | pattern | <code>string</code> |  | The pattern to play |
-| handler | [<code>StepperHandler</code>](#StepperHandler) |  | A function to be called for each step |
+| handler | [<code>StepHandler</code>](#StepHandler) |  | A function to be called for each step |
 | [continuation] | <code>string</code> | <code>&quot;&#x27;~&#x27;&quot;</code> | The step continuation character |
+| [silence] | <code>string</code> | <code>&quot;&#x27;_&#x27;&quot;</code> | The step silence character |
 
 <a name="pick"></a>
 
@@ -308,26 +309,26 @@ Creates a Ring.
 | --- | --- | --- |
 | at | <code>function</code> | Calls the handler function for the given step index |
 
-<a name="Step"></a>
+<a name="StepHandlerParameters"></a>
 
-## Step : <code>Object</code>
+## StepHandlerParameters : <code>Object</code>
 **Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
 | duration | <code>number</code> | The duration of the step |
-| symbol | <code>string</code> | The symbol of the step |
+| symbol | <code>string</code> \| <code>number</code> | The symbol of the step as a number (integer) or a string (character) |
 | line | <code>number</code> | The line of the step |
 
-<a name="StepperHandler"></a>
+<a name="StepHandler"></a>
 
-## StepperHandler : <code>function</code>
+## StepHandler : <code>function</code>
 **Kind**: global typedef  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| step | [<code>Step</code>](#Step) | The step object |
+| step | [<code>StepHandlerParameters</code>](#StepHandlerParameters) | The step object |
 
 <a name="Ring"></a>
 
