@@ -760,3 +760,22 @@ ab
   expect(fn1).toHaveBeenCalledTimes(5);
   expect(fn2).toHaveBeenCalledTimes(1);
 });
+
+test('stepper() should ignore whitespace', () => {
+  const {stepper} = getApiContext(midiOutput, messages);
+  const fn1 = jest.fn();
+  const step = stepper(
+    `a   b\tc`,
+    {
+      a: fn1,
+      b: fn1,
+      c: fn1,
+    }
+  );
+  step.at(0);
+  expect(fn1).toHaveBeenCalledTimes(1);
+  step.at(1);
+  expect(fn1).toHaveBeenCalledTimes(2);
+  step.at(2);
+  expect(fn1).toHaveBeenCalledTimes(3);
+});

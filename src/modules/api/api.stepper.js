@@ -3,6 +3,10 @@
  * @property {function} at - Trigger a stepper handler function at the given step
  */
 
+function removeWhitespaces(line) {
+  return line.replace(/\s/g, '');
+}
+
 /**
  * Creates a stepper object
  * @param {string} pattern - The pattern to play
@@ -11,7 +15,9 @@
  * @returns {Stepper} the stepper object
  */
 export function stepper(pattern, mapper, continuation = '~') {
-  const lines = pattern.split('\n');
+  const lines = pattern.split('\n')
+    .map((line) => removeWhitespaces(line));
+
   const maxLineLength = Math.max(...lines.map((line) => line.length));
 
   const getSymbols = (index) => lines
