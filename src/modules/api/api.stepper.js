@@ -1,55 +1,59 @@
 /**
  * @typedef {Object} Stepper
- * @property {function} get - Returns a stepper handler function at the given step
  * @property {function} at - Trigger a stepper handler function at the given step
- * @property {function} stepLength - Returns the length of the step at the given index
  */
+
+function removeWhitespaces(line) {
+  return line.replace(/\s/g, '');
+}
 
 /**
  * Creates a stepper object
- * @param {string|Array} pattern - The pattern to play
+ * @param {string} pattern - The pattern to play
  * @param {*} mapper - A dictionary mapping each step value to a handler function
  * @param {string} [continuation='~'] - The step continuation character
  * @returns {Stepper} the stepper object
  */
 export function stepper(pattern, mapper, continuation = '~') {
-  const getHandler = (index) => {
-    const step = pattern[index % pattern.length];
-    const handler = mapper[step];
+  const lines = pattern.split('\n').map((line) => removeWhitespaces(line));
 
-    if (!handler) {
-      return null;
-    }
+  const maxLineLength = Math.max(...lines.map((line) => line.length));
 
-    return handler;
-  };
+  const getSymbols = (index) =>
+    lines.map((line) => line[index % maxLineLength]);
 
-  const getStepLength = (index) => {
-    let length = 1;
+  const getHandlers = (index) =>
+    getSymbols(index).map((symbol) => mapper[symbol]);
 
-    for (let i = index + 1; i < index + pattern.length; i++) {
-      const step = pattern[i % pattern.length];
+  const getStepDuration = (index, lineIndex) => {
+    const line = lines[lineIndex];
+    let duration = 1;
 
-      if (step !== continuation) {
+    for (let i = index + 1; i < index + maxLineLength; i++) {
+      const symbol = line[i % maxLineLength];
+
+      if (symbol !== continuation) {
         break;
       } else {
-        length++;
+        duration++;
       }
     }
 
-    return length;
+    return duration;
   };
 
   return {
-    get: (index) => {
-      return getHandler(index);
-    },
     at: (index) => {
-      const handler = getHandler(index);
-      return handler ? handler(getStepLength(index)) : null;
-    },
-    stepLength: (index) => {
-      return getStepLength(index);
+      const handlers = getHandlers(index);
+
+      handlers.forEach((handler, handlerIndex) => {
+        if (typeof handler === 'function') {
+          const duration = getStepDuration(index, handlerIndex);
+          const symbol = getSymbols(index)[handlerIndex];
+          const line = handlerIndex;
+          handler({ duration, symbol, line });
+        }
+      });
     },
   };
 }
