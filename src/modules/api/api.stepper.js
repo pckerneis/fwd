@@ -70,6 +70,9 @@ export function stepper(pattern, handler, continuation = '~', silence = '_') {
           symbol.length > 0
         ) {
           const duration = getStepDuration(index, line);
+          if ('0123456789'.includes(symbol)) {
+            symbol = parseInt(symbol, 10);
+          }
           handler({ duration, symbol, line });
         }
       });
