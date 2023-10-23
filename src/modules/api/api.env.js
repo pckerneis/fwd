@@ -14,7 +14,7 @@ import { _persistedContext } from './api.shared.js';
  * @return {Array} A tuple with a getter and a setter
  */
 export function define(name, defaultValue) {
-  if (!Object.hasOwn(_persistedContext, name)) {
+  if (!Object.prototype.hasOwnProperty.call(_persistedContext, name)) {
     _persistedContext[name] = defaultValue;
   }
 
