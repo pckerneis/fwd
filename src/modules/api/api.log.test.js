@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { setEnv } from './api.shared.js';
+import { setPersistedContext } from './api.shared.js';
 import { initScheduler, startScheduler } from '../cli/scheduler.js';
 import { getApiContext } from '../api.js';
 
@@ -21,7 +21,7 @@ beforeEach(() => {
 
   currentTime = 0;
   messages = [];
-  setEnv({});
+  setPersistedContext({});
   initScheduler();
   mockDateNow(4537);
 });

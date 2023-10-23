@@ -6,7 +6,7 @@ import {
   resetMuteAndSolo,
 } from './api.midi.js';
 import { jest } from '@jest/globals';
-import { setEnv } from './api.shared.js';
+import { setPersistedContext } from './api.shared.js';
 import { resetNotesCurrentlyOnState } from '../cli/midi.js';
 
 let currentTime = 0;
@@ -31,7 +31,7 @@ beforeEach(() => {
   midiOutput = {
     send: jest.fn(),
   };
-  setEnv({});
+  setPersistedContext({});
   initScheduler();
   mockDateNow(4537);
   resetNotesCurrentlyOnState();
