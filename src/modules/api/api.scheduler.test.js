@@ -1,7 +1,7 @@
 import { getApiContext } from '../api.js';
 import { initScheduler, startScheduler } from '../cli/scheduler.js';
 import { jest } from '@jest/globals';
-import { setPersistedContext } from './api.shared.js';
+import {setPersistedContext} from './api.shared.js';
 
 let currentTime = 0;
 let messages = [];
@@ -169,6 +169,7 @@ test('repeat() ignore invalid intervals', () => {
   [0, null, -5, 'hey'].forEach((interval) => {
     startScheduler([]);
     const action = jest.fn();
+    // @ts-ignore
     repeat(interval, action, 5);
     advanceTime(5000);
     expect(action).toBeCalledTimes(0);
@@ -203,6 +204,7 @@ test('speed() sets speed', () => {
 
 test('speed() should not set invalid speed', () => {
   const apiContext = getApiContext(null, messages);
+  // @ts-ignore
   expect(() => apiContext.speed('hello')).toThrow();
 });
 
