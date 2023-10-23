@@ -8,7 +8,7 @@ import {
 import { getDefaultMidiChannel } from './api.midi.js';
 import { getCurrentScope, popScope, pushScope } from './api.scope.js';
 import { isFinitePositiveNumber } from '../utils.js';
-import { _env } from './api.shared.js';
+import { _persistedContext } from './api.shared.js';
 
 /**
  * Returns the execution time
@@ -95,7 +95,7 @@ function callAction(action, ...args) {
   if (typeof action === 'function') {
     action(...args);
   } else {
-    _env[action](...args);
+    _persistedContext[action](...args);
   }
 }
 

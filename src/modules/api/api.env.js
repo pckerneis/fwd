@@ -1,26 +1,27 @@
-import { _env } from './api.shared.js';
+import { _persistedContext } from './api.shared.js';
 
 /**
  * Define variable in the execution context with an optional default value.
- * This won't have any effects if a value is already defined for `name`.
+ * Returns a tuple with a getter and a setter for the variable.
  * @param {string} name - The accessor name
- * @param {*} [defaultValue] - A default value
- * @return {*} the named value
+ * @param {*} [defaultValue] - An optional default value
+ * @return {Array} A tuple with a getter and a setter
  */
 export function define(name, defaultValue) {
-  if (_env[name] === undefined) {
-    _env[name] = defaultValue;
+  if (!Object.hasOwn(_persistedContext, name)) {
+    _persistedContext[name] = defaultValue;
   }
 
-  return _env[name];
+  return [
+    () => _persistedContext[name],
+    (value) => (_persistedContext[name] = value),
+  ];
 }
 
 /**
- * Define or overwrite variable in the execution context with the provided value.
- * This won't have any effects if a value is already defined for `name`.
+ * Delete a variable from the execution context.
  * @param {string} name - The accessor name
- * @param {*} value - new value
  */
-export function set(name, value) {
-  _env[name] = value;
+export function undefine(name) {
+  delete _persistedContext[name];
 }

@@ -10,7 +10,7 @@ import {
   speed,
   wait,
 } from './api/api.scheduler.js';
-import { _env, setEnv, setLogLines, setMidiOutput } from './api/api.shared.js';
+import { setLogLines, setMidiOutput } from './api/api.shared.js';
 import {
   cc,
   channel,
@@ -22,7 +22,7 @@ import {
   unsolo,
 } from './api/api.midi.js';
 import { clear, fclear, flog, log } from './api/api.log.js';
-import { define, set } from './api/api.env.js';
+import { define } from './api/api.env.js';
 import { iter, pick, ring } from './api/api.utils.js';
 import { getNoteNumberConstants } from './api/api.notes.js';
 import { getPattern } from 'euclidean-rhythms';
@@ -70,7 +70,6 @@ function getApi() {
 
     define,
     def: define,
-    set,
 
     pick,
     _p: pick,
@@ -98,11 +97,5 @@ export function getApiContext(midiOutput, textOutputLines) {
   resetScopes();
   setMidiOutput(midiOutput);
   setLogLines(textOutputLines);
-
-  setEnv({
-    ..._env,
-    ...getApi(),
-  });
-
-  return _env;
+  return getApi();
 }
