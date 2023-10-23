@@ -65,30 +65,34 @@ See also [API reference](https://pckerneis.github.io/musch/#/api-reference.md).
 
 <a name="define"></a>
 
-### define(name, [defaultValue]) ⇒ <code>\*</code>
-Define variable in the execution context with an optional default value.
-This won't have any effects if a value is already defined for `name`.
+### define(name, [defaultValue]) ⇒ <code>Array</code>
+Define a variable with an optional default value. Once defined, the variable can be accessed and changed with
+the returned getter and setter functions. The set value is persisted across executions.
 
 **Kind**: global function  
-**Returns**: <code>\*</code> - the named value  
+**Returns**: <code>Array</code> - A tuple with a getter and a setter  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | name | <code>string</code> | The accessor name |
-| [defaultValue] | <code>\*</code> | A default value |
+| [defaultValue] | <code>\*</code> | An optional default value |
 
-<a name="set"></a>
+**Example**  
+```js
+const [getFoo, setFoo] = define('foo');
+setFoo('bar');
+getFoo(); // returns 'bar'
+```
+<a name="undefine"></a>
 
-### set(name, value)
-Define or overwrite variable in the execution context with the provided value.
-This won't have any effects if a value is already defined for `name`.
+### undefine(name)
+Delete a variable from the execution context.
 
 **Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | name | <code>string</code> | The accessor name |
-| value | <code>\*</code> | new value |
 
 <a name="clear"></a>
 

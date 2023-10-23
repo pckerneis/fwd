@@ -22,7 +22,7 @@ import {
   unsolo,
 } from './api/api.midi.js';
 import { clear, fclear, flog, log } from './api/api.log.js';
-import { define } from './api/api.env.js';
+import { define, undefine } from './api/api.env.js';
 import { iter, pick, ring } from './api/api.utils.js';
 import { getNoteNumberConstants } from './api/api.notes.js';
 import { getPattern } from 'euclidean-rhythms';
@@ -70,6 +70,8 @@ function getApi() {
 
     define,
     def: define,
+    undefine,
+    undef: undefine,
 
     pick,
     _p: pick,
