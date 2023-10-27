@@ -63,6 +63,83 @@ See [CLI documentation](cli.md).
 
 See also [API reference](api-reference.md).
 
+<a name="module_Smooth"></a>
+
+### Smooth
+
+* [Smooth](#module_Smooth)
+    * _static_
+        * [.Curve](#module_Smooth.Curve)
+        * [.smooth(defaultValue, defaultCurve)](#module_Smooth.smooth) ⇒ <code>SmoothedValue</code>
+    * _inner_
+        * [~SmoothedValue](#module_Smooth..SmoothedValue) : <code>Object</code>
+
+<a name="module_Smooth.Curve"></a>
+
+#### Smooth.Curve
+Curve types for smoothed values.
+
+Available curve types:
+- linear
+- easeInQuad
+- easeOutQuad
+- easeInOutQuad
+- easeInCubic
+- easeOutCubic
+- easeInOutCubic
+- easeInQuart
+- easeOutQuart
+- easeInOutQuart
+- easeInQuint
+- easeOutQuint
+- easeInOutQuint
+
+**Kind**: static constant of [<code>Smooth</code>](#module_Smooth)  
+<a name="module_Smooth.smooth"></a>
+
+#### Smooth.smooth(defaultValue, defaultCurve) ⇒ <code>SmoothedValue</code>
+Creates a smoothed value.
+The value can be set to a target value over a duration with a curve type with `setTarget`.
+Subsequent calls to `get` return a value interpolated between the start and target values using
+the curve type.
+
+**Kind**: static method of [<code>Smooth</code>](#module_Smooth)  
+**Returns**: <code>SmoothedValue</code> - A smoothed value  
+
+| Param | Description |
+| --- | --- |
+| defaultValue | The starting value |
+| defaultCurve | The default curve type |
+
+**Example**  
+```js
+// Smoothed value starting at 0 with a default curve of easeInQuad
+const value = smooth(0, Curve.easeInQuad);
+
+// Adds a curve from 0 to 10 over 4 time units with a easeInQuad curve
+value.setTarget(10, 4);
+
+wait(1);
+value.get(); // 0.625
+wait(2);
+value.get(); // 2.5
+wait(3);
+value.get(); // 5.625
+wait(4);
+value.get(); // 10
+```
+<a name="module_Smooth..SmoothedValue"></a>
+
+#### Smooth~SmoothedValue : <code>Object</code>
+**Kind**: inner typedef of [<code>Smooth</code>](#module_Smooth)  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| get | <code>function</code> | Returns the current value |
+| setCurve | <code>function</code> | Sets the default curve type |
+| setTarget | <code>function</code> | Sets the target value with an optional curve type |
+
 <a name="define"></a>
 
 ### define(name, [defaultValue]) ⇒ <code>Array</code>

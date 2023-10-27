@@ -29,7 +29,7 @@ import { getPattern } from 'euclidean-rhythms';
 import { resetScopes } from './api/api.scope.js';
 import { random, setSeed } from './api/api.random.js';
 import { stepper } from './api/api.stepper.js';
-import {smooth} from './api/api.smooth.js';
+import { smooth } from './api/api.smooth.js';
 
 function getApi() {
   return {

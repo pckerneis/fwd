@@ -1,5 +1,27 @@
 import { getCurrentScope } from './api.scope.js';
 
+/**
+ * @module Smooth
+ */
+
+/**
+ * Curve types for smoothed values.
+ *
+ * Available curve types:
+ * - linear
+ * - easeInQuad
+ * - easeOutQuad
+ * - easeInOutQuad
+ * - easeInCubic
+ * - easeOutCubic
+ * - easeInOutCubic
+ * - easeInQuart
+ * - easeOutQuart
+ * - easeInOutQuart
+ * - easeInQuint
+ * - easeOutQuint
+ * - easeInOutQuint
+ */
 export const Curve = {
   linear: 0,
   easeInQuad: 1,
@@ -45,6 +67,26 @@ const easingFunctions = {
 
 /**
  * Creates a smoothed value.
+ * The value can be set to a target value over a duration with a curve type with `setTarget`.
+ * Subsequent calls to `get` return a value interpolated between the start and target values using
+ * the curve type.
+ *
+ * @example
+ * // Smoothed value starting at 0 with a default curve of easeInQuad
+ * const value = smooth(0, Curve.easeInQuad);
+ *
+ * // Adds a curve from 0 to 10 over 4 time units with a easeInQuad curve
+ * value.setTarget(10, 4);
+ *
+ * wait(1);
+ * value.get(); // 0.625
+ * wait(2);
+ * value.get(); // 2.5
+ * wait(3);
+ * value.get(); // 5.625
+ * wait(4);
+ * value.get(); // 10
+ *
  * @param defaultValue - The starting value
  * @param defaultCurve - The default curve type
  * @returns {SmoothedValue} A smoothed value
