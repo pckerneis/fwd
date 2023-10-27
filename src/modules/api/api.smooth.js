@@ -16,20 +16,42 @@ export const Curve = {
   easeInOutQuint: 12,
 };
 
+// Source: https://gist.github.com/gre/1650294
+const easingFunctions = {
+  [Curve.linear]: (t) => t,
+  [Curve.easeInQuad]: (t) => t * t,
+  [Curve.easeOutQuad]: (t) => t * (2 - t),
+  [Curve.easeInOutQuad]: (t) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t),
+  [Curve.easeInCubic]: (t) => t * t * t,
+  [Curve.easeOutCubic]: (t) => --t * t * t + 1,
+  [Curve.easeInOutCubic]: (t) =>
+    t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1,
+  [Curve.easeInQuart]: (t) => t * t * t * t,
+  [Curve.easeOutQuart]: (t) => 1 - --t * t * t * t,
+  [Curve.easeInOutQuart]: (t) =>
+    t < 0.5 ? 8 * t * t * t * t : 1 - 8 * --t * t * t * t,
+  [Curve.easeInQuint]: (t) => t * t * t * t * t,
+  [Curve.easeOutQuint]: (t) => 1 + --t * t * t * t * t,
+  [Curve.easeInOutQuint]: (t) =>
+    t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * --t * t * t * t * t,
+};
+
 /**
  * @typedef {Object} SmoothedValue
- * @method get - Returns the current value
- * @method setCurve - Sets the default curve type
- * @method setTarget - Sets the target value with an optional curve type
+ * @property {function} get - Returns the current value
+ * @property {function} setCurve - Sets the default curve type
+ * @property {function} setTarget - Sets the target value with an optional curve type
  */
 
 /**
  * Creates a smoothed value.
  * @param defaultValue - The starting value
+ * @param defaultCurve - The default curve type
+ * @returns {SmoothedValue} A smoothed value
  */
-export function smooth(defaultValue = 0) {
+export function smooth(defaultValue = 0, defaultCurve = Curve.linear) {
   const segments = [];
-  const curve = Curve.linear;
+  let currentCurve = defaultCurve;
 
   const computeValue = (
     t,
@@ -39,22 +61,19 @@ export function smooth(defaultValue = 0) {
     targetTime,
     curve,
   ) => {
-    switch (curve) {
-      case Curve.linear:
-        if (t >= targetTime) {
-          return targetValue;
-        }
-
-        if (t <= startTime) {
-          return startValue;
-        }
-
-        return (
-          startValue +
-          ((targetValue - startValue) * (t - startTime)) /
-            (targetTime - startTime)
-        );
+    if (t >= targetTime) {
+      return targetValue;
     }
+
+    if (t <= startTime) {
+      return startValue;
+    }
+
+    const easingFunction = easingFunctions[curve];
+    const easingValue = easingFunction(
+      (t - startTime) / (targetTime - startTime),
+    );
+    return startValue + (targetValue - startValue) * easingValue;
   };
 
   const get = () => {
@@ -92,7 +111,12 @@ export function smooth(defaultValue = 0) {
 
   return {
     get,
-    setTarget(newValue, duration = 0) {
+    setCurve(newCurve) {
+      currentCurve = newCurve;
+    },
+    setTarget(newValue, duration = 0, curve = currentCurve) {
+      currentCurve = curve;
+
       const startTime = getCurrentScope().cursor;
       const startValue = get();
 
