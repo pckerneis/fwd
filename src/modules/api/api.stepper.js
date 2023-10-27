@@ -1,4 +1,8 @@
 /**
+ * @module Stepper
+ */
+
+/**
  * @typedef {Object} Stepper
  * @property {function} at - Calls the handler function for the given step index
  */

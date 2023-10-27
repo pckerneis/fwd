@@ -1,8 +1,8 @@
-import { getCurrentScope } from './api.scope.js';
-
 /**
  * @module Smooth
  */
+
+import { getCurrentScope } from './api.scope.js';
 
 /**
  * Curve types for smoothed values.

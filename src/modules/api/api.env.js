@@ -1,3 +1,7 @@
+/**
+ * @module Env
+ */
+
 import { _persistedContext } from './api.shared.js';
 
 /**

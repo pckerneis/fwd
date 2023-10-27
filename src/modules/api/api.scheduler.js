@@ -1,3 +1,7 @@
+/**
+ * @module Scheduler
+ */
+
 import {
   getCurrentEventTime,
   getCurrentSchedulerId,
