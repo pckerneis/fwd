@@ -76,5 +76,10 @@ export function iter(iterableOrNumber, callback) {
  * @return {function} a getter function to retrieve element at index
  */
 export function ring(...elements) {
-  return (i) => elements[Math.floor(i) % elements.length] ?? elements[0];
+  return (i) => elements[mod(Math.floor(i), elements.length)];
+}
+
+// Returns the element at a positive or negative index.
+function mod(i, length) {
+  return ((i % length) + length) % length;
 }

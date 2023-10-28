@@ -47,69 +47,37 @@ test('pick() picks a random rest parameter', () => {
 
 test('ring() creates a ring', () => {
   const r = ring('hello', 123, 42, null);
-  expect(r.get(0)).toBe('hello');
-  expect(r.get(1)).toBe(123);
-  expect(r.get(2)).toBe(42);
-  expect(r.get(3)).toBe(null);
-  expect(r.get(4)).toBe('hello');
-  expect(r.get(5)).toBe(123);
-  expect(r.get(6)).toBe(42);
-  expect(r.get(7)).toBe(null);
+  expect(r(0)).toBe('hello');
+  expect(r(1)).toBe(123);
+  expect(r(2)).toBe(42);
+  expect(r(3)).toBe(null);
+  expect(r(4)).toBe('hello');
+  expect(r(5)).toBe(123);
+  expect(r(6)).toBe(42);
+  expect(r(7)).toBe(null);
 });
 
-test('ring() iterates over elements', () => {
+test('ring() wraps negative indices', () => {
   const r = ring('hello', 123, 42, null);
-  const values = [];
-
-  for (let i = 0; i < 10; ++i) {
-    values.push(r.next());
-  }
-
-  expect(values).toEqual([
-    'hello',
-    123,
-    42,
-    null,
-    'hello',
-    123,
-    42,
-    null,
-    'hello',
-    123,
-  ]);
+  expect(r(-1)).toBe(null);
+  expect(r(-2)).toBe(42);
+  expect(r(-3)).toBe(123);
+  expect(r(-4)).toBe('hello');
+  expect(r(-5)).toBe(null);
+  expect(r(-6)).toBe(42);
+  expect(r(-7)).toBe(123);
+  expect(r(-8)).toBe('hello');
 });
-
-test('ring() iterates over elements with move', () => {
+test('ring() floors non-integer indices', () => {
   const r = ring('hello', 123, 42, null);
-  const values = [];
-
-  for (let i = 0; i < 10; ++i) {
-    values.push(r.move(i));
-    values.push(r.peek());
-  }
-
-  expect(values).toEqual([
-    'hello',
-    'hello',
-    123,
-    123,
-    42,
-    42,
-    null,
-    null,
-    'hello',
-    'hello',
-    123,
-    123,
-    42,
-    42,
-    null,
-    null,
-    'hello',
-    'hello',
-    123,
-    123,
-  ]);
+  expect(r(0.5)).toBe('hello');
+  expect(r(1.5)).toBe(123);
+  expect(r(2.5)).toBe(42);
+  expect(r(3.5)).toBe(null);
+  expect(r(4.5)).toBe('hello');
+  expect(r(5.5)).toBe(123);
+  expect(r(6.5)).toBe(42);
+  expect(r(7.5)).toBe(null);
 });
 
 test('iter() iterates over numbers', () => {
