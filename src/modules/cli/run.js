@@ -15,7 +15,7 @@ import { tryToReadFile } from './file.js';
 import { dbg, DBG_MODE } from './dbg.js';
 import easymidi from 'easymidi';
 import readline from 'readline';
-import {setPersistedContext} from '../api/api.shared.js';
+import { setPersistedContext } from '../api/api.shared.js';
 
 /**
  * Get an existing MIDI output name
