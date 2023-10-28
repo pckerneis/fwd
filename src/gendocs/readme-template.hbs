@@ -2,6 +2,9 @@
 
 [![Node.js CI](https://github.com/pckerneis/musch/actions/workflows/node.js.yml/badge.svg)](https://github.com/pckerneis/musch/actions/workflows/node.js.yml)
 [![codecov](https://codecov.io/gh/pckerneis/musch/graph/badge.svg?token=U4AH1GFZUZ)](https://codecov.io/gh/pckerneis/musch)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/pckerneis/musch)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/pckerneis/musch)
+![GitHub](https://img.shields.io/github/license/pckerneis/musch)
 
 A tiny environment for musical composition and live-coding in JavaScript.
 
