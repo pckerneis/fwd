@@ -1,5 +1,6 @@
 # Musch 0.0.1
 
+[![Node.js CI](https://github.com/pckerneis/musch/actions/workflows/node.js.yml/badge.svg)](https://github.com/pckerneis/musch/actions/workflows/node.js.yml)
 [![codecov](https://codecov.io/gh/pckerneis/musch/graph/badge.svg?token=U4AH1GFZUZ)](https://codecov.io/gh/pckerneis/musch)
 
 A tiny environment for musical composition and live-coding in JavaScript.
