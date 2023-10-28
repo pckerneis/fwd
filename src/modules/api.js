@@ -23,13 +23,14 @@ import {
 } from './api/api.midi.js';
 import { clear, fclear, flog, log } from './api/api.log.js';
 import { define, undefine } from './api/api.env.js';
-import { iter, pick, ring } from './api/api.utils.js';
+import { iter, pick } from './api/api.utils.js';
 import { getNoteNumberConstants } from './api/api.notes.js';
 import { getPattern } from 'euclidean-rhythms';
 import { resetScopes } from './api/api.scope.js';
 import { random, setSeed } from './api/api.random.js';
 import { stepper } from './api/api.stepper.js';
 import { smooth } from './api/api.smooth.js';
+import { ring } from './api/api.ring.js';
 
 function getApi() {
   return {
@@ -68,9 +69,11 @@ function getApi() {
 
     pick,
     iter,
-    ring,
+
     setSeed,
     random,
+
+    ring,
 
     stepper,
 

@@ -55,31 +55,3 @@ export function iter(iterableOrNumber, callback) {
     callback(iterableOrNumber);
   }
 }
-
-/**
- * @typedef Ring
- *
- * Call `next()` to get next element in list, or `peek()` to read the current element.
- *
- * @property {Array} elements - return the elements array.
- * @property {Function} get - return an element at given position.
- * @property {Function} move - moves cursor at given position and return the pointed element.
- * @property {Function} next - advance cursor and return the next element of the Ring.
- * @property {Function} peek - return the currently pointed element of the Ring.
- */
-
-/**
- * Creates a Ring.
- * A Ring (or circular buffer) acts like a list whose end is connected to its start.
- *
- * @param {...*} elements - Elements to circle through
- * @return {function} a getter function to retrieve element at index
- */
-export function ring(...elements) {
-  return (i) => elements[mod(Math.floor(i), elements.length)];
-}
-
-// Returns the element at a positive or negative index.
-function mod(i, length) {
-  return ((i % length) + length) % length;
-}

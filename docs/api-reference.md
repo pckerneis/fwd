@@ -184,6 +184,37 @@ If only min is specified, the returned number will be between 0 and min.
 | [min] | <code>number</code> | if both arguments are numbers, the minimum value of the random number, else the maximum value |
 | [max] | <code>number</code> | if specified, the maximum value of the random number |
 
+<a name="module_Ring"></a>
+
+## Ring
+<a name="module_Ring.ring"></a>
+
+### Ring.ring(...elements) ⇒ <code>function</code>
+Creates a ring function.
+A ring (or circular buffer) acts like a list whose end is connected to its start.
+The returned function takes a positive or negative index and returns the element at that index.
+Negative indices are counted from the end of the list. For example, -1 is the last element.
+If the index is not an integer, it is rounded down.
+
+**Kind**: static method of [<code>Ring</code>](#module_Ring)  
+**Returns**: <code>function</code> - a getter function to retrieve element at index  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ...elements | <code>\*</code> | Elements to circle through |
+
+**Example**  
+```js
+const ring = ring('a', 'b', 'c');
+ring(-3); // 'a'
+ring(-2); // 'b'
+ring(-1); // 'c'
+ring(0); // 'a'
+ring(1); // 'b'
+ring(2); // 'c'
+ring(3); // 'a'
+ring(1.4); // 'b'
+```
 <a name="module_Scheduler"></a>
 
 ## Scheduler
@@ -444,12 +475,8 @@ Creates a stepper object
 ## Utils
 
 * [Utils](#module_Utils)
-    * _static_
-        * [.pick([numberOrArrayOrElements])](#module_Utils.pick) ⇒ <code>\*</code>
-        * [.iter(iterableOrNumber, callback)](#module_Utils.iter)
-        * [.ring(...elements)](#module_Utils.ring) ⇒ <code>function</code>
-    * _inner_
-        * [~Ring](#module_Utils..Ring)
+    * [.pick([numberOrArrayOrElements])](#module_Utils.pick) ⇒ <code>\*</code>
+    * [.iter(iterableOrNumber, callback)](#module_Utils.iter)
 
 <a name="module_Utils.pick"></a>
 
@@ -480,31 +507,4 @@ integers starting from zero.
 | --- |
 | iterableOrNumber | 
 | callback | 
-
-<a name="module_Utils.ring"></a>
-
-### Utils.ring(...elements) ⇒ <code>function</code>
-Creates a Ring.
-A Ring (or circular buffer) acts like a list whose end is connected to its start.
-
-**Kind**: static method of [<code>Utils</code>](#module_Utils)  
-**Returns**: <code>function</code> - a getter function to retrieve element at index  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| ...elements | <code>\*</code> | Elements to circle through |
-
-<a name="module_Utils..Ring"></a>
-
-### Utils~Ring
-**Kind**: inner typedef of [<code>Utils</code>](#module_Utils)  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| elements | <code>Array</code> | return the elements array. |
-| get | <code>function</code> | return an element at given position. |
-| move | <code>function</code> | moves cursor at given position and return the pointed element. |
-| next | <code>function</code> | advance cursor and return the next element of the Ring. |
-| peek | <code>function</code> | return the currently pointed element of the Ring. |
 
