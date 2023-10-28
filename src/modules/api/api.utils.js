@@ -7,7 +7,7 @@ import { random } from './api.random.js';
 /**
  * Pick an element among choices.
  * - If an array is provided, the output will be an element of the array
- * - If an string is provided, the output will be a character of the string
+ * - If a string is provided, the output will be a character of the string
  * - If a number is provided, the output will be a number between 0 and this number
  * - For other inputs, the output is a random value between 0 and 1
  *
@@ -59,7 +59,6 @@ export function iter(iterableOrNumber, callback) {
 /**
  * @typedef Ring
  *
- * A Ring (or circular buffer) acts like a list whose end is connected to its start.
  * Call `next()` to get next element in list, or `peek()` to read the current element.
  *
  * @property {Array} elements - return the elements array.
@@ -71,28 +70,16 @@ export function iter(iterableOrNumber, callback) {
 
 /**
  * Creates a Ring.
+ * A Ring (or circular buffer) acts like a list whose end is connected to its start.
  *
  * @param {...*} elements - Elements to circle through
- * @return {Ring} a Ring containing `elements`.
+ * @return {function} a getter function to retrieve element at index
  */
 export function ring(...elements) {
-  let index = -1;
+  return (i) => elements[mod(Math.floor(i), elements.length)];
+}
 
-  const get = (i) => elements[i % elements.length];
-
-  const move = (i) => {
-    index = i;
-    return get(index);
-  };
-
-  const next = () => get(++index);
-  const peek = () => get(index);
-
-  return {
-    elements,
-    get,
-    move,
-    next,
-    peek,
-  };
+// Returns the element at a positive or negative index.
+function mod(i, length) {
+  return ((i % length) + length) % length;
 }
