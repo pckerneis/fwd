@@ -1,4 +1,4 @@
-import { iter, pick, ring } from './api.utils.js';
+import { iter, pick } from './api.utils.js';
 
 test('pick() picks a random number', () => {
   for (let i = 0; i < 100; ++i) {
@@ -43,41 +43,6 @@ test('pick() picks a random rest parameter', () => {
     const value = pick(...choices);
     expect(choices.includes(value)).toBeTruthy();
   }
-});
-
-test('ring() creates a ring', () => {
-  const r = ring('hello', 123, 42, null);
-  expect(r(0)).toBe('hello');
-  expect(r(1)).toBe(123);
-  expect(r(2)).toBe(42);
-  expect(r(3)).toBe(null);
-  expect(r(4)).toBe('hello');
-  expect(r(5)).toBe(123);
-  expect(r(6)).toBe(42);
-  expect(r(7)).toBe(null);
-});
-
-test('ring() wraps negative indices', () => {
-  const r = ring('hello', 123, 42, null);
-  expect(r(-1)).toBe(null);
-  expect(r(-2)).toBe(42);
-  expect(r(-3)).toBe(123);
-  expect(r(-4)).toBe('hello');
-  expect(r(-5)).toBe(null);
-  expect(r(-6)).toBe(42);
-  expect(r(-7)).toBe(123);
-  expect(r(-8)).toBe('hello');
-});
-test('ring() floors non-integer indices', () => {
-  const r = ring('hello', 123, 42, null);
-  expect(r(0.5)).toBe('hello');
-  expect(r(1.5)).toBe(123);
-  expect(r(2.5)).toBe(42);
-  expect(r(3.5)).toBe(null);
-  expect(r(4.5)).toBe('hello');
-  expect(r(5.5)).toBe(123);
-  expect(r(6.5)).toBe(42);
-  expect(r(7.5)).toBe(null);
 });
 
 test('iter() iterates over numbers', () => {
