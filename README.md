@@ -61,4 +61,4 @@ See [CLI documentation](https://pckerneis.github.io/musch/#/cli.md).
 
 ## API reference
 
-See also [API reference](https://pckerneis.github.io/musch/#/api-reference.md).
+See [API reference](https://pckerneis.github.io/musch/#/api-reference.md).

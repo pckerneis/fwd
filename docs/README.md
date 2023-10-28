@@ -61,4 +61,4 @@ See [CLI documentation](cli.md).
 
 ## API reference
 
-See also [API reference](api-reference.md).
+See [API reference](api-reference.md).
