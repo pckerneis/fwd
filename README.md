@@ -1,5 +1,7 @@
 # Musch 0.0.1
 
+[![codecov](https://codecov.io/gh/pckerneis/musch/graph/badge.svg?token=U4AH1GFZUZ)](https://codecov.io/gh/pckerneis/musch)
+
 A tiny environment for musical composition and live-coding in JavaScript.
 
 ![Screenshot](docs/hello-musch.gif)
