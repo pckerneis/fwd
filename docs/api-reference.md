@@ -311,7 +311,7 @@ Moves the cursor to the next multiple of `interval`.
 * [Smooth](#module_Smooth)
     * _static_
         * [.Curve](#module_Smooth.Curve)
-        * [.smooth(defaultValue, defaultCurve)](#module_Smooth.smooth) ⇒ <code>SmoothedValue</code>
+        * [.smooth([defaultValue], [defaultCurve])](#module_Smooth.smooth) ⇒ <code>SmoothedValue</code>
     * _inner_
         * [~SmoothedValue](#module_Smooth..SmoothedValue) : <code>Object</code>
 
@@ -338,7 +338,7 @@ Available curve types:
 **Kind**: static constant of [<code>Smooth</code>](#module_Smooth)  
 <a name="module_Smooth.smooth"></a>
 
-### Smooth.smooth(defaultValue, defaultCurve) ⇒ <code>SmoothedValue</code>
+### Smooth.smooth([defaultValue], [defaultCurve]) ⇒ <code>SmoothedValue</code>
 Creates a smoothed value.
 The value can be set to a target value over a duration with a curve type with `setTarget`.
 Subsequent calls to `get` return a value interpolated between the start and target values using
@@ -347,10 +347,10 @@ the curve type.
 **Kind**: static method of [<code>Smooth</code>](#module_Smooth)  
 **Returns**: <code>SmoothedValue</code> - A smoothed value  
 
-| Param | Description |
-| --- | --- |
-| defaultValue | The starting value |
-| defaultCurve | The default curve type |
+| Param | Default | Description |
+| --- | --- | --- |
+| [defaultValue] | <code>0</code> | The starting value |
+| [defaultCurve] | <code>Curve.linear</code> | The default curve type |
 
 **Example**  
 ```js

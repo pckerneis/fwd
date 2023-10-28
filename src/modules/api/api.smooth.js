@@ -87,8 +87,8 @@ const easingFunctions = {
  * wait(4);
  * value.get(); // 10
  *
- * @param defaultValue - The starting value
- * @param defaultCurve - The default curve type
+ * @param [defaultValue=0] - The starting value
+ * @param [defaultCurve=Curve.linear] - The default curve type
  * @returns {SmoothedValue} A smoothed value
  */
 export function smooth(defaultValue = 0, defaultCurve = Curve.linear) {
