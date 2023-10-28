@@ -13,6 +13,14 @@ To run from the sources:
 - install the command-line runner with `npm install -g .`
 - run with `musch`
 
+```bash
+git clone https://github.com/pckerneis/musch.git
+cd musch
+npm ci
+npm install -g .
+musch
+```
+
 You'll be prompted a text file to read from, and a MIDI output to send to.
 
 Every change to the text file will trigger the execution of its content,
