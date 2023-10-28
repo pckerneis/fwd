@@ -30,16 +30,10 @@ async function writeReadme(
   outputPath,
   urlPrefix = '',
 ) {
-  const replaced = template
+  const output = template
     .replace('{{example}}', example)
     .replace('{{version}}', PACKAGE_VERSION)
     .replace('{{screenshotPath}}', screenshotPath);
-
-  const output = await jsdoc2md.render({
-    files: PATH_TO_API_JS,
-    template: replaced,
-    'heading-depth': 3,
-  });
 
   fs.writeFileSync(
     outputPath,

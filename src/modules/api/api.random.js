@@ -1,3 +1,7 @@
+/**
+ * @module Random
+ */
+
 import seedrandom from 'seedrandom';
 
 let rng = seedrandom('hello, musch!');

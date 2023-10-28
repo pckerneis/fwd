@@ -1,3 +1,7 @@
+/**
+ * @module Log
+ */
+
 import { _logLines } from './api.shared.js';
 import { fire } from './api.scheduler.js';
 

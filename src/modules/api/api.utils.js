@@ -1,3 +1,7 @@
+/**
+ * @module Utils
+ */
+
 import { random } from './api.random.js';
 
 /**
