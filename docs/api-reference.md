@@ -447,7 +447,7 @@ Creates a stepper object
     * _static_
         * [.pick([numberOrArrayOrElements])](#module_Utils.pick) ⇒ <code>\*</code>
         * [.iter(iterableOrNumber, callback)](#module_Utils.iter)
-        * [.ring(...elements)](#module_Utils.ring) ⇒ <code>Ring</code>
+        * [.ring(...elements)](#module_Utils.ring) ⇒ <code>function</code>
     * _inner_
         * [~Ring](#module_Utils..Ring)
 
@@ -456,7 +456,7 @@ Creates a stepper object
 ### Utils.pick([numberOrArrayOrElements]) ⇒ <code>\*</code>
 Pick an element among choices.
 - If an array is provided, the output will be an element of the array
-- If an string is provided, the output will be a character of the string
+- If a string is provided, the output will be a character of the string
 - If a number is provided, the output will be a number between 0 and this number
 - For other inputs, the output is a random value between 0 and 1
 
@@ -483,11 +483,12 @@ integers starting from zero.
 
 <a name="module_Utils.ring"></a>
 
-### Utils.ring(...elements) ⇒ <code>Ring</code>
+### Utils.ring(...elements) ⇒ <code>function</code>
 Creates a Ring.
+A Ring (or circular buffer) acts like a list whose end is connected to its start.
 
 **Kind**: static method of [<code>Utils</code>](#module_Utils)  
-**Returns**: <code>Ring</code> - a Ring containing `elements`.  
+**Returns**: <code>function</code> - a getter function to retrieve element at index  
 
 | Param | Type | Description |
 | --- | --- | --- |
