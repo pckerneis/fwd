@@ -25,5 +25,5 @@
  */
 export function ring(...elements) {
   const length = elements.length;
-  return (i) => elements[((i % length) + length) % length];
+  return (i) => elements[((Math.floor(i) % length) + length) % length];
 }
