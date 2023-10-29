@@ -335,6 +335,28 @@ Moves the cursor to the next multiple of `interval`.
 | --- | --- |
 | interval | Time interval |
 
+<a name="module_Scope"></a>
+
+## Scope
+<a name="module_Scope.scoped"></a>
+
+### Scope.scoped(action)
+Call `action` in a new scope. The new scope is a copy of the current scope. The current scope is not modified.
+
+**Kind**: static method of [<code>Scope</code>](#module_Scope)  
+
+| Param | Description |
+| --- | --- |
+| action | action to call |
+
+**Example**  
+```js
+scoped(() => {
+  wait(4);
+  cursor(); // 4
+});
+cursor(); // 0
+```
 <a name="module_Smooth"></a>
 
 ## Smooth
