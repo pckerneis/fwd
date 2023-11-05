@@ -2,8 +2,7 @@ import jsdoc from 'jsdoc-api';
 import jsdocParser from 'jsdoc-parse';
 import fs from 'node:fs';
 
-const importSection =
-  `import {define} from './modules/api/api.env.js';
+const importSection = `import {define} from './modules/api/api.env.js';
 import {ring} from './modules/api/api.ring.js';
 import {scoped} from './modules/api/api.scope.js';
 import {at, cursor, setSpeed, wait} from './modules/api/api.scheduler.js';
@@ -19,9 +18,11 @@ beforeEach(() => {
 });
 `;
 
-const jsonDoc = jsdocParser(jsdoc.explainSync({
-  files: 'src/modules/api/**/*.js',
-}));
+const jsonDoc = jsdocParser(
+  jsdoc.explainSync({
+    files: 'src/modules/api/**/*.js',
+  }),
+);
 
 let generatedTests = importSection + beforeEachSection;
 
@@ -61,6 +62,4 @@ ${testBody}});
 
 console.log(generatedTests);
 
-fs.writeFileSync(
-  'src/generated.test.js',
-  generatedTests);
+fs.writeFileSync('src/generated.test.js', generatedTests);
