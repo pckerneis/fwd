@@ -17,8 +17,7 @@ but it is available as `define` in the program.
 <a name="module_Env.define"></a>
 
 ### Env.define(name, [defaultValue]) ⇒ <code>Array</code>
-Define a variable with an optional default value. Once defined, the variable can be accessed and changed with
-the returned getter and setter functions. The set value is persisted across executions.
+Define a variable with an optional default value. Once defined, the variable can be accessed and changed withthe returned getter and setter functions. The set value is persisted across executions.
 
 **Kind**: static method of [<code>Env</code>](#module_Env)  
 **Returns**: <code>Array</code> - A tuple with a getter and a setter  
@@ -30,9 +29,7 @@ the returned getter and setter functions. The set value is persisted across exec
 
 **Example**  
 ```js
-const [getFoo, setFoo] = define('foo');
-setFoo('bar');
-getFoo(); // 'bar'
+const [getFoo, setFoo] = define('foo');setFoo('bar');getFoo(); // 'bar'
 ```
 <a name="module_Env.undefine"></a>
 
@@ -47,9 +44,7 @@ Delete a variable from the execution context.
 
 **Example**  
 ```js
-const [getFoo, setFoo] = define('foo');
-undefine('foo');
-getFoo(); // undefined
+const [getFoo, setFoo] = define('foo');undefine('foo');getFoo(); // undefined
 ```
 <a name="module_Log"></a>
 
@@ -112,8 +107,7 @@ Schedule messages to be logged at the cursor position.
 <a name="module_MIDI.note"></a>
 
 ### MIDI.note(pitch, velocity, [duration], [channel])
-Schedule a MIDI note to be played at the cursor position
-with note number `pitch`, velocity `velocity` and duration `duration` on MIDI channel `channel`.
+Schedule a MIDI note to be played at the cursor positionwith note number `pitch`, velocity `velocity` and duration `duration` on MIDI channel `channel`.
 
 **Kind**: static method of [<code>MIDI</code>](#module_MIDI)  
 
@@ -126,11 +120,7 @@ with note number `pitch`, velocity `velocity` and duration `duration` on MIDI ch
 
 **Example**  
 ```js
-// Play a MIDI note with note number 60, velocity 127 for 1 time unit on default channel
-note(60, 127);
-
-// Play a MIDI note with note number 64, velocity 80 for 2 time units on channel 1
-note(64, 80, 2, 1);
+// Play a MIDI note with note number 60, velocity 127 for 1 time unit on default channelnote(60, 127);// Play a MIDI note with note number 64, velocity 80 for 2 time units on channel 1note(64, 80, 2, 1);
 ```
 <a name="module_MIDI.program"></a>
 
@@ -170,10 +160,7 @@ Set the default value for next MIDI messages
 
 **Example**  
 ```js
-channel(9);
-
-// Play a MIDI note on channel 9
-note(60, 127);
+channel(9);// Play a MIDI note on channel 9note(60, 127);
 ```
 <a name="module_MIDI.mute"></a>
 
@@ -188,8 +175,7 @@ Mute one or more MIDI channels. If none are provided, all channels are muted.
 
 **Example**  
 ```js
-// Mute channel 1 and 2
-mute(1, 2);
+// Mute channel 1 and 2mute(1, 2);
 ```
 <a name="module_MIDI.unmute"></a>
 
@@ -235,8 +221,7 @@ Unsolo one or more MIDI channels. If none are provided, all channels are unsoloe
 <a name="module_Random.setSeed"></a>
 
 ### Random.setSeed(seed)
-Sets the seed for the random number generator.
-Setting the seed to the same value will result in the same sequence of random numbers.
+Sets the seed for the random number generator.Setting the seed to the same value will result in the same sequence of random numbers.
 
 **Kind**: static method of [<code>Random</code>](#module_Random)  
 
@@ -246,19 +231,12 @@ Setting the seed to the same value will result in the same sequence of random nu
 
 **Example**  
 ```js
-setSeed('hello, musch!');
-random(); // 0.6235711870582765
-random(); // 0.6597003782594609
-
-setSeed('hello, musch!');
-random(); // 0.6235711870582765
+setSeed('hello, musch!');random(); // 0.6235711870582765random(); // 0.6597003782594609setSeed('hello, musch!');random(); // 0.6235711870582765
 ```
 <a name="module_Random.random"></a>
 
 ### Random.random([min], [max]) ⇒ <code>number</code>
-Returns a random number between 0 and 1 with optional min and max values.
-If both min and max are specified, the returned number will be between min and max.
-If only min is specified, the returned number will be between 0 and min.
+Returns a random number between 0 and 1 with optional min and max values.If both min and max are specified, the returned number will be between min and max.If only min is specified, the returned number will be between 0 and min.
 
 **Kind**: static method of [<code>Random</code>](#module_Random)  
 **Returns**: <code>number</code> - a random number between 0 and 1  
@@ -270,10 +248,7 @@ If only min is specified, the returned number will be between 0 and min.
 
 **Example**  
 ```js
-random(); // 0.6597003782594609
-random(10); // 6.419559847089204
-random(10, 20); // 15.731895383250938
-random(10, 10); // 10
+random(); // 0.6597003782594609random(10); // 6.419559847089204random(10, 20); // 15.731895383250938random(10, 10); // 10
 ```
 <a name="module_Ring"></a>
 
@@ -338,9 +313,7 @@ Returns the current time cursor position
 **Returns**: <code>number</code> - the cursor position  
 **Example**  
 ```js
-cursor(); // 0
-wait(42);
-cursor(); // 42
+cursor(); // 0wait(42);cursor(); // 42
 ```
 <a name="module_Scheduler.fire"></a>
 
@@ -355,9 +328,7 @@ Schedule the function `action` to be called at the cursor position.
 
 **Example**  
 ```js
-at(3);
-// Schedule a function to be called at time 3
-fire(() => log('Hello World!'));
+at(3);// Schedule a function to be called at time 3fire(() => log('Hello World!'));
 ```
 <a name="module_Scheduler.repeat"></a>
 
@@ -374,8 +345,7 @@ Repeatedly calls the function `action` every `interval`, `count` times, starting
 
 **Example**  
 ```js
-// Plays a MIDI note every 1 time unit
-repeat(1, () => note(64, 127));
+// Plays a MIDI note every 1 time unitrepeat(1, () => note(64, 127));
 ```
 <a name="module_Scheduler.at"></a>
 
@@ -390,11 +360,7 @@ Move the cursor at position `time`.
 
 **Example**  
 ```js
-// Move the cursor to time 3
-at(3);
-
-// Schedule a function to be called at time 3
-fire(() => log('Hello World!'));
+// Move the cursor to time 3at(3);// Schedule a function to be called at time 3fire(() => log('Hello World!'));
 ```
 <a name="module_Scheduler.wait"></a>
 
@@ -410,11 +376,7 @@ Offset the cursor by `duration`.
 <a name="module_Scheduler.setSpeed"></a>
 
 ### Scheduler.setSpeed(newSpeed)
-Sets the scheduler's playback speed. Defaults to 1.
-`newSpeed` must be a strictly positive number, or the function call won't have
-any effect.
-If speed is set to 2, time will tick twice as fast. This is useful for defining
-a global tempo value.
+Sets the scheduler's playback speed. Defaults to 1.`newSpeed` must be a strictly positive number, or the function call won't haveany effect.If speed is set to 2, time will tick twice as fast. This is useful for defininga global tempo value.
 
 **Kind**: static method of [<code>Scheduler</code>](#module_Scheduler)  
 
@@ -442,11 +404,7 @@ Shortcut for setting and getting scheduler's playback speed.
 
 **Example**  
 ```js
-// Set the scheduler's playback speed to 2
-speed(2);
-
-// Plays a MIDI note every 0.5 seconds
-repeat(1, () => note(64, 127));
+// Set the scheduler's playback speed to 2speed(2);// Plays a MIDI note every 0.5 secondsrepeat(1, () => note(64, 127));
 ```
 <a name="module_Scheduler.next"></a>
 
@@ -587,18 +545,7 @@ Creates a stepper object
 
 **Example**  
 ```js
-const theStepper = stepper('1~2_3~~~_', ({ duration, symbol }) => {
- log(`Symbol: ${symbol}, duration: ${duration}`);
-});
-
-// Prints "Symbol: 1, duration: 2"
-theStepper.at(0);
-
-// Prints "Symbol: 2, duration: 1"
-theStepper.at(2);
-
-// Prints "Symbol: 3, duration: 4"
-theStepper.at(4);
+const theStepper = stepper('1~2_3~~~_', ({ duration, symbol }) => { log(`Symbol: ${symbol}, duration: ${duration}`);});// Prints "Symbol: 1, duration: 2"theStepper.at(0);// Prints "Symbol: 2, duration: 1"theStepper.at(2);// Prints "Symbol: 3, duration: 4"theStepper.at(4);
 ```
 <a name="module_Stepper..Stepper"></a>
 
@@ -664,8 +611,8 @@ integers starting from zero.
 
 **Kind**: static method of [<code>Utils</code>](#module_Utils)  
 
-| Param |
-| --- |
-| iterableOrNumber | 
-| callback | 
+| Param | Type | Description |
+| --- | --- | --- |
+| iterableOrNumber | <code>number</code> \| <code>string</code> \| <code>Array</code> | iterable or number of iterations |
+| callback | <code>function</code> | function to call for each iteration |
 

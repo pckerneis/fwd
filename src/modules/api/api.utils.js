@@ -38,8 +38,8 @@ export function pick(...numberOrArrayOrElements) {
  * For each element of `iterableOrNumber`, call a function `callback`.
  * It can iterate over an iterable (such as an Array or a string) or on positive
  * integers starting from zero.
- * @param iterableOrNumber
- * @param callback
+ * @param {number|string|Array} iterableOrNumber - iterable or number of iterations
+ * @param {function} callback - function to call for each iteration
  */
 export function iter(iterableOrNumber, callback) {
   if (typeof iterableOrNumber === 'number') {
