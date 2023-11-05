@@ -47,7 +47,7 @@ jsonDoc.forEach((doc) => {
 
     example.split('\n').forEach((line) => {
       if (line.includes('//')) {
-        testBody += buildAssertion(line, testBody);
+        testBody += buildAssertion(line);
       } else {
         testBody += `  ${line}\n`;
       }
