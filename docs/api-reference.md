@@ -32,7 +32,7 @@ the returned getter and setter functions. The set value is persisted across exec
 ```js
 const [getFoo, setFoo] = define('foo');
 setFoo('bar');
-getFoo(); // returns 'bar'
+getFoo(); // 'bar'
 ```
 <a name="module_Env.undefine"></a>
 
@@ -45,6 +45,12 @@ Delete a variable from the execution context.
 | --- | --- | --- |
 | name | <code>string</code> | The accessor name |
 
+**Example**  
+```js
+const [getFoo, setFoo] = define('foo');
+undefine('foo');
+getFoo(); // undefined
+```
 <a name="module_Log"></a>
 
 ## Log
@@ -94,26 +100,34 @@ Schedule messages to be logged at the cursor position.
 ## MIDI
 
 * [MIDI](#module_MIDI)
-    * [.note(pitch, velocity, duration, [channel])](#module_MIDI.note)
+    * [.note(pitch, velocity, [duration], [channel])](#module_MIDI.note)
     * [.program(program, [channel])](#module_MIDI.program)
     * [.cc(controller, value, [channel])](#module_MIDI.cc)
     * [.channel([channelNumber])](#module_MIDI.channel)
 
 <a name="module_MIDI.note"></a>
 
-### MIDI.note(pitch, velocity, duration, [channel])
+### MIDI.note(pitch, velocity, [duration], [channel])
 Schedule a MIDI note to be played at the cursor position
 with note number `pitch`, velocity `velocity` and duration `duration` on MIDI channel `channel`.
 
 **Kind**: static method of [<code>MIDI</code>](#module_MIDI)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| pitch | <code>number</code> | MIDI note number |
-| velocity | <code>number</code> | Velocity value |
-| duration | <code>number</code> | Note duration |
-| [channel] | <code>number</code> | MIDI channel to send to |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| pitch | <code>number</code> |  | MIDI note number |
+| velocity | <code>number</code> |  | Velocity value |
+| [duration] | <code>number</code> | <code>1</code> | Note duration (defaults to 1) |
+| [channel] | <code>number</code> |  | MIDI channel to send to |
 
+**Example**  
+```js
+// Play a MIDI note with note number 60, velocity 127 for 1 time unit on default channel
+note(60, 127);
+
+// Play a MIDI note with note number 64, velocity 80 for 2 time units on channel 1
+note(64, 80, 2, 1);
+```
 <a name="module_MIDI.program"></a>
 
 ### MIDI.program(program, [channel])
@@ -205,15 +219,15 @@ If the index is not an integer, it is rounded down.
 
 **Example**  
 ```js
-const ring = ring('a', 'b', 'c');
-ring(-3); // 'a'
-ring(-2); // 'b'
-ring(-1); // 'c'
-ring(0); // 'a'
-ring(1); // 'b'
-ring(2); // 'c'
-ring(3); // 'a'
-ring(1.4); // 'b'
+const theRing = ring('a', 'b', 'c');
+theRing(-3); // 'a'
+theRing(-2); // 'b'
+theRing(-1); // 'c'
+theRing(0); // 'a'
+theRing(1); // 'b'
+theRing(2); // 'c'
+theRing(3); // 'a'
+theRing(1.4); // 'b'
 ```
 <a name="module_Scheduler"></a>
 
@@ -413,13 +427,13 @@ const value = smooth(0, Curve.easeInQuad);
 // Adds a curve from 0 to 10 over 4 time units with a easeInQuad curve
 value.setTarget(10, 4);
 
-wait(1);
+at(1);
 value.get(); // 0.625
-wait(2);
+at(2);
 value.get(); // 2.5
-wait(3);
+at(3);
 value.get(); // 5.625
-wait(4);
+at(4);
 value.get(); // 10
 ```
 <a name="module_Smooth..SmoothedValue"></a>

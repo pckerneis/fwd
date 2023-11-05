@@ -22,10 +22,17 @@ export function getDefaultMidiChannel() {
  *
  * @param {number} pitch - MIDI note number
  * @param {number} velocity - Velocity value
- * @param {number} duration - Note duration
+ * @param {number} [duration=1] - Note duration (defaults to 1)
  * @param {number} [channel] - MIDI channel to send to
+ *
+ * @example
+ * // Play a MIDI note with note number 60, velocity 127 for 1 time unit on default channel
+ * note(60, 127);
+ *
+ * // Play a MIDI note with note number 64, velocity 80 for 2 time units on channel 1
+ * note(64, 80, 2, 1);
  */
-export function note(pitch, velocity, duration, channel) {
+export function note(pitch, velocity, duration = 1, channel) {
   channel = channel ?? getDefaultMidiChannel();
 
   fire(() => {
