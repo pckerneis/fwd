@@ -2,7 +2,7 @@ import jsdoc from 'jsdoc-api';
 import jsdocParser from 'jsdoc-parse';
 import fs from 'node:fs';
 
-const importSection = `import {define} from './modules/api/api.env.js';
+const importSection = `import {define, undefine} from './modules/api/api.env.js';
 import {ring} from './modules/api/api.ring.js';
 import {scoped} from './modules/api/api.scope.js';
 import {at, cursor, setSpeed, wait} from './modules/api/api.scheduler.js';
