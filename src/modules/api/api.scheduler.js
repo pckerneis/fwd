@@ -25,6 +25,11 @@ export function now() {
 /**
  * Returns the current time cursor position
  * @returns {number} the cursor position
+ *
+ * @example
+ * cursor(); // 0
+ * wait(42);
+ * cursor(); // 42
  */
 export function cursor() {
   return getCurrentScope().cursor;
@@ -34,6 +39,11 @@ export function cursor() {
  * Schedule the function `action` to be called at the cursor position.
  *
  * @param {Function|string} action - The action to schedule as a function or a key
+ *
+ * @example
+ * at(3);
+ * // Schedule a function to be called at time 3
+ * fire(() => log('Hello World!'));
  */
 export function fire(action) {
   const memoizedCursor = cursor();
@@ -52,6 +62,10 @@ export function fire(action) {
  * @param {number} interval - The repeat interval as a strictly positive number
  * @param {Function|string} action - The action to repeat as a function or a key
  * @param {number} count - How many times to repeat. Defaults to Infinity.
+ *
+ * @example
+ * // Plays a MIDI note every 1 time unit
+ * repeat(1, () => note(64, 127));
  */
 export function repeat(interval, action, count = Infinity) {
   if (!isFinitePositiveNumber(interval) || count < 0) {
@@ -113,6 +127,13 @@ function callScoped(cursor, midiChannel, action) {
  * Move the cursor at position `time`.
  *
  * @param {number} time - Time position to move the cursor to
+ *
+ * @example
+ * // Move the cursor to time 3
+ * at(3);
+ *
+ * // Schedule a function to be called at time 3
+ * fire(() => log('Hello World!'));
  */
 export function at(time) {
   getCurrentScope().cursor = time;
@@ -153,6 +174,13 @@ export function getSpeed() {
  * @param {number} [newSpeed] - New speed value. If you pass null, undefined or omit
  * the value, the scheduler's speed won't change.
  * @return {number} Scheduler playback speed after eventual modification
+ *
+ * @example
+ * // Set the scheduler's playback speed to 2
+ * speed(2);
+ *
+ * // Plays a MIDI note every 0.5 seconds
+ * repeat(1, () => note(64, 127));
  */
 export function speed(newSpeed) {
   if (newSpeed !== undefined) {

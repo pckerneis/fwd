@@ -336,6 +336,12 @@ Returns the current time cursor position
 
 **Kind**: static method of [<code>Scheduler</code>](#module_Scheduler)  
 **Returns**: <code>number</code> - the cursor position  
+**Example**  
+```js
+cursor(); // 0
+wait(42);
+cursor(); // 42
+```
 <a name="module_Scheduler.fire"></a>
 
 ### Scheduler.fire(action)
@@ -347,6 +353,12 @@ Schedule the function `action` to be called at the cursor position.
 | --- | --- | --- |
 | action | <code>function</code> \| <code>string</code> | The action to schedule as a function or a key |
 
+**Example**  
+```js
+at(3);
+// Schedule a function to be called at time 3
+fire(() => log('Hello World!'));
+```
 <a name="module_Scheduler.repeat"></a>
 
 ### Scheduler.repeat(interval, action, count)
@@ -360,6 +372,11 @@ Repeatedly calls the function `action` every `interval`, `count` times, starting
 | action | <code>function</code> \| <code>string</code> | The action to repeat as a function or a key |
 | count | <code>number</code> | How many times to repeat. Defaults to Infinity. |
 
+**Example**  
+```js
+// Plays a MIDI note every 1 time unit
+repeat(1, () => note(64, 127));
+```
 <a name="module_Scheduler.at"></a>
 
 ### Scheduler.at(time)
@@ -371,6 +388,14 @@ Move the cursor at position `time`.
 | --- | --- | --- |
 | time | <code>number</code> | Time position to move the cursor to |
 
+**Example**  
+```js
+// Move the cursor to time 3
+at(3);
+
+// Schedule a function to be called at time 3
+fire(() => log('Hello World!'));
+```
 <a name="module_Scheduler.wait"></a>
 
 ### Scheduler.wait(duration)
@@ -415,6 +440,14 @@ Shortcut for setting and getting scheduler's playback speed.
 | --- | --- | --- |
 | [newSpeed] | <code>number</code> | New speed value. If you pass null, undefined or omit the value, the scheduler's speed won't change. |
 
+**Example**  
+```js
+// Set the scheduler's playback speed to 2
+speed(2);
+
+// Plays a MIDI note every 0.5 seconds
+repeat(1, () => note(64, 127));
+```
 <a name="module_Scheduler.next"></a>
 
 ### Scheduler.next(interval)
