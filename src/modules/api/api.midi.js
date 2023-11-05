@@ -84,11 +84,25 @@ export function cc(controller, value, channel) {
 /**
  * Set the default value for next MIDI messages
  * @param {number} [channelNumber] - Default MIDI channel
+ *
+ * @example
+ * channel(9);
+ *
+ * // Play a MIDI note on channel 9
+ * note(60, 127);
  */
 export function channel(channelNumber) {
   getCurrentScope().midiChannel = channelNumber ?? 0;
 }
 
+/**
+ * Mute one or more MIDI channels. If none are provided, all channels are muted.
+ * @param {number} channelNumbers - MIDI channels to mute.
+ *
+ * @example
+ * // Mute channel 1 and 2
+ * mute(1, 2);
+ */
 export function mute(...channelNumbers) {
   fire(() => {
     if (channelNumbers.length === 0) {
@@ -104,6 +118,10 @@ export function mute(...channelNumbers) {
   });
 }
 
+/**
+ * Unmute one or more MIDI channels. If none are provided, all channels are unmuted.
+ * @param {number} channelNumbers - MIDI channels to unmute
+ */
 export function unmute(...channelNumbers) {
   fire(() => {
     if (channelNumbers.length === 0) {
@@ -120,6 +138,10 @@ export function unmute(...channelNumbers) {
   });
 }
 
+/**
+ * Solo one or more MIDI channels. If none are provided, all channels are soloed.
+ * @param {number} channelNumbers - MIDI channels to solo
+ */
 export function solo(...channelNumbers) {
   fire(() => {
     if (channelNumbers.length === 0) {
@@ -135,6 +157,10 @@ export function solo(...channelNumbers) {
   });
 }
 
+/**
+ * Unsolo one or more MIDI channels. If none are provided, all channels are unsoloed.
+ * @param {number} channelNumbers - MIDI channels to unsolo
+ */
 export function unsolo(...channelNumbers) {
   fire(() => {
     if (channelNumbers.length === 0) {
