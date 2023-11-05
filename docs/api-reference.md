@@ -585,6 +585,21 @@ Creates a stepper object
 | [continuation] | <code>string</code> | <code>&quot;&#x27;~&#x27;&quot;</code> | The step continuation character |
 | [silence] | <code>string</code> | <code>&quot;&#x27;_&#x27;&quot;</code> | The step silence character |
 
+**Example**  
+```js
+const theStepper = stepper('1~2_3~~~_', ({ duration, symbol }) => {
+ log(`Symbol: ${symbol}, duration: ${duration}`);
+});
+
+// Prints "Symbol: 1, duration: 2"
+theStepper.at(0);
+
+// Prints "Symbol: 2, duration: 1"
+theStepper.at(2);
+
+// Prints "Symbol: 3, duration: 4"
+theStepper.at(4);
+```
 <a name="module_Stepper..Stepper"></a>
 
 ### Stepper~Stepper : <code>Object</code>
