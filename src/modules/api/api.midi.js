@@ -97,7 +97,7 @@ export function channel(channelNumber) {
 
 /**
  * Mute one or more MIDI channels. If none are provided, all channels are muted.
- * @param {number} channelNumbers - MIDI channels to mute.
+ * @param {...number} channelNumbers - MIDI channels to mute.
  *
  * @example
  * // Mute channel 1 and 2
@@ -120,7 +120,7 @@ export function mute(...channelNumbers) {
 
 /**
  * Unmute one or more MIDI channels. If none are provided, all channels are unmuted.
- * @param {number} channelNumbers - MIDI channels to unmute
+ * @param {...number} channelNumbers - MIDI channels to unmute
  */
 export function unmute(...channelNumbers) {
   fire(() => {
@@ -140,7 +140,7 @@ export function unmute(...channelNumbers) {
 
 /**
  * Solo one or more MIDI channels. If none are provided, all channels are soloed.
- * @param {number} channelNumbers - MIDI channels to solo
+ * @param {...number} channelNumbers - MIDI channels to solo
  */
 export function solo(...channelNumbers) {
   fire(() => {
@@ -159,7 +159,7 @@ export function solo(...channelNumbers) {
 
 /**
  * Unsolo one or more MIDI channels. If none are provided, all channels are unsoloed.
- * @param {number} channelNumbers - MIDI channels to unsolo
+ * @param {...number} channelNumbers - MIDI channels to unsolo
  */
 export function unsolo(...channelNumbers) {
   fire(() => {
