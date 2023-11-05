@@ -36,6 +36,20 @@ function removeWhitespaces(line) {
  * @param {string} [continuation='~'] - The step continuation character
  * @param {string} [silence='_'] - The step silence character
  * @returns {Stepper} the stepper object
+ *
+ * @example
+ * const theStepper = stepper('1~2_3~~~_', ({ duration, symbol }) => {
+ *  log(`Symbol: ${symbol}, duration: ${duration}`);
+ * });
+ *
+ * // Prints "Symbol: 1, duration: 2"
+ * theStepper.at(0);
+ *
+ * // Prints "Symbol: 2, duration: 1"
+ * theStepper.at(2);
+ *
+ * // Prints "Symbol: 3, duration: 4"
+ * theStepper.at(4);
  */
 export function stepper(pattern, handler, continuation = '~', silence = '_') {
   const lines = pattern.split('\n').map((line) => removeWhitespaces(line));
