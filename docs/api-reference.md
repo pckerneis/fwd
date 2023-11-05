@@ -235,7 +235,8 @@ Unsolo one or more MIDI channels. If none are provided, all channels are unsoloe
 <a name="module_Random.setSeed"></a>
 
 ### Random.setSeed(seed)
-Sets the seed for the random number generator
+Sets the seed for the random number generator.
+Setting the seed to the same value will result in the same sequence of random numbers.
 
 **Kind**: static method of [<code>Random</code>](#module_Random)  
 
@@ -243,6 +244,15 @@ Sets the seed for the random number generator
 | --- | --- | --- |
 | seed | <code>\*</code> | the seed to use |
 
+**Example**  
+```js
+setSeed('hello, musch!');
+random(); // 0.6235711870582765
+random(); // 0.6597003782594609
+
+setSeed('hello, musch!');
+random(); // 0.6235711870582765
+```
 <a name="module_Random.random"></a>
 
 ### Random.random([min], [max]) ⇒ <code>number</code>
@@ -258,6 +268,13 @@ If only min is specified, the returned number will be between 0 and min.
 | [min] | <code>number</code> | if both arguments are numbers, the minimum value of the random number, else the maximum value |
 | [max] | <code>number</code> | if specified, the maximum value of the random number |
 
+**Example**  
+```js
+random(); // 0.6597003782594609
+random(10); // 6.419559847089204
+random(10, 20); // 15.731895383250938
+random(10, 10); // 10
+```
 <a name="module_Ring"></a>
 
 ## Ring

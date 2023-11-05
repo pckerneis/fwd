@@ -2,12 +2,13 @@ import jsdoc from 'jsdoc-api';
 import jsdocParser from 'jsdoc-parse';
 import fs from 'node:fs';
 
-const importSection = `import {define, undefine} from './modules/api/api.env.js';
-import {ring} from './modules/api/api.ring.js';
-import {scoped} from './modules/api/api.scope.js';
-import {at, cursor, setSpeed, wait} from './modules/api/api.scheduler.js';
-import {Curve, smooth} from './modules/api/api.smooth.js';
-import {setPersistedContext} from './modules/api/api.shared.js';
+const importSection = `import { define, undefine } from './modules/api/api.env.js';
+import { ring } from './modules/api/api.ring.js';
+import { scoped } from './modules/api/api.scope.js';
+import { at, cursor, setSpeed, wait } from './modules/api/api.scheduler.js';
+import { Curve, smooth } from './modules/api/api.smooth.js';
+import { setPersistedContext } from './modules/api/api.shared.js';
+import { random, setSeed } from './modules/api/api.random.js';
 `;
 
 const beforeEachSection = `
@@ -25,8 +26,6 @@ const jsonDoc = jsdocParser(
 );
 
 let generatedTests = importSection + beforeEachSection;
-
-
 
 jsonDoc.forEach((doc) => {
   doc?.examples?.forEach((example, exampleIndex) => {
