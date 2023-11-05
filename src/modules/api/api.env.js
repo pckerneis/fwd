@@ -11,7 +11,7 @@ import { _persistedContext } from './api.shared.js';
  * @example
  * const [getFoo, setFoo] = define('foo');
  * setFoo('bar');
- * getFoo(); // returns 'bar'
+ * getFoo(); // 'bar'
  *
  * @param {string} name - The accessor name
  * @param {*} [defaultValue] - An optional default value

@@ -78,13 +78,13 @@ const easingFunctions = {
  * // Adds a curve from 0 to 10 over 4 time units with a easeInQuad curve
  * value.setTarget(10, 4);
  *
- * wait(1);
+ * at(1);
  * value.get(); // 0.625
- * wait(2);
+ * at(2);
  * value.get(); // 2.5
- * wait(3);
+ * at(3);
  * value.get(); // 5.625
- * wait(4);
+ * at(4);
  * value.get(); // 10
  *
  * @param [defaultValue=0] - The starting value
