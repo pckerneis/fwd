@@ -31,6 +31,7 @@ jobs:
     - run: npm ci
     - run: npm run check
     - run: npm run lint
+    - run: npm run gen-tests
     - run: npm test
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
