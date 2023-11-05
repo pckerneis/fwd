@@ -10,15 +10,15 @@
  * If the index is not an integer, it is rounded down.
  *
  * @example
- * const ring = ring('a', 'b', 'c');
- * ring(-3); // 'a'
- * ring(-2); // 'b'
- * ring(-1); // 'c'
- * ring(0); // 'a'
- * ring(1); // 'b'
- * ring(2); // 'c'
- * ring(3); // 'a'
- * ring(1.4); // 'b'
+ * const theRing = ring('a', 'b', 'c');
+ * theRing(-3); // 'a'
+ * theRing(-2); // 'b'
+ * theRing(-1); // 'c'
+ * theRing(0); // 'a'
+ * theRing(1); // 'b'
+ * theRing(2); // 'c'
+ * theRing(3); // 'a'
+ * theRing(1.4); // 'b'
  *
  * @param {...*} elements - Elements to circle through
  * @return {function} a getter function to retrieve element at index
