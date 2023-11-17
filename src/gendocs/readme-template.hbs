@@ -10,27 +10,40 @@ A tiny environment for musical composition and live-coding in JavaScript.
 
 ![Screenshot]({{screenshotPath}})
 
+## Introduction
+
+Musch is a lightweight JavaScript environment designed for musical composition and live-coding. With Musch, you can create dynamic musical compositions on-the-fly by writing code, allowing for real-time adjustments and experimentation.
+
 ## Quick start
 
-To run from the sources:
+Get started with Musch in just a few steps:
 
-- clone the project
-- install the NPM dependencies with `npm ci`
-- install the command-line runner with `npm install -g .`
-- run with `musch`
+1. Clone the Project:
 
 ```bash
 git clone https://github.com/pckerneis/musch.git
 cd musch
+```
+
+2. Install Dependencies:
+
+```bash
 npm ci
+```
+
+3. Install Command-Line Runner:
+
+```bash
 npm install -g .
+```
+
+4. Run Musch:
+
+```bash
 musch
 ```
 
-You'll be prompted a text file to read from, and a MIDI output to send to.
-
-Every change to the text file will trigger the execution of its content,
-allowing on-the-fly modification of the program running.
+You'll be prompted to select a text file to read from and a MIDI output to send to. Any changes to the text file trigger the execution of its content, allowing for seamless on-the-fly modification of the running program.
 
 ## Example program
 
