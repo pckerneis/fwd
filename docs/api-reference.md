@@ -107,8 +107,7 @@ Schedule messages to be logged at the cursor position.
 <a name="module_MIDI.note"></a>
 
 ### MIDI.note(pitch, velocity, [duration], [channel])
-Schedule a MIDI note to be played at the cursor position
-with note number `pitch`, velocity `velocity` and duration `duration` on MIDI channel `channel`.
+Schedule a MIDI note to be played at the cursor positionwith note number `pitch`, velocity `velocity` and duration `duration` on MIDI channel `channel`.
 
 **Kind**: static method of [<code>MIDI</code>](#module_MIDI)  
 
@@ -121,11 +120,7 @@ with note number `pitch`, velocity `velocity` and duration `duration` on MIDI ch
 
 **Example**  
 ```js
-// Play a MIDI note with note number 60, velocity 127 for 1 time unit on default channel
-note(60, 127);
-
-// Play a MIDI note with note number 64, velocity 80 for 2 time units on channel 1
-note(64, 80, 2, 1);
+// Play a MIDI note with note number 60, velocity 127 for 1 time unit on default channelnote(60, 127);// Play a MIDI note with note number 64, velocity 80 for 2 time units on channel 1note(64, 80, 2, 1);
 ```
 <a name="module_MIDI.program"></a>
 
@@ -165,10 +160,7 @@ Set the default value for next MIDI messages
 
 **Example**  
 ```js
-channel(9);
-
-// Play a MIDI note on channel 9
-note(60, 127);
+channel(9);// Play a MIDI note on channel 9note(60, 127);
 ```
 <a name="module_MIDI.mute"></a>
 
@@ -183,8 +175,7 @@ Mute one or more MIDI channels. If none are provided, all channels are muted.
 
 **Example**  
 ```js
-// Mute channel 1 and 2
-mute(1, 2);
+// Mute channel 1 and 2mute(1, 2);
 ```
 <a name="module_MIDI.unmute"></a>
 
