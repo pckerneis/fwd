@@ -15,9 +15,9 @@ Musch is a lightweight JavaScript environment designed for musical composition a
 
 ## Demonstration
 
-Livecoding session with Musch and Ableton Live
+[Livecoding session with Musch and Ableton Live](https://www.youtube.com/watch?v=N6_SV2H5GTE)
 
-[![YouTube](http://i.ytimg.com/vi/N6_SV2H5GTE/hqdefault.jpg)](https://www.youtube.com/watch?v=N6_SV2H5GTE)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/N6_SV2H5GTE?si=yDWXTnAew-uDNvGw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Quick start
 
